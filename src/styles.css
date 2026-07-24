@@ -1,0 +1,325 @@
+:root {
+  --black: #030302;
+  --asphalt: #080706;
+  --bone: #d8c89b;
+  --old-paper: #a79870;
+  --dried-red: #7f241e;
+  --deep-red: #32100e;
+  --muted: rgba(216, 200, 155, 0.68);
+  --border: rgba(216, 200, 155, 0.14);
+  color: var(--bone);
+  background: var(--black);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+  background: var(--black);
+}
+
+button {
+  font: inherit;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.page-shell {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: clamp(1.5rem, 5vw, 4rem);
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 43%, rgba(216, 200, 155, 0.055), transparent 22%),
+    radial-gradient(circle at 50% 54%, rgba(127, 36, 30, 0.13), transparent 40%),
+    linear-gradient(180deg, #010101 0%, var(--asphalt) 52%, #010101 100%);
+}
+
+.analog-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  opacity: 0.22;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.046) 0, rgba(255, 255, 255, 0.046) 1px, transparent 1px, transparent 5px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.42) 1px, transparent 1px);
+  background-size: 100% 5px, 19px 19px, 31px 31px;
+  mix-blend-mode: screen;
+  animation: noise-shift 2.4s steps(2) infinite;
+}
+
+.vignette {
+  position: absolute;
+  inset: -20%;
+  z-index: 6;
+  pointer-events: none;
+  background:
+    radial-gradient(circle, transparent 28%, rgba(0, 0, 0, 0.83) 71%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018), transparent 10%, transparent 90%, rgba(255, 255, 255, 0.016));
+}
+
+.sigil {
+  position: absolute;
+  z-index: 1;
+  width: min(74vw, 450px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(216, 200, 155, 0.11);
+  border-radius: 999px;
+  box-shadow: inset 0 0 34px rgba(127, 36, 30, 0.12);
+  filter: blur(0.15px);
+  opacity: 0.82;
+  animation: breathe 10s ease-in-out infinite;
+}
+
+.sigil-ring,
+.sigil-slash {
+  position: absolute;
+  pointer-events: none;
+}
+
+.ring-one {
+  inset: 11%;
+  border: 1px dashed rgba(216, 200, 155, 0.105);
+  border-radius: 47% 53% 49% 51%;
+  transform: rotate(-19deg);
+}
+
+.ring-two {
+  inset: 25%;
+  border: 1px solid rgba(127, 36, 30, 0.16);
+  border-radius: 52% 48% 46% 54%;
+  transform: rotate(37deg);
+}
+
+.ring-three {
+  inset: 39%;
+  border: 1px dotted rgba(216, 200, 155, 0.08);
+  border-radius: 999px;
+}
+
+.sigil-slash {
+  left: 50%;
+  top: 12%;
+  width: 1px;
+  height: 76%;
+  background: rgba(216, 200, 155, 0.12);
+  transform-origin: center;
+}
+
+.slash-one {
+  transform: rotate(11deg);
+}
+
+.slash-two {
+  transform: rotate(101deg);
+}
+
+.transmission {
+  position: relative;
+  z-index: 8;
+  width: min(100%, 660px);
+  text-align: center;
+  text-shadow: 0 0 18px rgba(0, 0, 0, 0.86);
+}
+
+.copy-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.line {
+  margin: 0;
+  opacity: 0;
+  transform: translateY(7px);
+  animation: reveal 950ms ease forwards;
+  animation-delay: var(--delay);
+}
+
+.whisper {
+  margin-bottom: 2rem;
+  color: rgba(216, 200, 155, 0.77);
+  font-style: italic;
+  letter-spacing: 0.08em;
+  font-size: clamp(0.98rem, 2.8vw, 1.2rem);
+}
+
+.doctrine {
+  color: rgba(230, 217, 184, 0.94);
+  font-size: clamp(1.42rem, 5vw, 2.8rem);
+  line-height: 1.07;
+}
+
+.doctrine + .doctrine {
+  margin-top: 0.24rem;
+}
+
+.rule {
+  color: rgba(151, 45, 38, 0.86);
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: clamp(0.84rem, 2.7vw, 1.08rem);
+  line-height: 1.78;
+}
+
+.rule:nth-of-type(5) {
+  margin-top: 2.35rem;
+}
+
+.closing {
+  color: rgba(216, 200, 155, 0.86);
+  font-size: clamp(1rem, 3.4vw, 1.34rem);
+  line-height: 1.42;
+}
+
+.closing:nth-of-type(9) {
+  margin-top: 2.2rem;
+}
+
+.submit-button {
+  margin-top: 1.9rem;
+  opacity: 0;
+  animation: reveal 950ms ease forwards 6.9s, button-flicker 5.5s linear infinite 9s;
+  cursor: pointer;
+  border: 1px solid rgba(216, 200, 155, 0.23);
+  border-radius: 0;
+  background: rgba(10, 8, 7, 0.58);
+  color: rgba(230, 217, 184, 0.78);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(0.72rem, 2.5vw, 0.8rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.78rem 1rem;
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+}
+
+.submit-button:hover,
+.submit-button:focus-visible {
+  color: rgba(238, 228, 198, 0.96);
+  border-color: rgba(151, 45, 38, 0.55);
+  background: rgba(10, 8, 7, 0.78);
+}
+
+.submit-button:focus-visible {
+  outline: 2px solid rgba(216, 200, 155, 0.55);
+  outline-offset: 4px;
+}
+
+.details,
+.secret {
+  min-height: 2.8rem;
+  margin-top: 1rem;
+  opacity: 0;
+  color: rgba(216, 200, 155, 0.8);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(0.73rem, 2.4vw, 0.82rem);
+  line-height: 1.65;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  transition: opacity 800ms ease;
+}
+
+.details p {
+  margin: 0;
+}
+
+.details.visible,
+.secret.visible {
+  opacity: 1;
+}
+
+.secret {
+  min-height: 1.4rem;
+  color: rgba(151, 45, 38, 0.88);
+  letter-spacing: 0.24em;
+}
+
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.985) rotate(0deg);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.02) rotate(1.2deg);
+    opacity: 0.9;
+  }
+}
+
+@keyframes noise-shift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-1px, 1px);
+  }
+}
+
+@keyframes button-flicker {
+  0%,
+  93%,
+  100% {
+    opacity: 0.9;
+  }
+  94% {
+    opacity: 0.34;
+  }
+  96% {
+    opacity: 0.78;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  .line,
+  .submit-button {
+    opacity: 1;
+    transform: none;
+  }
+}
