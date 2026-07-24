@@ -1,18 +1,16 @@
-# Scenic Loop Insanity III — Teaser Prototype
+# Scenic Loop Insanity Hype Landing Page
 
-A minimal, shareable hype landing page for Scenic Loop Insanity III.
+A small Vite + React prototype for a shareable Scenic Loop Insanity teaser page.
 
-Vibe: cursed seance, discovered VHS tape, occult cycling ritual. No gore, no bright colors, no form, no audio.
+## Experience
 
-## Features
-
-- Animated text reveal
-- Ritual CTA: `I Submit to the Loop`
-- CTA reveals: `October 2026. The details will find the worthy.`
-- Secret d-pad easter egg: ↑ ↓ ← → → ← ↓ ↑ reveals `Godspeed`
-- Static/Vercel-friendly Vite app
-- Mobile-first layout
-- Reduced-motion support
+- subtle loading animation
+- candle-lit occult/VHS atmosphere
+- text appears and disappears in timed scenes
+- no gore, no audio, no form
+- final button: **I Submit to the Loop**
+- click reveal: **October 2026. The details will find the worthy.**
+- easter egg: press `↑ ↓ ← → → ← ↓ ↑` to reveal **Godspeed**
 
 ## Run locally
 
@@ -29,14 +27,12 @@ npm run build
 
 ## Deploy to Vercel
 
-1. Push this repo to GitHub.
-2. Import the GitHub repo into Vercel.
-3. Framework preset: Vite.
-4. Build command: `npm run build`.
-5. Output directory: `dist`.
+1. Push this folder to a GitHub repo.
+2. Import the repo in Vercel.
+3. Use the default Vite settings:
+   - Build command: `npm run build`
+   - Output directory: `dist`
 
-## Suggested next steps
+## Notes
 
-- Replace the CSS sigil with a custom artist-drawn SVG.
-- Add Open Graph/social preview image.
-- Add `/scripture`, `/ledger`, and `/intent` only when ready.
+The current version is intentionally minimal: a cursed-seance landing page, not a full event page. Future versions can add scripture fragments, Orders of Participation, the Ledger of the Returned, or an intent form.
