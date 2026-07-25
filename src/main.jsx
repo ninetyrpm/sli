@@ -153,11 +153,6 @@ function App() {
       <div className="vignette" aria-hidden="true" />
       <div className="sigil-pattern" aria-hidden="true" />
       <div className="tape-damage" aria-hidden="true" />
-      <div className="candle-wrap" aria-hidden="true">
-        <div className="candle-flame" />
-        <div className="candle-body" />
-        <div className="candle-glow" />
-      </div>
 
       <section className="transmission" aria-labelledby="site-title">
         <h1 id="site-title" className="sr-only">
