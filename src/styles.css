@@ -8,6 +8,10 @@
   --deep-red: #230d0b;
   --ash: rgba(214, 196, 152, 0.62);
   --border: rgba(214, 196, 152, 0.13);
+  --sigil-contrast: 1.05;
+  --sigil-brightness: 0.58;
+  --sigil-opacity: 0.28;
+  --sigil-wash: 0.07;
   color: var(--bone);
   background: var(--black);
   font-family: Georgia, 'Times New Roman', serif;
@@ -64,7 +68,7 @@ button {
     linear-gradient(180deg, #010101 0%, var(--asphalt) 50%, #010101 100%);
 }
 
-.page-shell.is-blackout .sigil,
+.page-shell.is-blackout .sigil-pattern,
 .page-shell.is-blackout .transmission,
 .page-shell.is-blackout .candle-body {
   opacity: 0;
@@ -82,6 +86,42 @@ button {
 .page-shell.is-loading .candle-flame {
   opacity: 0.26;
   transform: translateX(-50%) scale(0.72);
+}
+
+
+.sigil-pattern {
+  position: absolute;
+  inset: -3%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--sigil-opacity);
+  background-image: url('/sigil.png');
+  background-repeat: repeat;
+  background-position: center;
+  background-size: 680px auto;
+  filter: contrast(var(--sigil-contrast)) brightness(var(--sigil-brightness)) saturate(0.78);
+  mix-blend-mode: screen;
+  transform: translateZ(0);
+  transition: opacity 90ms steps(1), filter 90ms steps(1);
+  animation: pattern-drift 32s linear infinite, pattern-jitter 3.2s steps(2) infinite;
+}
+
+.sigil-pattern::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(198, 172, 110, var(--sigil-wash));
+  mix-blend-mode: overlay;
+}
+
+.page-shell.is-blackout .sigil-pattern {
+  opacity: 0.045;
+  filter: contrast(0.75) brightness(0.18) saturate(0.55);
+}
+
+.page-shell.is-loading .sigil-pattern {
+  opacity: 0.12;
+  filter: contrast(0.88) brightness(0.28) saturate(0.65);
 }
 
 .analog-noise {
@@ -120,63 +160,6 @@ button {
     repeating-linear-gradient(90deg, transparent 0 38px, rgba(255, 255, 255, 0.03) 39px, transparent 40px),
     repeating-linear-gradient(0deg, transparent 0 83px, rgba(0, 0, 0, 0.42) 84px, transparent 87px);
   animation: tape-wobble 5s steps(3) infinite;
-}
-
-.sigil {
-  position: absolute;
-  z-index: 1;
-  width: min(74vw, 455px);
-  aspect-ratio: 1;
-  border: 1px solid rgba(214, 196, 152, 0.1);
-  border-radius: 999px;
-  box-shadow: inset 0 0 34px rgba(107, 33, 28, 0.1);
-  filter: blur(0.2px);
-  opacity: 0.7;
-  transition: opacity 240ms ease;
-  animation: breathe 11s ease-in-out infinite;
-}
-
-.sigil-ring,
-.sigil-slash {
-  position: absolute;
-  pointer-events: none;
-}
-
-.ring-one {
-  inset: 11%;
-  border: 1px dashed rgba(214, 196, 152, 0.1);
-  border-radius: 47% 53% 49% 51%;
-  transform: rotate(-19deg);
-}
-
-.ring-two {
-  inset: 25%;
-  border: 1px solid rgba(107, 33, 28, 0.15);
-  border-radius: 52% 48% 46% 54%;
-  transform: rotate(37deg);
-}
-
-.ring-three {
-  inset: 39%;
-  border: 1px dotted rgba(214, 196, 152, 0.075);
-  border-radius: 999px;
-}
-
-.sigil-slash {
-  left: 50%;
-  top: 12%;
-  width: 1px;
-  height: 76%;
-  background: rgba(214, 196, 152, 0.1);
-  transform-origin: center;
-}
-
-.slash-one {
-  transform: rotate(11deg);
-}
-
-.slash-two {
-  transform: rotate(101deg);
 }
 
 .candle-wrap {
@@ -417,6 +400,24 @@ button {
   letter-spacing: 0.24em;
 }
 
+@keyframes pattern-drift {
+  0% {
+    background-position: center center;
+  }
+  100% {
+    background-position: calc(50% + 42px) calc(50% + 29px);
+  }
+}
+
+@keyframes pattern-jitter {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  52% {
+    transform: translate(-1px, 1px);
+  }
+}
+
 @keyframes reveal {
   to {
     opacity: 1;
@@ -548,6 +549,10 @@ button {
     min-height: 255px;
   }
 
+  .sigil-pattern {
+    background-size: 540px auto;
+  }
+
   .candle-wrap {
     bottom: 1.25rem;
     transform: translateX(-50%) scale(0.86);
@@ -563,7 +568,7 @@ button {
     scroll-behavior: auto !important;
   }
 
-  .page-shell.is-blackout .sigil,
+  .page-shell.is-blackout .sigil-pattern,
   .page-shell.is-blackout .transmission,
   .page-shell.is-blackout .candle-body,
   .page-shell.is-blackout .candle-flame,

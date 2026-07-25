@@ -74,6 +74,36 @@ function App() {
   const [secretProgress, setSecretProgress] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
 
+  useEffect(() => {
+    const applyFlicker = () => {
+      const contrast = (0.72 + Math.random() * 0.82).toFixed(2);
+      const brightness = (0.42 + Math.random() * 0.42).toFixed(2);
+      const opacity = (0.18 + Math.random() * 0.22).toFixed(2);
+      const wash = (0.04 + Math.random() * 0.08).toFixed(2);
+
+      document.documentElement.style.setProperty('--sigil-contrast', contrast);
+      document.documentElement.style.setProperty('--sigil-brightness', brightness);
+      document.documentElement.style.setProperty('--sigil-opacity', opacity);
+      document.documentElement.style.setProperty('--sigil-wash', wash);
+    };
+
+    let timeoutId;
+    let cancelled = false;
+
+    const scheduleFlicker = () => {
+      if (cancelled) return;
+      applyFlicker();
+      timeoutId = window.setTimeout(scheduleFlicker, 95 + Math.random() * 360);
+    };
+
+    scheduleFlicker();
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, []);
+
   const currentScene = SCENES[sceneIndex];
   const isBlackout = currentScene.type === 'blackout';
   const isLoading = currentScene.type === 'loading';
@@ -121,14 +151,8 @@ function App() {
     <main className={sceneClassName} aria-label="Scenic Loop Insanity teaser">
       <div className="analog-noise" aria-hidden="true" />
       <div className="vignette" aria-hidden="true" />
+      <div className="sigil-pattern" aria-hidden="true" />
       <div className="tape-damage" aria-hidden="true" />
-      <div className="sigil" aria-hidden="true">
-        <span className="sigil-ring ring-one" />
-        <span className="sigil-ring ring-two" />
-        <span className="sigil-ring ring-three" />
-        <span className="sigil-slash slash-one" />
-        <span className="sigil-slash slash-two" />
-      </div>
       <div className="candle-wrap" aria-hidden="true">
         <div className="candle-flame" />
         <div className="candle-body" />
