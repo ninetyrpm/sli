@@ -67,9 +67,12 @@ button {
     linear-gradient(180deg, #010101 0%, var(--asphalt) 50%, #010101 100%);
 }
 
-.page-shell.is-blackout .sigil-pattern,
-.page-shell.is-blackout .transmission {
-  opacity: 0;
+.page-shell.is-blackout .sigil-pattern {
+  opacity: 0.055;
+  filter: contrast(0.82) brightness(0.22) saturate(0.55);
+  transition:
+    opacity 420ms ease-in-out,
+    filter 420ms ease-in-out;
 }
 
 .sigil-pattern {
