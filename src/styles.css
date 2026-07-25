@@ -3,7 +3,6 @@
   --asphalt: #070604;
   --bone: #d6c498;
   --old-paper: #9f916b;
-  --candle: #c7ad70;
   --dried-red: #6b211c;
   --deep-red: #230d0b;
   --ash: rgba(214, 196, 152, 0.62);
@@ -69,25 +68,9 @@ button {
 }
 
 .page-shell.is-blackout .sigil-pattern,
-.page-shell.is-blackout .transmission,
-.page-shell.is-blackout .candle-body {
+.page-shell.is-blackout .transmission {
   opacity: 0;
 }
-
-.page-shell.is-blackout .candle-flame {
-  opacity: 0.04;
-  transform: translateX(-50%) scale(0.42);
-}
-
-.page-shell.is-blackout .candle-glow {
-  opacity: 0.02;
-}
-
-.page-shell.is-loading .candle-flame {
-  opacity: 0.26;
-  transform: translateX(-50%) scale(0.72);
-}
-
 
 .sigil-pattern {
   position: absolute;
@@ -131,7 +114,13 @@ button {
   pointer-events: none;
   opacity: 0.29;
   background-image:
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.038) 0, rgba(255, 255, 255, 0.038) 1px, transparent 1px, transparent 4px),
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.038) 0,
+      rgba(255, 255, 255, 0.038) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
     radial-gradient(circle, rgba(255, 255, 255, 0.075) 1px, transparent 1px),
     radial-gradient(circle, rgba(0, 0, 0, 0.54) 1px, transparent 1px);
   background-size: 100% 5px, 17px 17px, 29px 29px;
@@ -146,7 +135,13 @@ button {
   pointer-events: none;
   background:
     radial-gradient(circle, transparent 24%, rgba(0, 0, 0, 0.88) 70%),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.014), transparent 11%, transparent 89%, rgba(255, 255, 255, 0.012));
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.014),
+      transparent 11%,
+      transparent 89%,
+      rgba(255, 255, 255, 0.012)
+    );
 }
 
 .tape-damage {
@@ -156,67 +151,17 @@ button {
   pointer-events: none;
   opacity: 0.13;
   background:
-    linear-gradient(90deg, transparent 0 16%, rgba(214, 196, 152, 0.16) 16.2%, transparent 16.6% 71%, rgba(214, 196, 152, 0.08) 71.25%, transparent 71.6%),
+    linear-gradient(
+      90deg,
+      transparent 0 16%,
+      rgba(214, 196, 152, 0.16) 16.2%,
+      transparent 16.6% 71%,
+      rgba(214, 196, 152, 0.08) 71.25%,
+      transparent 71.6%
+    ),
     repeating-linear-gradient(90deg, transparent 0 38px, rgba(255, 255, 255, 0.03) 39px, transparent 40px),
     repeating-linear-gradient(0deg, transparent 0 83px, rgba(0, 0, 0, 0.42) 84px, transparent 87px);
   animation: tape-wobble 5s steps(3) infinite;
-}
-
-.candle-wrap {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(2.1rem, 6vh, 4.5rem);
-  z-index: 4;
-  width: 82px;
-  height: 122px;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.candle-body {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 34px;
-  height: 74px;
-  transform: translateX(-50%);
-  opacity: 0.58;
-  border: 1px solid rgba(214, 196, 152, 0.22);
-  background:
-    linear-gradient(90deg, rgba(25, 21, 17, 0.8), rgba(145, 129, 91, 0.28), rgba(16, 13, 11, 0.84)),
-    linear-gradient(180deg, rgba(214, 196, 152, 0.26), rgba(88, 72, 48, 0.1));
-  transition: opacity 180ms ease;
-}
-
-.candle-flame {
-  position: absolute;
-  left: 50%;
-  bottom: 75px;
-  width: 20px;
-  height: 34px;
-  transform: translateX(-50%);
-  opacity: 0.92;
-  border-radius: 54% 46% 50% 50%;
-  background:
-    radial-gradient(circle at 50% 70%, rgba(255, 231, 165, 0.92), rgba(194, 135, 54, 0.58) 42%, rgba(87, 28, 18, 0.08) 78%),
-    linear-gradient(180deg, rgba(220, 185, 93, 0.7), rgba(121, 51, 28, 0.05));
-  filter: blur(0.2px);
-  transform-origin: 50% 90%;
-  transition: opacity 160ms ease, transform 160ms ease;
-  animation: flame-flicker 1.55s infinite alternate ease-in-out;
-}
-
-.candle-glow {
-  position: absolute;
-  left: 50%;
-  bottom: -150px;
-  width: min(96vw, 760px);
-  height: 560px;
-  transform: translateX(-50%);
-  opacity: 0.52;
-  background: radial-gradient(ellipse at 50% 72%, rgba(198, 172, 110, 0.17), rgba(107, 33, 28, 0.055) 32%, transparent 68%);
-  transition: opacity 180ms ease;
-  animation: glow-flicker 2.4s infinite ease-in-out;
 }
 
 .transmission {
@@ -404,15 +349,18 @@ button {
   0% {
     background-position: center center;
   }
+
   100% {
     background-position: calc(50% + 42px) calc(50% + 29px);
   }
 }
 
 @keyframes pattern-jitter {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0);
   }
+
   52% {
     transform: translate(-1px, 1px);
   }
@@ -434,58 +382,12 @@ button {
   }
 }
 
-@keyframes breathe {
-  0%,
-  100% {
-    transform: scale(0.985) rotate(0deg);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.02) rotate(1.2deg);
-    opacity: 0.78;
-  }
-}
-
-@keyframes flame-flicker {
-  0% {
-    transform: translateX(-50%) scale(0.96) skewX(-2deg);
-    opacity: 0.82;
-  }
-  34% {
-    transform: translateX(-50%) scale(1.06) skewX(3deg);
-    opacity: 0.96;
-  }
-  67% {
-    transform: translateX(-50%) scale(0.9) skewX(-4deg);
-    opacity: 0.66;
-  }
-  100% {
-    transform: translateX(-50%) scale(1.02) skewX(1deg);
-    opacity: 0.92;
-  }
-}
-
-@keyframes glow-flicker {
-  0%,
-  100% {
-    opacity: 0.45;
-  }
-  48% {
-    opacity: 0.62;
-  }
-  55% {
-    opacity: 0.34;
-  }
-  61% {
-    opacity: 0.56;
-  }
-}
-
 @keyframes noise-shift {
   0%,
   100% {
     transform: translate(0, 0);
   }
+
   50% {
     transform: translate(-1px, 1px);
   }
@@ -496,9 +398,11 @@ button {
   100% {
     transform: translateX(0);
   }
+
   35% {
     transform: translateX(-2px);
   }
+
   70% {
     transform: translateX(1px);
   }
@@ -515,11 +419,13 @@ button {
     opacity: 0;
     filter: blur(2px);
   }
+
   18%,
   78% {
     opacity: 1;
     filter: blur(0);
   }
+
   100% {
     opacity: 0;
     filter: blur(4px);
@@ -532,9 +438,11 @@ button {
   100% {
     opacity: 0.9;
   }
+
   94% {
     opacity: 0.34;
   }
+
   96% {
     opacity: 0.78;
   }
@@ -552,11 +460,6 @@ button {
   .sigil-pattern {
     background-size: 540px auto;
   }
-
-  .candle-wrap {
-    bottom: 1.25rem;
-    transform: translateX(-50%) scale(0.86);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -569,10 +472,7 @@ button {
   }
 
   .page-shell.is-blackout .sigil-pattern,
-  .page-shell.is-blackout .transmission,
-  .page-shell.is-blackout .candle-body,
-  .page-shell.is-blackout .candle-flame,
-  .page-shell.is-blackout .candle-glow {
+  .page-shell.is-blackout .transmission {
     opacity: 1;
   }
 
