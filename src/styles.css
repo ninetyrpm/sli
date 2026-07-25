@@ -82,14 +82,19 @@ button {
   background-image: url('/sigil.png');
   background-repeat: repeat;
   background-position: center;
-  background-size: 680px auto;
-  filter: contrast(var(--sigil-contrast)) brightness(var(--sigil-brightness)) saturate(0.78);
+  background-size: 620px auto;
+  filter:
+    contrast(var(--sigil-contrast))
+    brightness(var(--sigil-brightness))
+    saturate(0.92);
   mix-blend-mode: screen;
   transform: translateZ(0);
   transition:
     opacity var(--flicker-duration, 620ms) ease-in-out,
     filter var(--flicker-duration, 620ms) ease-in-out;
-  animation: pattern-drift 36s linear infinite, pattern-jitter 3.8s ease-in-out infinite;
+  animation:
+    pattern-drift 32s linear infinite,
+    pattern-jitter 3.2s steps(2) infinite;
 }
 
 .sigil-pattern::after {
