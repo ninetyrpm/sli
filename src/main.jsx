@@ -68,6 +68,106 @@ const SCENES = [
   },
 ];
 
+function startSigilCandleDrift() {
+  const root = document.documentElement;
+
+  let current = {
+    contrast: 1.05,
+    brightness: 0.58,
+    opacity: 0.28,
+    wash: 0.07,
+  };
+
+  let velocity = {
+    contrast: 0,
+    brightness: 0,
+    opacity: 0,
+    wash: 0,
+  };
+
+  let cancelled = false;
+  let timeoutId;
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const apply = (duration = 620) => {
+    root.style.setProperty('--flicker-duration', `${duration}ms`);
+    root.style.setProperty('--sigil-contrast', current.contrast.toFixed(3));
+    root.style.setProperty('--sigil-brightness', current.brightness.toFixed(3));
+    root.style.setProperty('--sigil-opacity', current.opacity.toFixed(3));
+    root.style.setProperty('--sigil-wash', current.wash.toFixed(3));
+  };
+
+  const chooseTarget = () => {
+    return {
+      contrast: 0.96 + Math.random() * 0.26,
+      brightness: 0.46 + Math.random() * 0.24,
+      opacity: 0.2 + Math.random() * 0.16,
+      wash: 0.035 + Math.random() * 0.085,
+    };
+  };
+
+  const driftToward = (target) => {
+    const spring = 0.09 + Math.random() * 0.05;
+    const damping = 0.66 + Math.random() * 0.16;
+
+    for (const key of Object.keys(current)) {
+      const force = (target[key] - current[key]) * spring;
+      velocity[key] = velocity[key] * damping + force;
+      current[key] += velocity[key];
+    }
+
+    current.contrast = clamp(current.contrast, 0.9, 1.28);
+    current.brightness = clamp(current.brightness, 0.38, 0.74);
+    current.opacity = clamp(current.opacity, 0.16, 0.39);
+    current.wash = clamp(current.wash, 0.025, 0.13);
+  };
+
+  const scheduleNext = () => {
+    if (cancelled) return;
+
+    const target = chooseTarget();
+    const quickFlutter = Math.random() < 0.16;
+
+    const duration = quickFlutter
+      ? 120 + Math.random() * 180
+      : 520 + Math.random() * 1100;
+
+    const steps = quickFlutter ? 2 : 4 + Math.floor(Math.random() * 5);
+    let step = 0;
+
+    const tick = () => {
+      if (cancelled) return;
+
+      driftToward(target);
+      apply(duration);
+
+      step += 1;
+
+      if (step < steps) {
+        timeoutId = window.setTimeout(tick, duration / steps);
+        return;
+      }
+
+      const pause = quickFlutter
+        ? 70 + Math.random() * 180
+        : 220 + Math.random() * 900;
+
+      timeoutId = window.setTimeout(scheduleNext, pause);
+    };
+
+    tick();
+  };
+
+  apply();
+  scheduleNext();
+
+  return () => {
+    cancelled = true;
+    window.clearTimeout(timeoutId);
+  };
+}
+
 function App() {
   const [sceneIndex, setSceneIndex] = useState(0);
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -75,33 +175,7 @@ function App() {
   const [showSecret, setShowSecret] = useState(false);
 
   useEffect(() => {
-    const applyFlicker = () => {
-      const contrast = (0.72 + Math.random() * 0.82).toFixed(2);
-      const brightness = (0.42 + Math.random() * 0.42).toFixed(2);
-      const opacity = (0.18 + Math.random() * 0.22).toFixed(2);
-      const wash = (0.04 + Math.random() * 0.08).toFixed(2);
-
-      document.documentElement.style.setProperty('--sigil-contrast', contrast);
-      document.documentElement.style.setProperty('--sigil-brightness', brightness);
-      document.documentElement.style.setProperty('--sigil-opacity', opacity);
-      document.documentElement.style.setProperty('--sigil-wash', wash);
-    };
-
-    let timeoutId;
-    let cancelled = false;
-
-    const scheduleFlicker = () => {
-      if (cancelled) return;
-      applyFlicker();
-      timeoutId = window.setTimeout(scheduleFlicker, 95 + Math.random() * 360);
-    };
-
-    scheduleFlicker();
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timeoutId);
-    };
+    return startSigilCandleDrift();
   }, []);
 
   const currentScene = SCENES[sceneIndex];
@@ -131,12 +205,14 @@ function App() {
 
       if (event.key === expectedKey) {
         const nextProgress = secretProgress + 1;
+
         if (nextProgress === SECRET_SEQUENCE.length) {
           setShowSecret(true);
           setSecretProgress(0);
-        } else {
-          setSecretProgress(nextProgress);
+          return;
         }
+
+        setSecretProgress(nextProgress);
         return;
       }
 
