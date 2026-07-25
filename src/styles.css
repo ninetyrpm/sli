@@ -11,6 +11,7 @@
   --sigil-brightness: 0.58;
   --sigil-opacity: 0.28;
   --sigil-wash: 0.07;
+  --flicker-duration: 620ms;
   color: var(--bone);
   background: var(--black);
   font-family: Georgia, 'Times New Roman', serif;
@@ -67,12 +68,9 @@ button {
     linear-gradient(180deg, #010101 0%, var(--asphalt) 50%, #010101 100%);
 }
 
-.page-shell.is-blackout .sigil-pattern {
-  opacity: 0.055;
-  filter: contrast(0.82) brightness(0.22) saturate(0.55);
-  transition:
-    opacity 420ms ease-in-out,
-    filter 420ms ease-in-out;
+.page-shell.is-blackout .sigil-pattern,
+.page-shell.is-blackout .transmission {
+  opacity: 0;
 }
 
 .sigil-pattern {
@@ -91,7 +89,7 @@ button {
   transition:
     opacity var(--flicker-duration, 620ms) ease-in-out,
     filter var(--flicker-duration, 620ms) ease-in-out;
-  animation: pattern-drift 32s linear infinite, pattern-jitter 3.2s steps(2) infinite;
+  animation: pattern-drift 36s linear infinite, pattern-jitter 3.8s ease-in-out infinite;
 }
 
 .sigil-pattern::after {
@@ -106,8 +104,11 @@ button {
 }
 
 .page-shell.is-blackout .sigil-pattern {
-  opacity: 0.045;
-  filter: contrast(0.75) brightness(0.18) saturate(0.55);
+  opacity: 0.055;
+  filter: contrast(0.82) brightness(0.22) saturate(0.55);
+  transition:
+    opacity 420ms ease-in-out,
+    filter 420ms ease-in-out;
 }
 
 .page-shell.is-loading .sigil-pattern {

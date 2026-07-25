@@ -128,11 +128,9 @@ function startSigilCandleDrift() {
 
     const target = chooseTarget();
     const quickFlutter = Math.random() < 0.16;
-
     const duration = quickFlutter
       ? 120 + Math.random() * 180
       : 520 + Math.random() * 1100;
-
     const steps = quickFlutter ? 2 : 4 + Math.floor(Math.random() * 5);
     let step = 0;
 
@@ -141,7 +139,6 @@ function startSigilCandleDrift() {
 
       driftToward(target);
       apply(duration);
-
       step += 1;
 
       if (step < steps) {
@@ -152,7 +149,6 @@ function startSigilCandleDrift() {
       const pause = quickFlutter
         ? 70 + Math.random() * 180
         : 220 + Math.random() * 900;
-
       timeoutId = window.setTimeout(scheduleNext, pause);
     };
 

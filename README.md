@@ -5,7 +5,7 @@ A small Vite + React prototype for a shareable Scenic Loop Insanity teaser page.
 ## Experience
 
 - subtle loading animation
-- candle-lit occult/VHS atmosphere
+- occult/VHS atmosphere with candlelight-like sigil flicker
 - uploaded sigil pattern background with irregular contrast/brightness flicker
 - text appears and disappears in timed scenes
 - no gore, no audio, no form
