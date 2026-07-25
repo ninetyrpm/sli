@@ -85,7 +85,9 @@ button {
   filter: contrast(var(--sigil-contrast)) brightness(var(--sigil-brightness)) saturate(0.78);
   mix-blend-mode: screen;
   transform: translateZ(0);
-  transition: opacity 90ms steps(1), filter 90ms steps(1);
+  transition:
+    opacity var(--flicker-duration, 620ms) ease-in-out,
+    filter var(--flicker-duration, 620ms) ease-in-out;
   animation: pattern-drift 32s linear infinite, pattern-jitter 3.2s steps(2) infinite;
 }
 
@@ -95,6 +97,9 @@ button {
   inset: 0;
   background: rgba(198, 172, 110, var(--sigil-wash));
   mix-blend-mode: overlay;
+  transition:
+    background-color var(--flicker-duration, 620ms) ease-in-out,
+    opacity var(--flicker-duration, 620ms) ease-in-out;
 }
 
 .page-shell.is-blackout .sigil-pattern {
