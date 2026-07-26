@@ -70,108 +70,43 @@ const SCENES = [
 
 function startSigilCandleDrift() {
   const root = document.documentElement;
+  let animationFrameId;
+  let startTime;
 
-  let current = {
-    contrast: 1.12,
-    brightness: 1.04,
-    opacity: 0.82,
-    wash: 0.12,
-    warmth: 0.1,
+  const apply = (timestamp) => {
+    if (!startTime) startTime = timestamp;
+    const t = (timestamp - startTime) / 1000;
+
+    // Smooth overlapping waves: no step changes, no abrupt target jumps.
+    // The higher-frequency waves add candle instability while still ramping continuously.
+    const slow = Math.sin(t * 0.72);
+    const medium = Math.sin(t * 1.83 + 1.7);
+    const fast = Math.sin(t * 4.9 + 0.4);
+    const flutter = Math.sin(t * 9.8 + Math.sin(t * 0.31) * 1.8);
+    const breath = 0.52 + 0.28 * slow + 0.13 * medium + 0.05 * fast + 0.025 * flutter;
+    const normalized = Math.max(0, Math.min(1, breath));
+
+    const contrast = 1.02 + normalized * 0.38;
+    const brightness = 0.92 + normalized * 0.34;
+    const opacity = 0.52 + normalized * 0.24;
+    const wash = 0.055 + normalized * 0.09;
+    const warmth = 0.045 + normalized * 0.105;
+    const halo = 0.18 + normalized * 0.22;
+
+    root.style.setProperty('--sigil-contrast', contrast.toFixed(3));
+    root.style.setProperty('--sigil-brightness', brightness.toFixed(3));
+    root.style.setProperty('--sigil-opacity', opacity.toFixed(3));
+    root.style.setProperty('--sigil-wash', wash.toFixed(3));
+    root.style.setProperty('--sigil-warmth', warmth.toFixed(3));
+    root.style.setProperty('--reveal-halo', halo.toFixed(3));
+
+    animationFrameId = window.requestAnimationFrame(apply);
   };
 
-  let velocity = {
-    contrast: 0,
-    brightness: 0,
-    opacity: 0,
-    wash: 0,
-    warmth: 0,
-  };
-
-  let cancelled = false;
-  let timeoutId;
-
-  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-
-  const apply = (duration = 720) => {
-    root.style.setProperty('--flicker-duration', `${duration}ms`);
-    root.style.setProperty('--sigil-contrast', current.contrast.toFixed(3));
-    root.style.setProperty('--sigil-brightness', current.brightness.toFixed(3));
-    root.style.setProperty('--sigil-opacity', current.opacity.toFixed(3));
-    root.style.setProperty('--sigil-wash', current.wash.toFixed(3));
-    root.style.setProperty('--sigil-warmth', current.warmth.toFixed(3));
-  };
-
-  const chooseTarget = () => {
-    // The sigil is intentionally prominent now. These values shift it from
-    // nearly-hidden wallpaper to candlelit occult pattern without becoming neon.
-    return {
-      contrast: 0.96 + Math.random() * 0.52,
-      brightness: 0.82 + Math.random() * 0.58,
-      opacity: 0.62 + Math.random() * 0.34,
-      wash: 0.055 + Math.random() * 0.14,
-      warmth: 0.055 + Math.random() * 0.13,
-    };
-  };
-
-  const driftToward = (target) => {
-    const spring = 0.075 + Math.random() * 0.055;
-    const damping = 0.68 + Math.random() * 0.16;
-
-    for (const key of Object.keys(current)) {
-      const force = (target[key] - current[key]) * spring;
-      velocity[key] = velocity[key] * damping + force;
-      current[key] += velocity[key];
-    }
-
-    current.contrast = clamp(current.contrast, 0.88, 1.58);
-    current.brightness = clamp(current.brightness, 0.72, 1.55);
-    current.opacity = clamp(current.opacity, 0.52, 0.98);
-    current.wash = clamp(current.wash, 0.03, 0.24);
-    current.warmth = clamp(current.warmth, 0.03, 0.22);
-  };
-
-  const scheduleNext = () => {
-    if (cancelled) return;
-
-    const target = chooseTarget();
-    const quickFlutter = Math.random() < 0.12;
-
-    const duration = quickFlutter
-      ? 150 + Math.random() * 220
-      : 620 + Math.random() * 1500;
-
-    const steps = quickFlutter ? 2 : 5 + Math.floor(Math.random() * 6);
-    let step = 0;
-
-    const tick = () => {
-      if (cancelled) return;
-
-      driftToward(target);
-      apply(duration);
-
-      step += 1;
-
-      if (step < steps) {
-        timeoutId = window.setTimeout(tick, duration / steps);
-        return;
-      }
-
-      const pause = quickFlutter
-        ? 70 + Math.random() * 220
-        : 180 + Math.random() * 900;
-
-      timeoutId = window.setTimeout(scheduleNext, pause);
-    };
-
-    tick();
-  };
-
-  apply();
-  scheduleNext();
+  animationFrameId = window.requestAnimationFrame(apply);
 
   return () => {
-    cancelled = true;
-    window.clearTimeout(timeoutId);
+    window.cancelAnimationFrame(animationFrameId);
   };
 }
 
@@ -189,10 +124,15 @@ function App() {
   const isFinal = currentScene.type === 'final';
 
   const sceneClassName = useMemo(() => {
-    return ['page-shell', isBlackout ? 'is-blackout' : '', isLoading ? 'is-loading' : '']
+    return [
+      'page-shell',
+      isBlackout ? 'is-blackout' : '',
+      isLoading ? 'is-loading' : '',
+      hasSubmitted ? 'is-revealed' : '',
+    ]
       .filter(Boolean)
       .join(' ');
-  }, [isBlackout, isLoading]);
+  }, [isBlackout, isLoading, hasSubmitted]);
 
   useEffect(() => {
     if (currentScene.duration === null) return undefined;
@@ -237,7 +177,7 @@ function App() {
       <div className="vignette" aria-hidden="true" />
       <div className="analog-noise" aria-hidden="true" />
 
-      <section className="transmission" aria-labelledby="site-title">
+      <section className="transmission" aria-labelledby="site-title" aria-hidden={hasSubmitted}>
         <h1 id="site-title" className="sr-only">
           Scenic Loop Insanity III
         </h1>
@@ -268,17 +208,14 @@ function App() {
             <button className="submit-button" type="button" onClick={() => setHasSubmitted(true)}>
               I Submit to the Loop
             </button>
-
-            <div className={`details ${hasSubmitted ? 'visible' : ''}`} aria-live="polite">
-              <p>October 2026.</p>
-              <p>The details will find the worthy.</p>
-            </div>
-
-            <div className={`secret ${showSecret ? 'visible' : ''}`} aria-live="polite">
-              Godspeed
-            </div>
           </div>
         )}
+      </section>
+
+      <section className="negative-reveal" aria-live="polite" aria-hidden={!hasSubmitted}>
+        <p>October 2026.</p>
+        <p>The details will find the worthy.</p>
+        <p className={`secret ${showSecret ? 'visible' : ''}`}>Godspeed</p>
       </section>
     </main>
   );

@@ -5,13 +5,13 @@ A minimal Vite/React prototype for a cursed, VHS-like teaser page.
 ## Features
 
 - Full-screen occult landing page
-- Visible repeating sigil background using `public/sigil.png`
-- Smooth candlelight-style background drift
+- Sigil stays hidden until the visitor submits to the Loop
+- Smooth sine-wave candlelight drift on the revealed sigil background
 - Sequential text reveal/disappear scenes
 - No bottom candle animation
 - No audio
 - Final button: `I Submit to the Loop`
-- Button reveal: `October 2026. The details will find the worthy.`
+- Button reveal hides all prior text and shows `October 2026. The details will find the worthy.` as dark negative-space text over the sigil
 - Secret d-pad code: ↑ ↓ ← → → ← ↓ ↑ reveals `Godspeed`
 
 ## Run locally
