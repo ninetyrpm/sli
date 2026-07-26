@@ -215,22 +215,14 @@ button {
 
 .transmission {
   position: relative;
-  z-index: 10;
+  z-index: 9;
   width: min(100%, 690px);
-  min-height: 360px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  min-height: 460px;
+  display: grid;
+  place-items: center;
   text-align: center;
-  text-shadow:
-    0 0 16px rgba(0, 0, 0, 0.96),
-    0 0 30px rgba(0, 0, 0, 0.82),
-    0 0 24px rgba(118, 50, 28, 0.32);
-  transition:
-    opacity 650ms ease,
-    filter 650ms ease,
-    transform 650ms ease;
+  text-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
+  transition: opacity 420ms ease, filter 420ms ease;
 }
 
 .page-shell.is-revealed .transmission {
@@ -241,9 +233,11 @@ button {
 }
 
 .copy-frame {
+  position: relative;
   display: grid;
   place-items: center;
-  min-height: 220px;
+  width: 100%;
+  min-height: 260px;
 }
 
 .copy-block {
@@ -346,6 +340,11 @@ button {
 }
 
 .final-actions {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 128px);
+  transform: translateX(-50%);
+  width: min(100%, 520px);
   min-height: 150px;
   display: flex;
   flex-direction: column;
