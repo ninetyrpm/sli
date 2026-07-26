@@ -7,10 +7,10 @@
   --deep-red: #230d0b;
   --ash: rgba(214, 196, 152, 0.62);
   --border: rgba(214, 196, 152, 0.13);
-  --sigil-contrast: 1.35;
-  --sigil-brightness: 0.82;
-  --sigil-opacity: 0.46;
-  --sigil-wash: 0.12;
+  --sigil-contrast: 1.15;
+  --sigil-brightness: 0.92;
+  --sigil-opacity: 0.42;
+  --sigil-wash: 0.10;
   --flicker-duration: 620ms;
   color: var(--bone);
   background: var(--black);
