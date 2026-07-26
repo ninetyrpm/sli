@@ -139,8 +139,8 @@ button {
 }
 
 .page-shell.is-blackout .sigil-pattern {
-  opacity: 0.12;
-  filter: contrast(0.95) brightness(0.32) saturate(0.65);
+  opacity: 0.16;
+  filter: contrast(0.9) brightness(0.42) saturate(0.65);
   transition:
     opacity 420ms ease-in-out,
     filter 420ms ease-in-out;
