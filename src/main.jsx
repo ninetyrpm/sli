@@ -100,10 +100,10 @@ function startSigilCandleDrift() {
 
   const chooseTarget = () => {
     return {
-      contrast: 1.12 + Math.random() * 0.55,
-      brightness: 0.62 + Math.random() * 0.48,
-      opacity: 0.34 + Math.random() * 0.34,
-      wash: 0.055 + Math.random() * 0.15,
+      contrast: 1.0 + Math.random() * 0.35,
+      brightness: 0.78 + Math.random() * 0.32,
+      opacity: 0.28 + Math.random() * 0.32,
+      wash: 0.055 + Math.random() * 0.12,
     };
   };
 
@@ -117,10 +117,10 @@ function startSigilCandleDrift() {
       current[key] += velocity[key];
     }
 
-    current.contrast = clamp(current.contrast, 1.0, 1.78);
-    current.brightness = clamp(current.brightness, 0.52, 1.18);
-    current.opacity = clamp(current.opacity, 0.28, 0.72);
-    current.wash = clamp(current.wash, 0.035, 0.23);
+    current.contrast = clamp(current.contrast, 0.92, 1.42);
+    current.brightness = clamp(current.brightness, 0.68, 1.18);
+    current.opacity = clamp(current.opacity, 0.22, 0.66);
+    current.wash = clamp(current.wash, 0.035, 0.20);
   };
 
   const scheduleNext = () => {
