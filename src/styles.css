@@ -78,15 +78,6 @@ button {
   z-index: 0;
   pointer-events: none;
   opacity: var(--sigil-opacity);
-  background-image: url('/sigil.png');
-  background-repeat: repeat;
-  background-position: center;
-  background-size: 620px auto;
-  filter:
-    contrast(var(--sigil-contrast))
-    brightness(var(--sigil-brightness))
-    saturate(0.92);
-  mix-blend-mode: screen;
   transform: translateZ(0);
   transition:
     opacity var(--flicker-duration, 620ms) ease-in-out,
@@ -94,14 +85,54 @@ button {
   animation:
     pattern-drift 32s linear infinite,
     pattern-jitter 3.2s steps(2) infinite;
+  filter:
+    contrast(var(--sigil-contrast))
+    brightness(var(--sigil-brightness))
+    saturate(0.85);
+}
+
+.sigil-pattern::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background:
+    rgba(214, 196, 152, 0.72);
+
+  mask-image: url('/sigil.png');
+  mask-repeat: repeat;
+  mask-position: center;
+  mask-size: 620px auto;
+  mask-mode: luminance;
+
+  -webkit-mask-image: url('/sigil.png');
+  -webkit-mask-repeat: repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: 620px auto;
+
+  opacity: 1;
 }
 
 .sigil-pattern::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(198, 172, 110, var(--sigil-wash));
-  mix-blend-mode: overlay;
+
+  background:
+    rgba(160, 72, 38, var(--sigil-wash));
+
+  mask-image: url('/sigil.png');
+  mask-repeat: repeat;
+  mask-position: center;
+  mask-size: 620px auto;
+  mask-mode: luminance;
+
+  -webkit-mask-image: url('/sigil.png');
+  -webkit-mask-repeat: repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: 620px auto;
+
+  mix-blend-mode: screen;
   transition:
     background-color var(--flicker-duration, 620ms) ease-in-out,
     opacity var(--flicker-duration, 620ms) ease-in-out;
