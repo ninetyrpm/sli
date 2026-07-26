@@ -30,7 +30,7 @@ const SCENES = [
   {
     key: 'flicker-one',
     type: 'blackout',
-    duration: 1200,
+    duration: 1150,
     lines: [],
   },
   {
@@ -43,7 +43,7 @@ const SCENES = [
   {
     key: 'flicker-two',
     type: 'blackout',
-    duration: 1200,
+    duration: 1150,
     lines: [],
   },
   {
@@ -56,7 +56,7 @@ const SCENES = [
   {
     key: 'flicker-three',
     type: 'blackout',
-    duration: 1150,
+    duration: 1100,
     lines: [],
   },
   {
@@ -68,37 +68,59 @@ const SCENES = [
   },
 ];
 
-function startSigilCandleDrift() {
+const LOADING_SCENE_INDEX = 0;
+const FINAL_SCENE_INDEX = SCENES.length - 1;
+
+function startSigilRevealDrift(isRevealedRef) {
   const root = document.documentElement;
   let animationFrameId;
-  let startTime;
+  let revealStart;
+  let globalStart;
+
+  const clamp01 = (value) => Math.min(1, Math.max(0, value));
+  const easeOutCubic = (value) => 1 - Math.pow(1 - value, 3);
 
   const apply = (timestamp) => {
-    if (!startTime) startTime = timestamp;
-    const t = (timestamp - startTime) / 1000;
+    if (!globalStart) globalStart = timestamp;
 
-    // Smooth overlapping waves: no step changes, no abrupt target jumps.
-    // The higher-frequency waves add candle instability while still ramping continuously.
-    const slow = Math.sin(t * 0.72);
-    const medium = Math.sin(t * 1.83 + 1.7);
-    const fast = Math.sin(t * 4.9 + 0.4);
-    const flutter = Math.sin(t * 9.8 + Math.sin(t * 0.31) * 1.8);
-    const breath = 0.52 + 0.28 * slow + 0.13 * medium + 0.05 * fast + 0.025 * flutter;
-    const normalized = Math.max(0, Math.min(1, breath));
+    const isRevealed = isRevealedRef.current;
 
-    const contrast = 1.02 + normalized * 0.38;
-    const brightness = 0.92 + normalized * 0.34;
-    const opacity = 0.52 + normalized * 0.24;
-    const wash = 0.055 + normalized * 0.09;
-    const warmth = 0.045 + normalized * 0.105;
-    const halo = 0.18 + normalized * 0.22;
+    if (!isRevealed) {
+      revealStart = undefined;
+      root.style.setProperty('--sigil-opacity', '0');
+      root.style.setProperty('--sigil-brightness', '0.32');
+      root.style.setProperty('--sigil-contrast', '0.90');
+      root.style.setProperty('--sigil-wash', '0.000');
+      root.style.setProperty('--sigil-halo', '0.00');
+      animationFrameId = window.requestAnimationFrame(apply);
+      return;
+    }
 
-    root.style.setProperty('--sigil-contrast', contrast.toFixed(3));
-    root.style.setProperty('--sigil-brightness', brightness.toFixed(3));
+    if (!revealStart) revealStart = timestamp;
+
+    const revealT = clamp01((timestamp - revealStart) / 2200);
+    const ramp = easeOutCubic(revealT);
+    const t = (timestamp - revealStart) / 1000;
+
+    // Smooth, faster candle-flicker: overlapping sine waves with no random step jumps.
+    const slow = Math.sin(t * 1.15);
+    const medium = Math.sin(t * 2.9 + 1.2);
+    const fast = Math.sin(t * 7.2 + 0.7);
+    const flutter = Math.sin(t * 13.4 + Math.sin(t * 0.77) * 2.0);
+    const raw = 0.5 + slow * 0.22 + medium * 0.16 + fast * 0.075 + flutter * 0.045;
+    const flicker = clamp01(raw);
+
+    const opacity = ramp * (0.64 + flicker * 0.22);
+    const brightness = 0.35 + ramp * (0.76 + flicker * 0.28);
+    const contrast = 0.95 + ramp * (0.26 + flicker * 0.28);
+    const wash = ramp * (0.045 + flicker * 0.10);
+    const halo = ramp * (0.08 + flicker * 0.22);
+
     root.style.setProperty('--sigil-opacity', opacity.toFixed(3));
+    root.style.setProperty('--sigil-brightness', brightness.toFixed(3));
+    root.style.setProperty('--sigil-contrast', contrast.toFixed(3));
     root.style.setProperty('--sigil-wash', wash.toFixed(3));
-    root.style.setProperty('--sigil-warmth', warmth.toFixed(3));
-    root.style.setProperty('--reveal-halo', halo.toFixed(3));
+    root.style.setProperty('--sigil-halo', halo.toFixed(3));
 
     animationFrameId = window.requestAnimationFrame(apply);
   };
@@ -116,12 +138,16 @@ function App() {
   const [secretProgress, setSecretProgress] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
 
-  useEffect(() => startSigilCandleDrift(), []);
+  const submittedRef = React.useRef(false);
+  submittedRef.current = hasSubmitted;
+
+  useEffect(() => startSigilRevealDrift(submittedRef), []);
 
   const currentScene = SCENES[sceneIndex];
   const isBlackout = currentScene.type === 'blackout';
   const isLoading = currentScene.type === 'loading';
   const isFinal = currentScene.type === 'final';
+  const canSkip = sceneIndex > LOADING_SCENE_INDEX && !isFinal && !hasSubmitted;
 
   const sceneClassName = useMemo(() => {
     return [
@@ -135,14 +161,14 @@ function App() {
   }, [isBlackout, isLoading, hasSubmitted]);
 
   useEffect(() => {
-    if (currentScene.duration === null) return undefined;
+    if (hasSubmitted || currentScene.duration === null) return undefined;
 
     const timer = window.setTimeout(() => {
       setSceneIndex((index) => Math.min(index + 1, SCENES.length - 1));
     }, currentScene.duration);
 
     return () => window.clearTimeout(timer);
-  }, [currentScene]);
+  }, [currentScene, hasSubmitted]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -171,8 +197,9 @@ function App() {
   return (
     <main className={sceneClassName} aria-label="Scenic Loop Insanity teaser">
       <div className="base-darkness" aria-hidden="true" />
+      <div className="intro-glow" aria-hidden="true" />
       <div className="sigil-pattern" aria-hidden="true" />
-      <div className="candle-wash" aria-hidden="true" />
+      <div className="sigil-warmth" aria-hidden="true" />
       <div className="tape-damage" aria-hidden="true" />
       <div className="vignette" aria-hidden="true" />
       <div className="analog-noise" aria-hidden="true" />
@@ -212,9 +239,22 @@ function App() {
         )}
       </section>
 
+      {canSkip && (
+        <button
+          className="skip-button"
+          type="button"
+          aria-label="Skip transmission"
+          onClick={() => setSceneIndex(FINAL_SCENE_INDEX)}
+        >
+          →
+        </button>
+      )}
+
       <section className="negative-reveal" aria-live="polite" aria-hidden={!hasSubmitted}>
-        <p>October 2026.</p>
-        <p>The details will find the worthy.</p>
+        <div className="negative-plaque">
+          <p>October 2026.</p>
+          <p>The details will find the worthy.</p>
+        </div>
         <p className={`secret ${showSecret ? 'visible' : ''}`}>Godspeed</p>
       </section>
     </main>

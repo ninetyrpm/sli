@@ -1,12 +1,12 @@
 {
-  "name": "scenic-loop-insanity-prototype",
+  "name": "scenic-loop-insanity-hype-site",
   "private": true,
-  "version": "0.4.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

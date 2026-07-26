@@ -1,20 +1,19 @@
-# Scenic Loop Insanity — Hype Landing Page Prototype
+# Scenic Loop Insanity Hype Site
 
-A minimal Vite/React prototype for a cursed, VHS-like teaser page.
+A Vite + React static teaser landing page for **Scenic Loop Insanity III**.
 
 ## Features
 
-- Full-screen occult landing page
-- Sigil stays hidden until the visitor submits to the Loop
-- Smooth sine-wave candlelight drift on the revealed sigil background
-- Sequential text reveal/disappear scenes
-- No bottom candle animation
-- No audio
-- Final button: `I Submit to the Loop`
-- Button reveal hides all prior text and shows `October 2026. The details will find the worthy.` as dark negative-space text over the sigil
-- Secret d-pad code: ↑ ↓ ← → → ← ↓ ↑ reveals `Godspeed`
+- Timed occult/VHS text transmission
+- Warm glow behind the opening sequence
+- Bottom-right skip arrow after loading
+- `I Submit to the Loop` button
+- Post-submit sigil reveal that ramps up like candlelight
+- Smooth faster candle-flicker animation after reveal
+- Centered negative-space plaque for the October message
+- Secret d-pad code: `↑ ↓ ← → → ← ↓ ↑` reveals `Godspeed`
 
-## Run locally
+## Local development
 
 ```bash
 npm install
@@ -27,9 +26,4 @@ npm run dev
 npm run build
 ```
 
-## Deploy on Vercel
-
-Import this repo into Vercel. The default Vite settings should work:
-
-- Build command: `npm run build`
-- Output directory: `dist`
+Deploy the repo to Vercel as a standard Vite project.
