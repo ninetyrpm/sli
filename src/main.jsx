@@ -72,10 +72,10 @@ function startSigilCandleDrift() {
   const root = document.documentElement;
 
   let current = {
-    contrast: 1.05,
-    brightness: 0.58,
-    opacity: 0.28,
-    wash: 0.07,
+    contrast: 1.35,
+    brightness: 0.82,
+    opacity: 0.46,
+    wash: 0.12,
   };
 
   let velocity = {
@@ -100,13 +100,13 @@ function startSigilCandleDrift() {
 
   const chooseTarget = () => {
     return {
-      contrast: 1.2 + Math.random() * 0.75,
-      brightness: 0.72 + Math.random() * 0.58,
-      opacity: 0.42 + Math.random() * 0.38,
-      wash: 0.075 + Math.random() * 0.18,
+      contrast: 1.12 + Math.random() * 0.55,
+      brightness: 0.62 + Math.random() * 0.48,
+      opacity: 0.34 + Math.random() * 0.34,
+      wash: 0.055 + Math.random() * 0.15,
     };
   };
-  
+
   const driftToward = (target) => {
     const spring = 0.09 + Math.random() * 0.05;
     const damping = 0.66 + Math.random() * 0.16;
@@ -117,10 +117,10 @@ function startSigilCandleDrift() {
       current[key] += velocity[key];
     }
 
-    current.contrast = clamp(current.contrast, 1.05, 2.05);
-    current.brightness = clamp(current.brightness, 0.58, 1.35);
-    current.opacity = clamp(current.opacity, 0.34, 0.84);
-    current.wash = clamp(current.wash, 0.045, 0.28);
+    current.contrast = clamp(current.contrast, 1.0, 1.78);
+    current.brightness = clamp(current.brightness, 0.52, 1.18);
+    current.opacity = clamp(current.opacity, 0.28, 0.72);
+    current.wash = clamp(current.wash, 0.035, 0.23);
   };
 
   const scheduleNext = () => {
@@ -221,9 +221,9 @@ function App() {
 
   return (
     <main className={sceneClassName} aria-label="Scenic Loop Insanity teaser">
+      <div className="sigil-pattern" aria-hidden="true" />
       <div className="analog-noise" aria-hidden="true" />
       <div className="vignette" aria-hidden="true" />
-      <div className="sigil-pattern" aria-hidden="true" />
       <div className="tape-damage" aria-hidden="true" />
 
       <section className="transmission" aria-labelledby="site-title">

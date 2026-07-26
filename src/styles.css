@@ -68,7 +68,6 @@ button {
     linear-gradient(180deg, #010101 0%, var(--asphalt) 50%, #010101 100%);
 }
 
-.page-shell.is-blackout .sigil-pattern,
 .page-shell.is-blackout .transmission {
   opacity: 0;
 }
@@ -109,16 +108,16 @@ button {
 }
 
 .page-shell.is-blackout .sigil-pattern {
-  opacity: 0.055;
-  filter: contrast(0.82) brightness(0.22) saturate(0.55);
+  opacity: 0.12;
+  filter: contrast(0.95) brightness(0.32) saturate(0.65);
   transition:
     opacity 420ms ease-in-out,
     filter 420ms ease-in-out;
 }
 
 .page-shell.is-loading .sigil-pattern {
-  opacity: 0.12;
-  filter: contrast(0.88) brightness(0.28) saturate(0.65);
+  opacity: 0.22;
+  filter: contrast(1.08) brightness(0.42) saturate(0.76);
 }
 
 .analog-noise {
@@ -148,7 +147,7 @@ button {
   z-index: 7;
   pointer-events: none;
   background:
-    radial-gradient(circle, transparent 24%, rgba(0, 0, 0, 0.88) 70%),
+    radial-gradient(circle, transparent 28%, rgba(0, 0, 0, 0.82) 72%),
     linear-gradient(
       90deg,
       rgba(255, 255, 255, 0.014),
@@ -188,7 +187,9 @@ button {
   align-items: center;
   justify-content: center;
   text-align: center;
-  text-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
+  text-shadow:
+    0 0 18px rgba(0, 0, 0, 0.95),
+    0 0 36px rgba(0, 0, 0, 0.72);
   transition: opacity 180ms ease;
 }
 
@@ -282,6 +283,10 @@ button {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   animation: loading-fade 2500ms ease forwards;
+}
+
+.loading-rite p {
+  margin: 0;
 }
 
 .loading-glyph {
@@ -472,7 +477,7 @@ button {
   }
 
   .sigil-pattern {
-    background-size: 540px auto;
+    background-size: 500px auto;
   }
 }
 
