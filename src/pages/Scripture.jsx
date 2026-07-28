@@ -10,22 +10,38 @@ export function Scripture() {
         <a className="return-link" href="/">← Return to the transmission</a>
 
         <header className="scripture-header">
-          <p className="archive-label">Recovered Archive / Third Rite</p>
+          <p className="archive-label">Book of the Third Rite</p>
           <h1 id="scripture-title">The Scripture of the Loop</h1>
           <p className="scripture-subtitle">
-            Recovered verses pertaining to the Third Rite. Interpretations provided for the insufficiently initiated.
+            Incantations of the Loop, with interpretations provided for the insufficiently initiated.
           </p>
         </header>
 
         <div className="scripture-divider" aria-hidden="true">✦</div>
 
-        {scriptureSections.map((section) => (
-          <section className="scripture-section" id={section.id} key={section.id}>
-            <div className="section-kicker">Fragment {section.numeral}</div>
+        <nav className="incantation-index" aria-label="Index of incantations">
+          <p>Index of Incantations</p>
+          <ol>
+            {scriptureSections.map((section) => (
+              <li key={section.id}>
+                <a href={`#${section.id}`}>{section.numeral}. {section.title}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
+        {scriptureSections.map((section, index) => (
+          <section
+            className="scripture-section"
+            id={section.id}
+            key={section.id}
+            style={{ '--section-index': index }}
+          >
+            <div className="section-kicker">Incantation {section.numeral}</div>
             <h2>{section.title}</h2>
 
             <div className="verse-block">
-              <h3>Sacred Verse</h3>
+              <h3>Verse</h3>
               {section.verse.map((line) => (
                 <p key={line}>{line}</p>
               ))}

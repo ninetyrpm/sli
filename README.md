@@ -5,7 +5,7 @@ A small Vite/React prototype for the Scenic Loop Insanity III teaser site.
 ## Pages
 
 - `/` — cursed transmission / hype landing page
-- `/scripture` — scripture-based lore archive
+- `/scripture` — scripture-based lore archive / Book of the Third Rite / Book of the Third Rite
 
 ## Features
 
@@ -15,6 +15,7 @@ A small Vite/React prototype for the Scenic Loop Insanity III teaser site.
 - Smooth sigil ramp/flicker effect using `requestAnimationFrame`
 - Hidden d-pad easter egg after submission: `↑ ↓ ← → → ← ↓ ↑`
 - Reusable components and data files for future lore/buildout
+- Scripture page uses incantations/verses taxonomy instead of fragments
 - Vercel SPA rewrite support via `vercel.json`
 - Basic favicon and Open Graph image
 

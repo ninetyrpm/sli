@@ -39,7 +39,7 @@ html {
 
 body {
   min-width: 320px;
-  overflow-x: hidden;
+  overflow-x: clip;
   background: var(--black);
 }
 
@@ -72,7 +72,6 @@ a {
 .scripture-shell {
   position: relative;
   min-height: 100svh;
-  overflow: hidden;
   isolation: isolate;
   background: #020201;
 }
@@ -80,11 +79,13 @@ a {
 .page-shell {
   display: grid;
   place-items: center;
+  overflow: hidden;
   padding: clamp(1.25rem, 4vw, 4rem);
 }
 
 .scripture-shell {
-  overflow-y: auto;
+  overflow-x: clip;
+  overflow-y: visible;
   padding: clamp(1.25rem, 4vw, 4rem) clamp(1rem, 4vw, 2.5rem);
 }
 
@@ -99,12 +100,16 @@ a {
     linear-gradient(180deg, #010101 0%, var(--asphalt) 48%, #010101 100%);
 }
 
+.scripture-shell .base-darkness {
+  position: fixed;
+}
+
 .intro-glow {
   position: absolute;
   left: 50%;
   top: 50%;
   z-index: 1;
-  width: min(82vw, 660px);
+  width: clamp(520px, 92vw, 980px);
   aspect-ratio: 1;
   pointer-events: none;
   opacity: 1;
@@ -123,12 +128,20 @@ a {
   transition: opacity 950ms ease, transform 950ms ease;
 }
 
-.page-shell.is-revealed .intro-glow {
+.page-shell.is-revealed .scripture-shell .base-darkness {
+  position: fixed;
+}
+
+.intro-glow {
   opacity: 0;
   transform: translate(-50%, -50%) scale(1.04);
 }
 
-.scripture-shell .intro-glow {
+.scripture-shell .scripture-shell .base-darkness {
+  position: fixed;
+}
+
+.intro-glow {
   position: fixed;
   opacity: 0.34;
   width: min(90vw, 840px);
@@ -237,7 +250,7 @@ a {
 
 .scripture-shell .vignette {
   position: fixed;
-  background: radial-gradient(circle, transparent 28%, rgba(0, 0, 0, 0.44) 75%, rgba(0, 0, 0, 0.92) 98%);
+  background: radial-gradient(circle, transparent 34%, rgba(0, 0, 0, 0.36) 74%, rgba(0, 0, 0, 0.88) 98%);
 }
 
 .page-shell.is-revealed .vignette {
@@ -436,7 +449,8 @@ a {
 .skip-button:focus-visible,
 .return-link:focus-visible,
 .scripture-link:focus-visible,
-.scripture-footer a:focus-visible {
+.scripture-footer a:focus-visible,
+.incantation-index a:focus-visible {
   outline: 2px solid rgba(214, 196, 152, 0.56);
   outline-offset: 4px;
 }
@@ -552,10 +566,11 @@ a {
   opacity: 1;
 }
 
+
 .scripture-document {
   position: relative;
   z-index: 10;
-  width: min(100%, 820px);
+  width: min(100%, 840px);
   margin: 0 auto;
   color: rgba(229, 215, 182, 0.92);
 }
@@ -581,12 +596,15 @@ a {
   text-align: center;
 }
 
-.archive-label,
-.section-kicker {
+.archive-label {
+  display: inline-block;
   margin: 0;
-  color: rgba(154, 59, 49, 0.96);
+  padding: 0.38rem 0.58rem;
+  border: 1px solid rgba(154, 59, 49, 0.34);
+  color: rgba(178, 66, 55, 0.98);
+  background: rgba(20, 7, 5, 0.44);
   font-family: 'Courier New', Courier, monospace;
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   letter-spacing: 0.20em;
   text-transform: uppercase;
 }
@@ -630,32 +648,112 @@ a {
   background: rgba(214, 196, 152, 0.16);
 }
 
+.incantation-index {
+  position: relative;
+  margin: 0 0 clamp(2.25rem, 6vw, 4rem);
+  padding: clamp(1rem, 3vw, 1.45rem);
+  border: 1px solid rgba(214, 196, 152, 0.12);
+  background: rgba(9, 7, 5, 0.72);
+  box-shadow: inset 0 0 28px rgba(0, 0, 0, 0.36);
+}
+
+.incantation-index p {
+  margin: 0 0 0.75rem;
+  color: rgba(154, 59, 49, 0.94);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.incantation-index ol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.45rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.incantation-index a {
+  display: inline-block;
+  color: rgba(214, 196, 152, 0.75);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(0.76rem, 2.1vw, 0.86rem);
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.incantation-index a:hover,
+.incantation-index a:focus-visible {
+  color: rgba(235, 221, 188, 0.96);
+}
+
 .scripture-section {
   position: relative;
-  margin: 0 0 clamp(2.1rem, 6vw, 4rem);
-  padding: clamp(1.15rem, 3.8vw, 2rem);
-  border: 1px solid rgba(214, 196, 152, 0.13);
+  margin: 0 0 clamp(2.25rem, 6vw, 4.25rem);
+  padding: clamp(1.25rem, 4vw, 2.35rem);
+  border: 1px solid rgba(214, 196, 152, 0.18);
   background:
-    linear-gradient(180deg, rgba(10, 8, 7, 0.82), rgba(5, 4, 3, 0.92)),
-    radial-gradient(circle at 50% 0%, rgba(107, 33, 28, 0.14), transparent 45%);
+    radial-gradient(circle at 50% 12%, rgba(107, 33, 28, 0.13), transparent 44%),
+    linear-gradient(180deg, rgba(23, 18, 13, 0.92), rgba(7, 6, 4, 0.96));
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.76),
-    0 24px 70px rgba(0, 0, 0, 0.46),
-    inset 0 0 40px rgba(0, 0, 0, 0.34);
+    0 30px 90px rgba(0, 0, 0, 0.5),
+    inset 0 0 42px rgba(0, 0, 0, 0.42);
+  overflow: hidden;
+  animation: scripture-enter 900ms ease both;
+  animation-delay: calc(var(--section-index, 0) * 90ms);
 }
 
 .scripture-section::before {
   content: '';
   position: absolute;
-  inset: 0.55rem;
-  border: 1px solid rgba(214, 196, 152, 0.055);
+  inset: 0.62rem;
+  border: 1px solid rgba(214, 196, 152, 0.08);
   pointer-events: none;
+  z-index: 2;
+}
+
+.scripture-section::after {
+  content: '';
+  position: absolute;
+  right: -7rem;
+  top: -7rem;
+  width: min(72vw, 520px);
+  aspect-ratio: 1;
+  background-image: url('/sigil.png');
+  background-repeat: repeat;
+  background-size: 360px auto;
+  background-position: center;
+  opacity: 0.075;
+  filter: brightness(1.35) contrast(1.25) saturate(0.7);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scripture-section > * {
+  position: relative;
+  z-index: 1;
+}
+
+.section-kicker {
+  display: inline-block;
+  margin: 0;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid rgba(154, 59, 49, 0.36);
+  color: rgba(178, 66, 55, 0.98);
+  background: rgba(20, 7, 5, 0.52);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .scripture-section h2 {
-  margin: 0.55rem 0 clamp(1.2rem, 3vw, 1.8rem);
+  margin: 0.85rem 0 clamp(1.35rem, 3vw, 2rem);
   color: rgba(235, 221, 188, 0.98);
-  font-size: clamp(1.45rem, 5.2vw, 2.35rem);
+  font-size: clamp(1.55rem, 5.2vw, 2.45rem);
   font-weight: 400;
   line-height: 1.04;
   letter-spacing: 0.025em;
@@ -677,12 +775,12 @@ a {
 }
 
 .verse-block p {
-  max-width: 650px;
+  max-width: 660px;
   margin: 0;
-  color: rgba(229, 215, 182, 0.92);
-  font-size: clamp(1.03rem, 3.2vw, 1.32rem);
+  color: rgba(235, 221, 188, 0.94);
+  font-size: clamp(1.08rem, 3.1vw, 1.36rem);
   font-style: italic;
-  line-height: 1.62;
+  line-height: 1.68;
 }
 
 .verse-block p + p {
@@ -690,17 +788,21 @@ a {
 }
 
 .interpretation-block {
-  margin-top: clamp(1.25rem, 3.4vw, 2rem);
+  margin-top: clamp(1.35rem, 3.4vw, 2.1rem);
   padding: 1rem 0 0;
-  border-top: 1px solid rgba(214, 196, 152, 0.12);
+  border-top: 1px solid rgba(154, 59, 49, 0.28);
+}
+
+.interpretation-block h3 {
+  color: rgba(154, 59, 49, 0.95);
 }
 
 .interpretation-block p {
-  max-width: 680px;
+  max-width: 690px;
   margin: 0;
-  color: rgba(159, 145, 107, 0.98);
+  color: rgba(180, 164, 123, 0.98);
   font-family: 'Courier New', Courier, monospace;
-  font-size: clamp(0.82rem, 2.4vw, 0.94rem);
+  font-size: clamp(0.82rem, 2.3vw, 0.94rem);
   line-height: 1.78;
 }
 
@@ -893,5 +995,25 @@ a {
 
   .page-shell.is-blackout .transmission {
     opacity: 1;
+  }
+}
+
+@keyframes scripture-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .incantation-index ol {
+    grid-template-columns: 1fr;
   }
 }
