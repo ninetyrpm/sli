@@ -1,17 +1,22 @@
 # Scenic Loop Insanity Hype Site
 
-A Vite + React static teaser landing page for **Scenic Loop Insanity III**.
+A small Vite/React prototype for the Scenic Loop Insanity III teaser site.
+
+## Pages
+
+- `/` — cursed transmission / hype landing page
+- `/scripture` — scripture-based lore archive
 
 ## Features
 
-- Timed occult/VHS text transmission
-- Warm glow behind the opening sequence
-- Bottom-right skip arrow after loading
-- `I Submit to the Loop` button
-- Post-submit sigil reveal that ramps up like candlelight
-- Smooth faster candle-flicker animation after reveal
-- Centered negative-space plaque for the October message
-- Secret d-pad code: `↑ ↓ ← → → ← ↓ ↑` reveals `Godspeed`
+- Sequential text scenes with warm seance glow
+- Bottom-right skip button after loading
+- Submit interaction: reveals the sigil background and final message plaque
+- Smooth sigil ramp/flicker effect using `requestAnimationFrame`
+- Hidden d-pad easter egg after submission: `↑ ↓ ← → → ← ↓ ↑`
+- Reusable components and data files for future lore/buildout
+- Vercel SPA rewrite support via `vercel.json`
+- Basic favicon and Open Graph image
 
 ## Local development
 
@@ -24,6 +29,29 @@ npm run dev
 
 ```bash
 npm run build
+npm run preview
 ```
 
-Deploy the repo to Vercel as a standard Vite project.
+## Structure
+
+```txt
+src/
+  App.jsx
+  main.jsx
+  components/
+    BackgroundLayers.jsx
+    SigilReveal.jsx
+    SkipButton.jsx
+    Transmission.jsx
+  data/
+    scenes.js
+    verses.js
+  pages/
+    Home.jsx
+    Scripture.jsx
+  styles.css
+```
+
+## Notes
+
+The site is intentionally minimal and atmospheric. The homepage is designed as a shareable artifact, not a full event page.

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#020201"/>
+  <circle cx="600" cy="315" r="230" fill="none" stroke="#6b211c" stroke-width="4" opacity="0.45"/>
+  <circle cx="600" cy="315" r="160" fill="none" stroke="#d6c498" stroke-width="2" opacity="0.28"/>
+  <text x="600" y="285" text-anchor="middle" fill="#d6c498" font-family="Georgia, serif" font-size="58" letter-spacing="6">SCENIC LOOP INSANITY III</text>
+  <text x="600" y="365" text-anchor="middle" fill="#9f916b" font-family="Courier New, monospace" font-size="24" letter-spacing="8">THE LOOP BECKONS ONCE MORE</text>
+</svg>
