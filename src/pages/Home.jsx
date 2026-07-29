@@ -19,8 +19,8 @@ function startSigilRevealDrift(isRevealedRef) {
     if (!isRevealed) {
       revealStart = undefined;
       root.style.setProperty('--sigil-opacity', '0');
-      root.style.setProperty('--sigil-brightness', '0.32');
-      root.style.setProperty('--sigil-contrast', '0.90');
+      root.style.setProperty('--sigil-brightness', '0.24');
+      root.style.setProperty('--sigil-contrast', '0.86');
       root.style.setProperty('--sigil-wash', '0.000');
       root.style.setProperty('--sigil-halo', '0.00');
       animationFrameId = window.requestAnimationFrame(apply);
@@ -29,21 +29,22 @@ function startSigilRevealDrift(isRevealedRef) {
 
     if (!revealStart) revealStart = timestamp;
 
-    const revealT = clamp01((timestamp - revealStart) / 2400);
+    // Slow cathedral illumination: starts as almost nothing, then opens into a larger room.
+    const revealT = clamp01((timestamp - revealStart) / 5400);
     const ramp = easeOutCubic(revealT);
     const t = (timestamp - revealStart) / 1000;
 
-    // Slower overlapping waves: candle-breath rather than glitch.
-    const slow = Math.sin(t * 0.55);
-    const medium = Math.sin(t * 1.05 + 1.7);
-    const small = Math.sin(t * 2.35 + 0.4);
-    const micro = Math.sin(t * 3.75 + Math.sin(t * 0.32) * 1.2);
+    // Slow overlapping waves: candle-breath rather than digital jitter.
+    const slow = Math.sin(t * 0.32);
+    const medium = Math.sin(t * 0.72 + 1.7);
+    const small = Math.sin(t * 1.36 + 0.4);
+    const micro = Math.sin(t * 2.05 + Math.sin(t * 0.23) * 0.8);
 
-    const brightness = 0.32 + ramp * (0.74 + slow * 0.12 + medium * 0.055 + small * 0.025 + micro * 0.012);
-    const contrast = 0.90 + ramp * (0.24 + slow * 0.10 + medium * 0.065 + small * 0.025);
-    const opacity = ramp * (0.68 + slow * 0.10 + medium * 0.045 + small * 0.020);
-    const wash = ramp * (0.10 + slow * 0.045 + medium * 0.025 + small * 0.012);
-    const halo = ramp * (0.16 + slow * 0.055 + medium * 0.035 + small * 0.018);
+    const brightness = 0.24 + ramp * (0.86 + slow * 0.10 + medium * 0.052 + small * 0.022 + micro * 0.008);
+    const contrast = 0.86 + ramp * (0.34 + slow * 0.075 + medium * 0.044 + small * 0.017);
+    const opacity = ramp * (0.76 + slow * 0.075 + medium * 0.036 + small * 0.014);
+    const wash = ramp * (0.13 + slow * 0.035 + medium * 0.020 + small * 0.008);
+    const halo = ramp * (0.25 + slow * 0.050 + medium * 0.028 + small * 0.012);
 
     root.style.setProperty('--sigil-opacity', Math.max(0, opacity).toFixed(3));
     root.style.setProperty('--sigil-brightness', Math.max(0, brightness).toFixed(3));
@@ -64,6 +65,8 @@ function startSigilRevealDrift(isRevealedRef) {
 export function Home() {
   const [sceneIndex, setSceneIndex] = useState(0);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [hasSkipped, setHasSkipped] = useState(false);
+  const [isEnteringScripture, setIsEnteringScripture] = useState(false);
   const [secretProgress, setSecretProgress] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
 
@@ -76,6 +79,7 @@ export function Home() {
   const isBlackout = currentScene.type === 'blackout';
   const isLoading = currentScene.type === 'loading';
   const isFinal = currentScene.type === 'final';
+  const immediateFinal = isFinal && hasSkipped && !hasSubmitted;
   const canSkip = sceneIndex > LOADING_SCENE_INDEX && !isFinal && !hasSubmitted;
 
   const sceneClassName = useMemo(() => {
@@ -84,10 +88,12 @@ export function Home() {
       isBlackout ? 'is-blackout' : '',
       isLoading ? 'is-loading' : '',
       hasSubmitted ? 'is-revealed' : '',
+      hasSkipped ? 'has-skipped' : '',
+      isEnteringScripture ? 'is-entering-scripture' : '',
     ]
       .filter(Boolean)
       .join(' ');
-  }, [isBlackout, isLoading, hasSubmitted]);
+  }, [isBlackout, isLoading, hasSubmitted, hasSkipped, isEnteringScripture]);
 
   useEffect(() => {
     if (hasSubmitted || currentScene.duration === null) return undefined;
@@ -125,6 +131,20 @@ export function Home() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [hasSubmitted, secretProgress]);
 
+  const handleSkip = () => {
+    setHasSkipped(true);
+    setSceneIndex(FINAL_SCENE_INDEX);
+  };
+
+  const handleScriptureClick = (event) => {
+    event.preventDefault();
+    if (isEnteringScripture) return;
+    setIsEnteringScripture(true);
+    window.setTimeout(() => {
+      window.location.href = '/scripture';
+    }, 3200);
+  };
+
   return (
     <main className={sceneClassName} aria-label="Scenic Loop Insanity teaser">
       <BackgroundLayers includeSigil />
@@ -135,10 +155,11 @@ export function Home() {
         isFinal={isFinal}
         hasSubmitted={hasSubmitted}
         onSubmit={() => setHasSubmitted(true)}
+        immediateFinal={immediateFinal}
       />
 
-      {canSkip && <SkipButton onSkip={() => setSceneIndex(FINAL_SCENE_INDEX)} />}
-      {hasSubmitted && <SigilReveal showSecret={showSecret} />}
+      {canSkip && <SkipButton onSkip={handleSkip} />}
+      {hasSubmitted && <SigilReveal showSecret={showSecret} onScriptureClick={handleScriptureClick} />}
     </main>
   );
 }
