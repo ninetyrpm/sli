@@ -173,7 +173,7 @@ npm run preview
 ```
 
 
-## v0.6.3
+## v0.6.4
 
 - Corrected the opening so the candle glow remains absent during `LIGHTING A CANDLE`, then grows from the center during ignition.
 - Removed a legacy Scriptorium stylesheet override that forced the opening glow to appear immediately.

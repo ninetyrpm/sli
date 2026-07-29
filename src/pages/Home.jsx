@@ -96,17 +96,17 @@ export function Home({ initialSubmitted = false, onSubmittedChange, onCandleLitC
   }, [hasSubmitted, onSubmittedChange]);
 
   useEffect(() => {
-    if (!hasSubmitted || initialSubmitted) return undefined;
+    if (!hasSubmitted) return undefined;
 
-    // The plaque begins entering after the reveal wave and takes 1.2 seconds
-    // to settle. Hold the folded map back a little longer so the visitor can
-    // take in the Crossroads before another navigational element arrives.
+    // The plaque begins its entrance 2.6 seconds after submission and completes
+    // 4.3 seconds later. Keep the folded map off-screen until the plaque has
+    // fully settled, then allow a brief pause before its own entrance.
     const timer = window.setTimeout(() => {
       onCrossroadsSettled?.();
-    }, 5400);
+    }, 7600);
 
     return () => window.clearTimeout(timer);
-  }, [hasSubmitted, initialSubmitted, onCrossroadsSettled]);
+  }, [hasSubmitted, onCrossroadsSettled]);
 
   useEffect(() => {
     const candleIsLit = sceneIndex >= CANDLE_SCENE_INDEX || hasSubmitted;
