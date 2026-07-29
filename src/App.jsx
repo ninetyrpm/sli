@@ -77,10 +77,12 @@ export function App() {
         >
           <Home
             initialSubmitted={homeHasSubmitted}
+            isActive={activeChamberId === 'crossroads'}
             onSubmittedChange={setHomeHasSubmitted}
             onCandleLitChange={setCandleLit}
             onCrossroadsSettled={() => setMapReady(true)}
             onReadScripture={() => navigateTo('scriptorium')}
+            onSecretDismiss={() => navigateTo('crossroads')}
           />
         </section>
 

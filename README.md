@@ -18,7 +18,7 @@ The Scripture is entertainment and thematic foundation. Its current writing is p
 - Skip control for quickly reaching the final invitation
 - Submission interaction with an expanding candlelight wave that reveals the sigil field as it passes
 - Centered Scenic Loop Insanity III plaque with “The Rite of Mutual Suffering,” date, location, premise, and teaser line
-- Hidden d-pad Easter egg after submission: `↑ ↓ ← → → ← ↓ ↑`
+- Crossroads-only d-pad Easter egg after submission: `↑ ↓ ← → → ← ↓ ↑`, with a smoke transition and looping watchful-eye vision
 - Chamber registry defining names, routes, coordinates, and labels
 - Continuous spatial canvas with panning transitions between chambers
 - Foldable ritual map navigation styled as a worn handwritten guide
@@ -55,6 +55,7 @@ src/
     SigilReveal.jsx
     SkipButton.jsx
     Transmission.jsx
+    WatchfulEye.jsx
   config/
     chambers.js
   data/
@@ -73,6 +74,7 @@ src/
     tome.css
     navigation.css
     responsive.css
+    watchful-eye.css
 ```
 
 ## Chamber registry
@@ -173,8 +175,21 @@ npm run preview
 ```
 
 
-## v0.6.4
+## v0.7.0
 
 - Corrected the opening so the candle glow remains absent during `LIGHTING A CANDLE`, then grows from the center during ignition.
 - Removed a legacy Scriptorium stylesheet override that forced the opening glow to appear immediately.
 - Refined the Crossroads plaque title, occult-styled edition numeral, location, and declaration copy.
+
+
+## Watchful Eye Easter egg
+
+The existing arrow-key sequence can be entered only while viewing **The Crossroads**. A successful entry summons a full-screen smoke transition and then reveals a looping eye video. Clicking the invisible circular target centered over the eye closes the vision and returns the visitor to The Crossroads.
+
+Store the video at:
+
+```text
+public/media/watchful-eye.mp4
+```
+
+The application references it as `/media/watchful-eye.mp4`. Keep that path and filename unchanged. H.264 video in an MP4 container is recommended for broad browser compatibility.

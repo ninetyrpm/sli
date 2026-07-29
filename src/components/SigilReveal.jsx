@@ -1,4 +1,4 @@
-export function SigilReveal({ showSecret, onReadScripture }) {
+export function SigilReveal({ onReadScripture }) {
   return (
     <section className="negative-reveal" aria-live="polite">
       <div className="negative-plaque">
@@ -14,7 +14,6 @@ export function SigilReveal({ showSecret, onReadScripture }) {
         <p className="reveal-message">The details will find the worthy.</p>
         <a className="scripture-link" href="/scripture" onClick={onReadScripture}>Enter the Scriptorium →</a>
       </div>
-      <p className={`secret ${showSecret ? 'visible' : ''}`}>Godspeed</p>
     </section>
   );
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { SigilReveal } from '../components/SigilReveal.jsx';
 import { SkipButton } from '../components/SkipButton.jsx';
 import { Transmission } from '../components/Transmission.jsx';
+import { WatchfulEye } from '../components/WatchfulEye.jsx';
 import { CANDLE_SCENE_INDEX, FINAL_SCENE_INDEX, LOADING_SCENE_INDEX, SCENES, SECRET_SEQUENCE } from '../data/scenes.js';
 
 function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
@@ -78,7 +79,7 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   };
 }
 
-export function Home({ initialSubmitted = false, onSubmittedChange, onCandleLitChange, onCrossroadsSettled, onReadScripture }) {
+export function Home({ initialSubmitted = false, isActive = true, onSubmittedChange, onCandleLitChange, onCrossroadsSettled, onReadScripture, onSecretDismiss }) {
   const [sceneIndex, setSceneIndex] = useState(() => (initialSubmitted ? FINAL_SCENE_INDEX : 0));
   const [hasSubmitted, setHasSubmitted] = useState(() => initialSubmitted);
   const [skipToSubmit, setSkipToSubmit] = useState(false);
@@ -144,7 +145,7 @@ export function Home({ initialSubmitted = false, onSubmittedChange, onCandleLitC
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (!hasSubmitted) return;
+      if (!hasSubmitted || !isActive || showSecret) return;
 
       const expectedKey = SECRET_SEQUENCE[secretProgress];
 
@@ -166,7 +167,7 @@ export function Home({ initialSubmitted = false, onSubmittedChange, onCandleLitC
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [hasSubmitted, secretProgress]);
+  }, [hasSubmitted, isActive, secretProgress, showSecret]);
 
   const handleSkip = () => {
     setSceneIndex(FINAL_SCENE_INDEX);
@@ -188,6 +189,12 @@ export function Home({ initialSubmitted = false, onSubmittedChange, onCandleLitC
     setHasSubmitted(true);
   };
 
+  const handleSecretDismiss = () => {
+    setShowSecret(false);
+    setSecretProgress(0);
+    onSecretDismiss?.();
+  };
+
   const handleReadScripture = (event) => {
     event.preventDefault();
     onReadScripture?.();
@@ -205,7 +212,8 @@ export function Home({ initialSubmitted = false, onSubmittedChange, onCandleLitC
       />
 
       {canSkip && <SkipButton onSkip={handleSkip} />}
-      {hasSubmitted && <SigilReveal showSecret={showSecret} onReadScripture={handleReadScripture} />}
+      {hasSubmitted && <SigilReveal onReadScripture={handleReadScripture} />}
+      <WatchfulEye isOpen={showSecret} onDismiss={handleSecretDismiss} />
     </div>
   );
 }
