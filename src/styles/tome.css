@@ -396,3 +396,84 @@
   min-height: 5rem;
 }
 .page-touch-zone span { pointer-events: none; }
+
+/* v0.7.2 scripture header and adjacent-page footer navigation. */
+.tome-page-header {
+  position: absolute;
+  top: clamp(1rem, 3vw, 1.55rem);
+  left: clamp(1.4rem, 6vw, 4.8rem);
+  right: clamp(1.4rem, 6vw, 4.8rem);
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+}
+
+.return-to-index {
+  border: 0;
+  border-bottom: 1px solid rgba(154, 59, 49, 0.42);
+  padding: 0.18rem 0.3rem 0.28rem;
+  background: transparent;
+  color: rgba(154, 59, 49, 0.94);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(0.62rem, 1.8vw, 0.74rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.return-to-index:hover,
+.return-to-index:focus-visible {
+  color: rgba(235, 221, 188, 0.96);
+  border-bottom-color: rgba(235, 221, 188, 0.5);
+}
+
+.return-to-index[aria-current='page'] {
+  opacity: 0.58;
+}
+
+.tome-footer-side {
+  width: min(46%, 20rem);
+  min-height: 2.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.tome-footer-next {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.tome-page-footer button {
+  max-width: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: rgba(154, 59, 49, 0.94);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.tome-page-footer button:hover,
+.tome-page-footer button:focus-visible {
+  color: rgba(235, 221, 188, 0.95);
+}
+
+.tome-footer-direction,
+.tome-footer-title {
+  display: block;
+}
+
+.tome-footer-direction {
+  margin-bottom: 0.2rem;
+  color: rgba(159, 145, 107, 0.66);
+  font-size: 0.82em;
+}
+
+.tome-footer-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

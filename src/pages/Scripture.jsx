@@ -8,11 +8,11 @@ const SWIPE_THRESHOLD = 56;
 const SWIPE_AXIS_BIAS = 1.25;
 
 function pageLabel(pageIndex) {
-  if (pageIndex === COVER_PAGE) return 'Closed cover';
+  if (pageIndex === COVER_PAGE) return 'The Scripture of the Loop';
   if (pageIndex === INDEX_PAGE) return 'Index of Incantations';
 
   const section = scriptureSections[pageIndex - FIRST_INCANTATION_PAGE];
-  return section ? `Incantation ${section.numeral}: ${section.title}` : 'Scripture page';
+  return section ? section.title : 'Scripture page';
 }
 
 export function Scripture() {
@@ -75,6 +75,8 @@ export function Scripture() {
   const currentSection = scriptureSections[pageIndex - FIRST_INCANTATION_PAGE];
   const canGoBackward = pageIndex > COVER_PAGE;
   const canGoForward = pageIndex < maxPageIndex;
+  const previousPageTitle = canGoBackward ? pageLabel(pageIndex - 1) : '';
+  const nextPageTitle = canGoForward ? pageLabel(pageIndex + 1) : '';
 
   const tomeClassName = useMemo(
     () => ['tome-book', pageIndex === COVER_PAGE ? 'is-closed' : 'is-open', turnDirection]
@@ -115,6 +117,17 @@ export function Scripture() {
             </section>
           ) : (
             <section className="tome-page" aria-label={pageLabel(pageIndex)}>
+              <header className="tome-page-header">
+                <button
+                  className="return-to-index"
+                  type="button"
+                  onClick={() => goToPage(INDEX_PAGE)}
+                  aria-current={pageIndex === INDEX_PAGE ? 'page' : undefined}
+                >
+                  Return to the Index
+                </button>
+              </header>
+
               {pageIndex === INDEX_PAGE ? (
                 <div className="tome-page-content index-page-content">
                   <p className="archive-label">Index of Incantations</p>
@@ -157,8 +170,23 @@ export function Scripture() {
                 </div>
               )}
 
-              <footer className="tome-page-footer">
-                <span>{pageLabel(pageIndex)}</span>
+              <footer className="tome-page-footer" aria-label="Scripture page navigation">
+                <div className="tome-footer-side tome-footer-previous">
+                  {canGoBackward && (
+                    <button type="button" onClick={() => goToPage(pageIndex - 1)}>
+                      <span className="tome-footer-direction">Previous</span>
+                      <span className="tome-footer-title">{previousPageTitle}</span>
+                    </button>
+                  )}
+                </div>
+                <div className="tome-footer-side tome-footer-next">
+                  {canGoForward && (
+                    <button type="button" onClick={() => goToPage(pageIndex + 1)}>
+                      <span className="tome-footer-direction">Next</span>
+                      <span className="tome-footer-title">{nextPageTitle}</span>
+                    </button>
+                  )}
+                </div>
               </footer>
 
               {canGoBackward && (

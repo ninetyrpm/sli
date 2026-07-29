@@ -48,3 +48,54 @@
     animation: none !important;
   }
 }
+
+/* Reserve a clear lower strip for the folded ritual-map tab on mobile. */
+@media (max-width: 700px) {
+  .scriptorium-chamber .tome-shell {
+    min-height: 100svh;
+    padding: 0.5rem 0.5rem calc(4.75rem + env(safe-area-inset-bottom));
+  }
+
+  .scriptorium-chamber .tome-stage {
+    width: min(94vw, 900px);
+    padding: 0.5rem 0;
+  }
+
+  .scriptorium-chamber .tome-book,
+  .scriptorium-chamber .tome-cover,
+  .scriptorium-chamber .tome-page {
+    min-height: 0;
+    height: calc(100svh - 5.75rem - env(safe-area-inset-bottom));
+  }
+
+  .scriptorium-chamber .tome-page-content {
+    max-height: calc(100svh - 16.25rem - env(safe-area-inset-bottom));
+  }
+
+  .tome-page-header {
+    top: 0.85rem;
+    left: 1.15rem;
+    right: 1.15rem;
+  }
+
+  .tome-page-footer {
+    left: 1.15rem;
+    right: 1.15rem;
+    bottom: 0.75rem;
+    flex-direction: row;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .tome-footer-side {
+    width: 47%;
+  }
+
+  .tome-footer-next {
+    text-align: right;
+  }
+
+  .tome-footer-title {
+    font-size: 0.95em;
+  }
+}
