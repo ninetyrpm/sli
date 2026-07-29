@@ -1,0 +1,182 @@
+.scripture-shell .base-darkness {
+  position: fixed;
+}
+
+.intro-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: clamp(520px, 92vw, 980px);
+  aspect-ratio: 1;
+  pointer-events: none;
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      circle,
+      rgba(214, 142, 72, 0.20) 0%,
+      rgba(126, 48, 28, 0.105) 30%,
+      rgba(46, 19, 12, 0.038) 49%,
+      transparent 69%
+    );
+  mix-blend-mode: screen;
+  animation: intro-glow-breathe 5.8s ease-in-out infinite;
+  transition: opacity 950ms ease, transform 950ms ease;
+}
+
+.page-shell.is-revealed .scripture-shell .base-darkness {
+  position: fixed;
+}
+
+.intro-glow {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.04);
+}
+
+.scripture-shell .scripture-shell .base-darkness {
+  position: fixed;
+}
+
+.intro-glow {
+  position: fixed;
+  opacity: 0.34;
+  width: min(90vw, 840px);
+}
+
+.sigil-pattern {
+  position: absolute;
+  inset: -4%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: var(--sigil-opacity);
+  background-image: url('/sigil.png');
+  background-repeat: repeat;
+  background-position: center;
+  background-size: 610px auto;
+  filter:
+    contrast(var(--sigil-contrast))
+    brightness(var(--sigil-brightness))
+    saturate(0.92);
+  transform: translateZ(0);
+  animation: pattern-drift 72s linear infinite;
+  will-change: opacity, filter;
+}
+
+.sigil-pattern.quiet {
+  position: fixed;
+  opacity: 0.09;
+  filter: contrast(1.05) brightness(0.58) saturate(0.74);
+  animation-duration: 120s;
+}
+
+.sigil-warmth {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(227, 164, 82, var(--sigil-halo)) 0%,
+      rgba(128, 52, 26, calc(var(--sigil-halo) * 0.42)) 28%,
+      transparent 60%
+    ),
+    rgba(170, 92, 36, var(--sigil-wash));
+  mix-blend-mode: soft-light;
+  transition: opacity 900ms ease;
+}
+
+.sigil-warmth.quiet {
+  position: fixed;
+  opacity: 0.22;
+  background: radial-gradient(circle at 50% 20%, rgba(107, 33, 28, 0.12), transparent 54%);
+}
+
+.page-shell.is-revealed .sigil-warmth {
+  opacity: 1;
+}
+
+.page-shell.is-blackout .transmission {
+  opacity: 0;
+}
+
+.analog-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.023) 0,
+      rgba(255, 255, 255, 0.023) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    radial-gradient(circle, rgba(255, 255, 255, 0.036) 1px, transparent 1px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.33) 1px, transparent 1px);
+  background-size: 100% 5px, 17px 17px, 29px 29px;
+  mix-blend-mode: screen;
+  animation: noise-shift 2.4s steps(2) infinite;
+}
+
+.scripture-shell .analog-noise,
+.page-shell.is-revealed .analog-noise {
+  opacity: 0.11;
+}
+
+.vignette {
+  position: absolute;
+  inset: -20%;
+  z-index: 6;
+  pointer-events: none;
+  background:
+    radial-gradient(circle, transparent 38%, rgba(0, 0, 0, 0.38) 73%, rgba(0, 0, 0, 0.88) 96%),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.008),
+      transparent 12%,
+      transparent 88%,
+      rgba(255, 255, 255, 0.008)
+    );
+  transition: background 1000ms ease;
+}
+
+.scripture-shell .vignette {
+  position: fixed;
+  background: radial-gradient(circle, transparent 34%, rgba(0, 0, 0, 0.36) 74%, rgba(0, 0, 0, 0.88) 98%);
+}
+
+.page-shell.is-revealed .vignette {
+  background: radial-gradient(circle at 50% 50%, transparent 28%, rgba(0, 0, 0, 0.22) 68%, rgba(0, 0, 0, 0.74) 96%);
+}
+
+.tape-damage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.08;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0 16%,
+      rgba(214, 196, 152, 0.08) 16.2%,
+      transparent 16.6% 71%,
+      rgba(214, 196, 152, 0.055) 71.25%,
+      transparent 71.6%
+    ),
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(255, 255, 255, 0.012) 39px, transparent 40px),
+    repeating-linear-gradient(0deg, transparent 0 83px, rgba(0, 0, 0, 0.20) 84px, transparent 87px);
+  animation: tape-wobble 5s steps(3) infinite;
+}
+
+.scripture-shell .tape-damage {
+  position: fixed;
+  opacity: 0.05;
+}
+

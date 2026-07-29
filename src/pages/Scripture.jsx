@@ -1,9 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { scriptureSections } from '../data/verses.js';
 
 const COVER_PAGE = 0;
 const INDEX_PAGE = 1;
 const FIRST_INCANTATION_PAGE = 2;
+const SWIPE_THRESHOLD = 56;
+const SWIPE_AXIS_BIAS = 1.25;
 
 function pageLabel(pageIndex) {
   if (pageIndex === COVER_PAGE) return 'Closed cover';
@@ -16,6 +18,7 @@ function pageLabel(pageIndex) {
 export function Scripture({ onReturnHome }) {
   const [pageIndex, setPageIndex] = useState(COVER_PAGE);
   const [turnDirection, setTurnDirection] = useState('');
+  const gestureRef = useRef(null);
   const maxPageIndex = scriptureSections.length + FIRST_INCANTATION_PAGE - 1;
 
   useEffect(() => {
@@ -32,10 +35,46 @@ export function Scripture({ onReturnHome }) {
 
   const goToPage = (nextPageIndex) => {
     const boundedPage = Math.max(COVER_PAGE, Math.min(maxPageIndex, nextPageIndex));
-    if (boundedPage === pageIndex) return;
+    if (boundedPage === pageIndex || turnDirection) return;
 
     setTurnDirection(boundedPage > pageIndex ? 'turning-forward' : 'turning-backward');
     window.setTimeout(() => setPageIndex(boundedPage), 210);
+  };
+
+  const handlePointerDown = (event) => {
+    if (event.pointerType === 'mouse' || turnDirection) return;
+    gestureRef.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      axis: null,
+    };
+  };
+
+  const handlePointerMove = (event) => {
+    const gesture = gestureRef.current;
+    if (!gesture || gesture.pointerId !== event.pointerId) return;
+
+    const deltaX = event.clientX - gesture.startX;
+    const deltaY = event.clientY - gesture.startY;
+
+    if (!gesture.axis && (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10)) {
+      gesture.axis = Math.abs(deltaX) > Math.abs(deltaY) * SWIPE_AXIS_BIAS ? 'horizontal' : 'vertical';
+    }
+
+    if (gesture.axis === 'horizontal' && event.cancelable) event.preventDefault();
+  };
+
+  const handlePointerEnd = (event) => {
+    const gesture = gestureRef.current;
+    gestureRef.current = null;
+    if (!gesture || gesture.pointerId !== event.pointerId || gesture.axis !== 'horizontal') return;
+
+    const deltaX = event.clientX - gesture.startX;
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
+
+    if (deltaX < 0 && pageIndex < maxPageIndex) goToPage(pageIndex + 1);
+    if (deltaX > 0 && pageIndex > COVER_PAGE) goToPage(pageIndex - 1);
   };
 
   const currentSection = scriptureSections[pageIndex - FIRST_INCANTATION_PAGE];
@@ -51,10 +90,16 @@ export function Scripture({ onReturnHome }) {
 
   return (
     <div className="scripture-shell tome-shell" aria-labelledby="scripture-title">
-      <a className="return-link tome-return" href="/" onClick={handleReturnHome}>← Return to Home</a>
+      <a className="return-link tome-return" href="/" onClick={handleReturnHome}>← Return to the Crossroads</a>
 
       <article className="scripture-document tome-stage" aria-live="polite">
-        <div className={tomeClassName}>
+        <div
+          className={tomeClassName}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerEnd}
+          onPointerCancel={() => { gestureRef.current = null; }}
+        >
           <div className="tome-spine" aria-hidden="true" />
 
           {pageIndex === COVER_PAGE ? (
@@ -109,16 +154,12 @@ export function Scripture({ onReturnHome }) {
 
                   <div className="verse-block">
                     <h3>Verse</h3>
-                    {currentSection.verse.map((line) => (
-                      <p key={line}>{line}</p>
-                    ))}
+                    {currentSection.verse.map((line) => <p key={line}>{line}</p>)}
                   </div>
 
                   <div className="interpretation-block">
                     <h3>Interpretation</h3>
-                    {currentSection.interpretation.map((line) => (
-                      <p key={line}>{line}</p>
-                    ))}
+                    {currentSection.interpretation.map((line) => <p key={line}>{line}</p>)}
                   </div>
                 </div>
               )}
@@ -130,23 +171,23 @@ export function Scripture({ onReturnHome }) {
 
               {canGoBackward && (
                 <button
-                  className="book-arrow book-arrow-left"
+                  className="book-arrow book-arrow-left page-touch-zone"
                   type="button"
                   onClick={() => goToPage(pageIndex - 1)}
                   aria-label="Turn to the previous page"
                 >
-                  ←
+                  <span aria-hidden="true">←</span>
                 </button>
               )}
 
               {canGoForward && (
                 <button
-                  className="book-arrow book-arrow-right"
+                  className="book-arrow book-arrow-right page-touch-zone"
                   type="button"
                   onClick={() => goToPage(pageIndex + 1)}
                   aria-label="Turn to the next page"
                 >
-                  →
+                  <span aria-hidden="true">→</span>
                 </button>
               )}
             </section>

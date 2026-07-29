@@ -47,7 +47,7 @@ export const SCENES = [
     type: 'text',
     duration: 6200,
     tone: 'rule',
-    lines: ['No prizes.', 'No podiums.', 'No mercy.', 'Just insanity.'],
+    lines: ['No prizes.', 'No podiums.', 'Just insanity.'],
   },
   {
     key: 'flicker-three',
