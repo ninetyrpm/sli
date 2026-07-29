@@ -39,7 +39,7 @@ Chambers occupy coordinates in one continuous spatial world. Navigation translat
 
 Chamber navigation is explicit through the ritual map and in-world links. The site does **not** use swipe gestures to move between chambers. This avoids inconsistent behavior as the world expands in horizontal and vertical directions and prevents conflict with native browser gestures.
 
-The ritual map appears after submission and can be folded away if it obscures the current chamber. A small tab remains available to unfold it again.
+After the Crossroads plaque has fully settled, the ritual map arrives from below in its folded “UNFOLD MAP” state. It can then be opened for navigation or folded away again whenever it obscures the current chamber.
 
 Within the tome, horizontal touch swipes turn pages. Vertical movement remains native scrolling.
 
@@ -173,7 +173,7 @@ npm run preview
 ```
 
 
-## v0.6.2
+## v0.6.3
 
 - Corrected the opening so the candle glow remains absent during `LIGHTING A CANDLE`, then grows from the center during ignition.
 - Removed a legacy Scriptorium stylesheet override that forced the opening glow to appear immediately.

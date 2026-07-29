@@ -3,7 +3,7 @@
   left: 50%;
   top: 50%;
   z-index: 1;
-  width: clamp(360px, 72vw, 840px);
+  width: clamp(500px, 102vw, 1180px);
   aspect-ratio: 1;
   pointer-events: none;
   opacity: 0;

@@ -15,7 +15,8 @@ const GRID_ROWS = GRID_MAX_Y - GRID_MIN_Y + 1;
 export function App() {
   const [activeChamberId, setActiveChamberId] = useState(() => getChamberFromPath().id);
   const [homeHasSubmitted, setHomeHasSubmitted] = useState(() => getChamberFromPath().id !== 'crossroads');
-  const [mapHidden, setMapHidden] = useState(false);
+  const [mapHidden, setMapHidden] = useState(true);
+  const [mapReady, setMapReady] = useState(() => getChamberFromPath().id !== 'crossroads');
   const [candleLit, setCandleLit] = useState(() => getChamberFromPath().id !== 'crossroads');
 
   const activeChamber = CHAMBERS[activeChamberId] ?? CHAMBERS.crossroads;
@@ -78,6 +79,7 @@ export function App() {
             initialSubmitted={homeHasSubmitted}
             onSubmittedChange={setHomeHasSubmitted}
             onCandleLitChange={setCandleLit}
+            onCrossroadsSettled={() => setMapReady(true)}
             onReadScripture={() => navigateTo('scriptorium')}
           />
         </section>
@@ -91,7 +93,7 @@ export function App() {
         </section>
       </div>
 
-      {homeHasSubmitted && (
+      {homeHasSubmitted && mapReady && (
         <RitualMap
           currentChamberId={activeChamberId}
           isHidden={mapHidden}

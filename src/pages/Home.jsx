@@ -78,7 +78,7 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   };
 }
 
-export function Home({ initialSubmitted = false, onSubmittedChange, onCandleLitChange, onReadScripture }) {
+export function Home({ initialSubmitted = false, onSubmittedChange, onCandleLitChange, onCrossroadsSettled, onReadScripture }) {
   const [sceneIndex, setSceneIndex] = useState(() => (initialSubmitted ? FINAL_SCENE_INDEX : 0));
   const [hasSubmitted, setHasSubmitted] = useState(() => initialSubmitted);
   const [skipToSubmit, setSkipToSubmit] = useState(false);
@@ -94,6 +94,19 @@ export function Home({ initialSubmitted = false, onSubmittedChange, onCandleLitC
   useEffect(() => {
     onSubmittedChange?.(hasSubmitted);
   }, [hasSubmitted, onSubmittedChange]);
+
+  useEffect(() => {
+    if (!hasSubmitted || initialSubmitted) return undefined;
+
+    // The plaque begins entering after the reveal wave and takes 1.2 seconds
+    // to settle. Hold the folded map back a little longer so the visitor can
+    // take in the Crossroads before another navigational element arrives.
+    const timer = window.setTimeout(() => {
+      onCrossroadsSettled?.();
+    }, 5400);
+
+    return () => window.clearTimeout(timer);
+  }, [hasSubmitted, initialSubmitted, onCrossroadsSettled]);
 
   useEffect(() => {
     const candleIsLit = sceneIndex >= CANDLE_SCENE_INDEX || hasSubmitted;
