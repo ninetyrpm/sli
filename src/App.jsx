@@ -56,6 +56,8 @@ export function App() {
     '--grid-rows': GRID_ROWS,
     '--view-x': activeChamber.x - GRID_MIN_X,
     '--view-y': activeChamber.y - GRID_MIN_Y,
+    '--crossroads-center-x': `${(CHAMBERS.crossroads.x - GRID_MIN_X + 0.5) * 100}vw`,
+    '--crossroads-center-y': `${(CHAMBERS.crossroads.y - GRID_MIN_Y + 0.5) * 100}svh`,
   };
 
   return (
@@ -82,7 +84,7 @@ export function App() {
           style={{ '--chamber-x': CHAMBERS.scriptorium.x - GRID_MIN_X, '--chamber-y': CHAMBERS.scriptorium.y - GRID_MIN_Y }}
           aria-label={CHAMBERS.scriptorium.ariaLabel}
         >
-          <Scripture onReturnHome={() => navigateTo('crossroads')} />
+          <Scripture />
         </section>
       </div>
 

@@ -14,7 +14,7 @@ export const SCENES = [
     key: 'loading',
     type: 'loading',
     duration: 2600,
-    lines: ['TUNING THE SIGNAL'],
+    lines: ['LIGHTING A CANDLE'],
   },
   {
     key: 'summons',
@@ -60,7 +60,7 @@ export const SCENES = [
     type: 'final',
     duration: null,
     tone: 'closing',
-    lines: ['The Third Rite approaches.', 'Will you join the madness?'],
+    lines: ['Scenic Loop Insanity III approaches.', 'Will you join the madness?'],
   },
 ];
 

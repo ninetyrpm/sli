@@ -29,7 +29,8 @@
 .spatial-background .sigil-warmth,
 .spatial-background .tape-damage,
 .spatial-background .vignette,
-.spatial-background .analog-noise {
+.spatial-background .analog-noise,
+.spatial-background .reveal-wave {
   position: absolute;
 }
 
@@ -38,13 +39,8 @@
 }
 
 .spatial-shell:not(.is-spatial-revealed) .spatial-background .intro-glow {
-  left: 25vw;
-  top: 50svh;
-}
-
-.spatial-shell.is-spatial-revealed .spatial-background .intro-glow {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(1.08);
+  left: var(--crossroads-center-x, 50vw);
+  top: var(--crossroads-center-y, 50svh);
 }
 
 .spatial-shell.is-spatial-revealed .spatial-background .sigil-warmth {

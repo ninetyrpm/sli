@@ -209,7 +209,7 @@
   opacity: 0;
   transform: translateY(8px) scale(0.985);
   pointer-events: none;
-  transition: opacity 1200ms ease 950ms, transform 1200ms ease 950ms;
+  transition: opacity 1200ms ease 3000ms, transform 1200ms ease 3000ms;
 }
 
 .page-shell.is-revealed .negative-reveal {
@@ -637,4 +637,57 @@
 .reveal-message {
   margin-top: 1.05rem !important;
   font-style: italic;
+}
+
+/* Scenic Loop Insanity III plaque hierarchy */
+.reveal-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: clamp(0.45rem, 1.8vw, 0.9rem);
+  margin: 0 0 0.45rem;
+  color: rgba(235, 221, 188, 0.96);
+  line-height: 1;
+}
+
+.reveal-title-name {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.35rem, 5vw, 2.65rem);
+  font-weight: 400;
+  letter-spacing: clamp(0.04em, 0.65vw, 0.1em);
+  text-transform: uppercase;
+}
+
+.reveal-title-number {
+  color: rgba(154, 59, 49, 0.98);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(1.1rem, 4vw, 2.05rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-shadow: 0 0 18px rgba(139, 52, 44, 0.34);
+}
+
+.negative-plaque .reveal-tagline {
+  margin-bottom: 1.05rem;
+  color: rgba(214, 196, 152, 0.74);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(0.74rem, 2.35vw, 0.98rem);
+  font-style: italic;
+  letter-spacing: clamp(0.055em, 0.7vw, 0.12em);
+  text-transform: none;
+}
+
+.reveal-location,
+.reveal-declaration {
+  font-size: clamp(0.68rem, 2vw, 0.88rem);
+  letter-spacing: clamp(0.045em, 0.55vw, 0.11em);
+}
+
+.reveal-declaration {
+  margin-top: 0.45rem !important;
+}
+
+.loading-rite {
+  font-size: clamp(0.66rem, 2.2vw, 0.78rem);
+  color: rgba(214, 196, 152, 0.58);
 }

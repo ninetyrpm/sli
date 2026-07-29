@@ -9,7 +9,7 @@ export function Transmission({ currentScene, isLoading, isFinal, hasSubmitted, s
         {isLoading ? (
           <div className="loading-rite">
             <span className="loading-glyph" aria-hidden="true" />
-            <p>TUNING THE SIGNAL</p>
+            <p>{currentScene.lines[0]}</p>
           </div>
         ) : (
           <div className={`copy-block candlelit-text ${currentScene.tone || ''}`} key={currentScene.key}>

@@ -144,7 +144,7 @@ export const scriptureSections = [
     numeral: 'X',
     title: 'Closing Invocation',
     verse: [
-      'Gather, O Riders of the Third Rite.',
+      'Gather, O Riders of Scenic Loop Insanity III.',
       'The Loop calls with neither promise nor pity.',
       'Bring forth your quads as offering, your reason as collateral.',
       'Ride. Repeat. Redeem.',

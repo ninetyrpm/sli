@@ -1,6 +1,6 @@
 # Scenic Loop Insanity 2026 — Hype Site
 
-A Vite/React teaser experience for **Scenic Loop Insanity: The Third Rite**.
+A Vite/React teaser experience for **Scenic Loop Insanity III**.
 
 The site is intentionally being revealed in stages. The current build establishes the opening ritual, spatial architecture, visual language, and lore experience before practical event information, registration, and additional chambers are released.
 
@@ -14,10 +14,10 @@ The Scripture is entertainment and thematic foundation. Its current writing is p
 
 ## Current features
 
-- Timed opening transmission with a single-candle glow
+- Timed opening transmission beginning in complete darkness with “LIGHTING A CANDLE”
 - Skip control for quickly reaching the final invitation
-- Submission interaction that expands into a cathedral-like sigil reveal
-- Revised Third Rite plaque with date, location, premise, and teaser line
+- Submission interaction with an expanding candlelight wave that reveals the sigil field as it passes
+- Centered Scenic Loop Insanity III plaque with “The Rite of Mutual Suffering,” date, location, premise, and teaser line
 - Hidden d-pad Easter egg after submission: `↑ ↓ ← → → ← ↓ ↑`
 - Chamber registry defining names, routes, coordinates, and labels
 - Continuous spatial canvas with panning transitions between chambers
@@ -111,7 +111,7 @@ The site will be built gradually as event details become available and as the ca
 - Date, schedule, gathering point, parking, food, and support
 - Registration or commitment ledger
 - Sponsors, collaborators, vendors, and supporters
-- History of the First, Second, and Third Rites
+- History of the first, second, and third editions
 - The Final Procession
 
 ## Backlog

@@ -22,6 +22,10 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
       root.style.setProperty('--sigil-contrast', '0.90');
       root.style.setProperty('--sigil-wash', '0.000');
       root.style.setProperty('--sigil-halo', '0.00');
+      root.style.setProperty('--sigil-reveal-radius', '0vmax');
+      root.style.setProperty('--reveal-wave-opacity', '0');
+      root.style.setProperty('--candle-scale', '1');
+      root.style.setProperty('--candle-opacity', '1');
       animationFrameId = window.requestAnimationFrame(apply);
       return;
     }
@@ -30,8 +34,9 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
       revealStart = revealCompleteRef.current ? timestamp - 6200 : timestamp;
     }
 
-    const revealT = clamp01((timestamp - revealStart) / 6200);
+    const revealT = clamp01((timestamp - revealStart) / 4200);
     const ramp = revealCompleteRef.current ? 1 : easeOutCubic(revealT);
+    const waveProgress = revealCompleteRef.current ? 1 : revealT;
     const t = (timestamp - revealStart) / 1000;
 
     // Slow overlapping waves: cathedral candlelight, not screen glitch.
@@ -51,6 +56,10 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
     root.style.setProperty('--sigil-contrast', Math.max(0, contrast).toFixed(3));
     root.style.setProperty('--sigil-wash', Math.max(0, wash).toFixed(3));
     root.style.setProperty('--sigil-halo', Math.max(0, halo).toFixed(3));
+    root.style.setProperty('--sigil-reveal-radius', `${(waveProgress * 235).toFixed(2)}vmax`);
+    root.style.setProperty('--reveal-wave-opacity', revealCompleteRef.current ? '0' : Math.sin(Math.PI * waveProgress).toFixed(3));
+    root.style.setProperty('--candle-scale', (1 + waveProgress * 4.8).toFixed(3));
+    root.style.setProperty('--candle-opacity', Math.max(0, 1 - waveProgress * 1.08).toFixed(3));
 
     if (revealT >= 1 && !revealCompleteRef.current) {
       revealCompleteRef.current = true;
@@ -83,6 +92,13 @@ export function Home({ initialSubmitted = false, onSubmittedChange, onReadScript
     onSubmittedChange?.(hasSubmitted);
   }, [hasSubmitted, onSubmittedChange]);
 
+  useEffect(() => {
+    const candleIsLit = sceneIndex > LOADING_SCENE_INDEX || hasSubmitted;
+    document.documentElement.classList.toggle('candle-is-lit', candleIsLit);
+
+    return () => document.documentElement.classList.remove('candle-is-lit');
+  }, [sceneIndex, hasSubmitted]);
+
   const currentScene = SCENES[sceneIndex];
   const isBlackout = currentScene.type === 'blackout';
   const isLoading = currentScene.type === 'loading';
@@ -94,12 +110,13 @@ export function Home({ initialSubmitted = false, onSubmittedChange, onReadScript
       'page-shell',
       isBlackout ? 'is-blackout' : '',
       isLoading ? 'is-loading' : '',
+      sceneIndex > LOADING_SCENE_INDEX || hasSubmitted ? 'is-candle-lit' : '',
       hasSubmitted ? 'is-revealed' : '',
       skipToSubmit ? 'has-skipped' : '',
     ]
       .filter(Boolean)
       .join(' ');
-  }, [isBlackout, isLoading, hasSubmitted, skipToSubmit]);
+  }, [isBlackout, isLoading, hasSubmitted, skipToSubmit, sceneIndex]);
 
   useEffect(() => {
     if (hasSubmitted || currentScene.duration === null) return undefined;

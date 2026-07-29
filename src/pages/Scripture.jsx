@@ -15,7 +15,7 @@ function pageLabel(pageIndex) {
   return section ? `Incantation ${section.numeral}: ${section.title}` : 'Scripture page';
 }
 
-export function Scripture({ onReturnHome }) {
+export function Scripture() {
   const [pageIndex, setPageIndex] = useState(COVER_PAGE);
   const [turnDirection, setTurnDirection] = useState('');
   const gestureRef = useRef(null);
@@ -27,11 +27,6 @@ export function Scripture({ onReturnHome }) {
     const timer = window.setTimeout(() => setTurnDirection(''), 780);
     return () => window.clearTimeout(timer);
   }, [turnDirection]);
-
-  const handleReturnHome = (event) => {
-    event.preventDefault();
-    onReturnHome?.();
-  };
 
   const goToPage = (nextPageIndex) => {
     const boundedPage = Math.max(COVER_PAGE, Math.min(maxPageIndex, nextPageIndex));
@@ -90,8 +85,6 @@ export function Scripture({ onReturnHome }) {
 
   return (
     <div className="scripture-shell tome-shell" aria-labelledby="scripture-title">
-      <a className="return-link tome-return" href="/" onClick={handleReturnHome}>← Return to the Crossroads</a>
-
       <article className="scripture-document tome-stage" aria-live="polite">
         <div
           className={tomeClassName}
@@ -104,7 +97,7 @@ export function Scripture({ onReturnHome }) {
 
           {pageIndex === COVER_PAGE ? (
             <section className="tome-cover" aria-label="Book cover">
-              <p className="archive-label">Book of the Third Rite</p>
+              <p className="archive-label">Book of Scenic Loop Insanity III</p>
               <h1 id="scripture-title">The Scripture of the Loop</h1>
               <p className="scripture-subtitle">
                 Incantations of the Loop, with interpretations provided for the insufficiently initiated.
@@ -115,7 +108,7 @@ export function Scripture({ onReturnHome }) {
                 className="book-arrow book-arrow-right cover-open"
                 type="button"
                 onClick={() => goToPage(INDEX_PAGE)}
-                aria-label="Open the Book of the Third Rite"
+                aria-label="Open the Book of Scenic Loop Insanity III"
               >
                 →
               </button>
@@ -166,7 +159,6 @@ export function Scripture({ onReturnHome }) {
 
               <footer className="tome-page-footer">
                 <span>{pageLabel(pageIndex)}</span>
-                <a href="/" onClick={handleReturnHome}>Return before it notices →</a>
               </footer>
 
               {canGoBackward && (

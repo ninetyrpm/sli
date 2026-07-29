@@ -24,9 +24,7 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(91, 40, 21, 0.11), transparent 27%),
-    radial-gradient(circle at 50% 50%, rgba(198, 172, 110, 0.045), transparent 18%),
-    linear-gradient(180deg, #010101 0%, var(--asphalt) 48%, #010101 100%);
+  background: #000;
 }
+
 
