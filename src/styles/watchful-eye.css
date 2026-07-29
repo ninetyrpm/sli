@@ -149,3 +149,28 @@
     animation-delay: 0ms;
   }
 }
+
+/* v0.7.1: center the 720 × 1280 portrait source by its displayed frame. */
+.watchful-eye-vision {
+  overflow: hidden;
+}
+
+.watchful-eye-video {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: auto;
+  height: min(82svh, 1280px);
+  max-width: 92vw;
+  max-height: 88svh;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 700px) {
+  .watchful-eye-video {
+    width: auto;
+    height: min(84svh, 1280px);
+    max-width: 94vw;
+    max-height: 88svh;
+  }
+}

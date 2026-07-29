@@ -17,6 +17,7 @@ export function App() {
   const [homeHasSubmitted, setHomeHasSubmitted] = useState(() => getChamberFromPath().id !== 'crossroads');
   const [mapHidden, setMapHidden] = useState(true);
   const [mapReady, setMapReady] = useState(() => getChamberFromPath().id !== 'crossroads');
+  const [mapHasEntered, setMapHasEntered] = useState(() => getChamberFromPath().id !== 'crossroads');
   const [candleLit, setCandleLit] = useState(() => getChamberFromPath().id !== 'crossroads');
 
   const activeChamber = CHAMBERS[activeChamberId] ?? CHAMBERS.crossroads;
@@ -81,7 +82,6 @@ export function App() {
             onSubmittedChange={setHomeHasSubmitted}
             onCandleLitChange={setCandleLit}
             onCrossroadsSettled={() => setMapReady(true)}
-            onReadScripture={() => navigateTo('scriptorium')}
             onSecretDismiss={() => navigateTo('crossroads')}
           />
         </section>
@@ -99,6 +99,8 @@ export function App() {
         <RitualMap
           currentChamberId={activeChamberId}
           isHidden={mapHidden}
+          animateEntry={!mapHasEntered}
+          onMarkEntered={() => setMapHasEntered(true)}
           onToggleHidden={() => setMapHidden((hidden) => !hidden)}
           onNavigate={navigateTo}
         />

@@ -79,7 +79,7 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   };
 }
 
-export function Home({ initialSubmitted = false, isActive = true, onSubmittedChange, onCandleLitChange, onCrossroadsSettled, onReadScripture, onSecretDismiss }) {
+export function Home({ initialSubmitted = false, isActive = true, onSubmittedChange, onCandleLitChange, onCrossroadsSettled, onSecretDismiss }) {
   const [sceneIndex, setSceneIndex] = useState(() => (initialSubmitted ? FINAL_SCENE_INDEX : 0));
   const [hasSubmitted, setHasSubmitted] = useState(() => initialSubmitted);
   const [skipToSubmit, setSkipToSubmit] = useState(false);
@@ -195,10 +195,6 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
     onSecretDismiss?.();
   };
 
-  const handleReadScripture = (event) => {
-    event.preventDefault();
-    onReadScripture?.();
-  };
 
   return (
     <div className={sceneClassName} aria-label="Scenic Loop Insanity teaser">
@@ -212,7 +208,7 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
       />
 
       {canSkip && <SkipButton onSkip={handleSkip} />}
-      {hasSubmitted && <SigilReveal onReadScripture={handleReadScripture} />}
+      {hasSubmitted && <SigilReveal />}
       <WatchfulEye isOpen={showSecret} onDismiss={handleSecretDismiss} />
     </div>
   );

@@ -193,3 +193,10 @@ public/media/watchful-eye.mp4
 ```
 
 The application references it as `/media/watchful-eye.mp4`. Keep that path and filename unchanged. H.264 video in an MP4 container is recommended for broad browser compatibility.
+
+## v0.7.1
+
+- Centered the portrait Watchful Eye video using its rendered frame rather than viewport-width sizing.
+- Prevented the folded Ritual Map tab from replaying its entrance animation after the map is folded.
+- Redesigned the map around a central occult signpost at The Crossroads, with the discovered route to The Scriptorium and three muted unknown paths.
+- Removed the direct Scriptorium link from the Crossroads plaque and changed the final message to the plaque's red accent color.

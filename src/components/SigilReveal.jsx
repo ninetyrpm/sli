@@ -1,4 +1,4 @@
-export function SigilReveal({ onReadScripture }) {
+export function SigilReveal() {
   return (
     <section className="negative-reveal" aria-live="polite">
       <div className="negative-plaque">
@@ -12,7 +12,6 @@ export function SigilReveal({ onReadScripture }) {
         <p className="reveal-location">Cherokee Park</p>
         <p className="reveal-declaration">One Hundred Miles of Madness</p>
         <p className="reveal-message">The details will find the worthy.</p>
-        <a className="scripture-link" href="/scripture" onClick={onReadScripture}>Enter the Scriptorium →</a>
       </div>
     </section>
   );

@@ -1,12 +1,24 @@
-import { CHAMBER_LIST } from '../config/chambers.js';
+export function RitualMap({
+  currentChamberId,
+  isHidden,
+  animateEntry,
+  onToggleHidden,
+  onMarkEntered,
+  onNavigate,
+}) {
+  const navigate = (chamberId) => {
+    if (chamberId !== currentChamberId) onNavigate(chamberId);
+  };
 
-export function RitualMap({ currentChamberId, isHidden, onToggleHidden, onNavigate }) {
   if (isHidden) {
     return (
       <button
-        className="ritual-map-tab"
+        className={`ritual-map-tab ${animateEntry ? 'is-entering' : ''}`}
         type="button"
-        onClick={onToggleHidden}
+        onClick={() => {
+          onMarkEntered?.();
+          onToggleHidden();
+        }}
         aria-label="Unfold the ritual map"
       >
         Unfold map
@@ -19,37 +31,51 @@ export function RitualMap({ currentChamberId, isHidden, onToggleHidden, onNaviga
       <div className="ritual-map-paper">
         <div className="ritual-map-heading">
           <span>Map of the Known Ways</span>
-          <button type="button" onClick={onToggleHidden} aria-label="Fold away the ritual map">
+          <button type="button" onClick={onToggleHidden} aria-label="Fold the ritual map">
             Fold
           </button>
         </div>
 
-        <div className="ritual-map-drawing" aria-hidden="true">
-          <span className="map-line" />
-          <span className="map-scratch map-scratch-one">?</span>
-          <span className="map-scratch map-scratch-two">×</span>
+        <div className="ritual-map-compass">
+          <span className="ritual-path ritual-path-up is-unknown" aria-hidden="true" />
+          <span className="ritual-path ritual-path-down is-unknown" aria-hidden="true" />
+          <span className="ritual-path ritual-path-left is-unknown" aria-hidden="true" />
+          <span className="ritual-path ritual-path-right is-known" aria-hidden="true" />
+
+          <span className="ritual-unknown ritual-unknown-up" aria-hidden="true">?</span>
+          <span className="ritual-unknown ritual-unknown-down" aria-hidden="true">?</span>
+          <span className="ritual-unknown ritual-unknown-left" aria-hidden="true">?</span>
+
+          <button
+            className={`ritual-chamber-label ritual-crossroads-label ${currentChamberId === 'crossroads' ? 'is-current' : ''}`}
+            type="button"
+            onClick={() => navigate('crossroads')}
+            disabled={currentChamberId === 'crossroads'}
+            aria-current={currentChamberId === 'crossroads' ? 'page' : undefined}
+          >
+            The Crossroads
+          </button>
+
+          <div className="ritual-stake" aria-hidden="true">
+            <span className="stake-post" />
+            <span className="stake-sigil stake-sigil-up">⌃</span>
+            <span className="stake-sigil stake-sigil-right">◇</span>
+            <span className="stake-sigil stake-sigil-down">⌄</span>
+            <span className="stake-sigil stake-sigil-left">◈</span>
+          </div>
+
+          <button
+            className={`ritual-chamber-label ritual-scriptorium-label ${currentChamberId === 'scriptorium' ? 'is-current' : ''}`}
+            type="button"
+            onClick={() => navigate('scriptorium')}
+            disabled={currentChamberId === 'scriptorium'}
+            aria-current={currentChamberId === 'scriptorium' ? 'page' : undefined}
+          >
+            The Scriptorium
+          </button>
         </div>
 
-        <nav className="ritual-map-links" aria-label="Known chambers">
-          {CHAMBER_LIST.map((chamber) => {
-            const isCurrent = chamber.id === currentChamberId;
-            return (
-              <button
-                key={chamber.id}
-                type="button"
-                className={isCurrent ? 'is-current' : ''}
-                onClick={() => onNavigate(chamber.id)}
-                aria-current={isCurrent ? 'page' : undefined}
-                disabled={isCurrent}
-              >
-                <span className="map-node" aria-hidden="true" />
-                {chamber.mapLabel}
-              </button>
-            );
-          })}
-        </nav>
-
-        <p className="ritual-map-note">Other passages remain unmarked.</p>
+        <p className="ritual-map-note">The other ways have not yet revealed themselves.</p>
       </div>
     </aside>
   );
