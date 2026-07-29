@@ -1,0 +1,199 @@
+.intro-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: clamp(360px, 72vw, 840px);
+  aspect-ratio: 1;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(var(--candle-scale, 1));
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      circle,
+      rgba(235, 169, 91, 0.23) 0%,
+      rgba(154, 72, 36, 0.13) 28%,
+      rgba(66, 27, 16, 0.052) 49%,
+      transparent 70%
+    );
+  mix-blend-mode: screen;
+  transition: opacity 1350ms ease, transform 90ms linear;
+  will-change: opacity, transform;
+}
+
+.spatial-shell.is-candle-lit .spatial-background .intro-glow {
+  opacity: var(--candle-opacity, 1);
+  animation: intro-glow-breathe 5.8s ease-in-out infinite;
+}
+
+.sigil-pattern {
+  position: absolute;
+  inset: -4%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: var(--sigil-opacity);
+  background-image: url('/sigil.png');
+  background-repeat: repeat;
+  background-position: center;
+  background-size: 610px auto;
+  filter:
+    contrast(var(--sigil-contrast))
+    brightness(var(--sigil-brightness))
+    saturate(0.92);
+  transform: translateZ(0);
+  animation: pattern-drift 72s linear infinite;
+  -webkit-mask-image: radial-gradient(
+    circle at var(--crossroads-center-x, 50vw) var(--crossroads-center-y, 50svh),
+    #000 0,
+    #000 var(--sigil-reveal-radius, 0vmax),
+    transparent calc(var(--sigil-reveal-radius, 0vmax) + 4vmax)
+  );
+  mask-image: radial-gradient(
+    circle at var(--crossroads-center-x, 50vw) var(--crossroads-center-y, 50svh),
+    #000 0,
+    #000 var(--sigil-reveal-radius, 0vmax),
+    transparent calc(var(--sigil-reveal-radius, 0vmax) + 4vmax)
+  );
+  will-change: opacity, filter, mask-image;
+}
+
+.sigil-pattern.quiet {
+  position: fixed;
+  opacity: 0.09;
+  filter: contrast(1.05) brightness(0.58) saturate(0.74);
+  animation-duration: 120s;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.sigil-warmth {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(
+      circle at var(--crossroads-center-x, 50vw) var(--crossroads-center-y, 50svh),
+      rgba(227, 164, 82, var(--sigil-halo)) 0%,
+      rgba(128, 52, 26, calc(var(--sigil-halo) * 0.42)) 28%,
+      transparent 60%
+    ),
+    rgba(170, 92, 36, var(--sigil-wash));
+  mix-blend-mode: soft-light;
+  transition: opacity 900ms ease;
+  -webkit-mask-image: radial-gradient(
+    circle at var(--crossroads-center-x, 50vw) var(--crossroads-center-y, 50svh),
+    #000 0,
+    #000 var(--sigil-reveal-radius, 0vmax),
+    transparent calc(var(--sigil-reveal-radius, 0vmax) + 4vmax)
+  );
+  mask-image: radial-gradient(
+    circle at var(--crossroads-center-x, 50vw) var(--crossroads-center-y, 50svh),
+    #000 0,
+    #000 var(--sigil-reveal-radius, 0vmax),
+    transparent calc(var(--sigil-reveal-radius, 0vmax) + 4vmax)
+  );
+}
+
+.sigil-warmth.quiet {
+  position: fixed;
+  opacity: 0.22;
+  background: radial-gradient(circle at 50% 20%, rgba(107, 33, 28, 0.12), transparent 54%);
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.spatial-shell.is-spatial-revealed .sigil-warmth {
+  opacity: 1;
+}
+
+.reveal-wave {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: var(--reveal-wave-opacity, 0);
+  background: radial-gradient(
+    circle at var(--crossroads-center-x, 50vw) var(--crossroads-center-y, 50svh),
+    transparent 0,
+    transparent calc(var(--sigil-reveal-radius, 0vmax) - 6vmax),
+    rgba(255, 209, 132, 0.05) calc(var(--sigil-reveal-radius, 0vmax) - 3vmax),
+    rgba(238, 163, 78, 0.34) var(--sigil-reveal-radius, 0vmax),
+    rgba(126, 50, 25, 0.14) calc(var(--sigil-reveal-radius, 0vmax) + 4vmax),
+    transparent calc(var(--sigil-reveal-radius, 0vmax) + 10vmax)
+  );
+  mix-blend-mode: screen;
+  filter: blur(3px);
+  will-change: opacity, background;
+}
+
+.page-shell.is-blackout .transmission {
+  opacity: 0;
+}
+
+.analog-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  opacity: 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.023) 0, rgba(255, 255, 255, 0.023) 1px, transparent 1px, transparent 4px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.036) 1px, transparent 1px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.33) 1px, transparent 1px);
+  background-size: 100% 5px, 17px 17px, 29px 29px;
+  mix-blend-mode: screen;
+  animation: noise-shift 2.4s steps(2) infinite;
+  transition: opacity 1200ms ease;
+}
+
+.spatial-shell.is-candle-lit .spatial-background .analog-noise {
+  opacity: 0.18;
+}
+
+.spatial-shell.is-spatial-revealed .spatial-background .analog-noise {
+  opacity: 0.11;
+}
+
+.vignette {
+  position: absolute;
+  inset: -20%;
+  z-index: 6;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle, transparent 38%, rgba(0, 0, 0, 0.38) 73%, rgba(0, 0, 0, 0.88) 96%),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.008), transparent 12%, transparent 88%, rgba(255, 255, 255, 0.008));
+  transition: opacity 1200ms ease, background 1000ms ease;
+}
+
+.spatial-shell.is-candle-lit .spatial-background .vignette {
+  opacity: 1;
+}
+
+.spatial-shell.is-spatial-revealed .spatial-background .vignette {
+  opacity: 1;
+  background: radial-gradient(circle at 50% 50%, transparent 28%, rgba(0, 0, 0, 0.22) 68%, rgba(0, 0, 0, 0.74) 96%);
+}
+
+.tape-damage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(90deg, transparent 0 16%, rgba(214, 196, 152, 0.08) 16.2%, transparent 16.6% 71%, rgba(214, 196, 152, 0.055) 71.25%, transparent 71.6%),
+    repeating-linear-gradient(90deg, transparent 0 38px, rgba(255, 255, 255, 0.012) 39px, transparent 40px),
+    repeating-linear-gradient(0deg, transparent 0 83px, rgba(0, 0, 0, 0.20) 84px, transparent 87px);
+  animation: tape-wobble 5s steps(3) infinite;
+  transition: opacity 1200ms ease;
+}
+
+.spatial-shell.is-candle-lit .spatial-background .tape-damage {
+  opacity: 0.08;
+}
+
+
