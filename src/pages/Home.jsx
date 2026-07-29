@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { SigilReveal } from '../components/SigilReveal.jsx';
 import { SkipButton } from '../components/SkipButton.jsx';
 import { Transmission } from '../components/Transmission.jsx';
-import { FINAL_SCENE_INDEX, LOADING_SCENE_INDEX, SCENES, SECRET_SEQUENCE } from '../data/scenes.js';
+import { CANDLE_SCENE_INDEX, FINAL_SCENE_INDEX, LOADING_SCENE_INDEX, SCENES, SECRET_SEQUENCE } from '../data/scenes.js';
 
 function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   const root = document.documentElement;
@@ -56,10 +56,13 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
     root.style.setProperty('--sigil-contrast', Math.max(0, contrast).toFixed(3));
     root.style.setProperty('--sigil-wash', Math.max(0, wash).toFixed(3));
     root.style.setProperty('--sigil-halo', Math.max(0, halo).toFixed(3));
+    const candleFadeT = clamp01((waveProgress - 0.16) / 0.66);
+    const candleOpacity = 1 - easeOutCubic(candleFadeT);
+
     root.style.setProperty('--sigil-reveal-radius', `${(waveProgress * 235).toFixed(2)}vmax`);
     root.style.setProperty('--reveal-wave-opacity', revealCompleteRef.current ? '0' : Math.sin(Math.PI * waveProgress).toFixed(3));
-    root.style.setProperty('--candle-scale', (1 + waveProgress * 4.8).toFixed(3));
-    root.style.setProperty('--candle-opacity', Math.max(0, 1 - waveProgress * 1.08).toFixed(3));
+    root.style.setProperty('--candle-scale', (1 + waveProgress * 5.2).toFixed(3));
+    root.style.setProperty('--candle-opacity', Math.max(0, candleOpacity).toFixed(3));
 
     if (revealT >= 1 && !revealCompleteRef.current) {
       revealCompleteRef.current = true;
@@ -75,7 +78,7 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   };
 }
 
-export function Home({ initialSubmitted = false, onSubmittedChange, onReadScripture }) {
+export function Home({ initialSubmitted = false, onSubmittedChange, onCandleLitChange, onReadScripture }) {
   const [sceneIndex, setSceneIndex] = useState(() => (initialSubmitted ? FINAL_SCENE_INDEX : 0));
   const [hasSubmitted, setHasSubmitted] = useState(() => initialSubmitted);
   const [skipToSubmit, setSkipToSubmit] = useState(false);
@@ -93,24 +96,22 @@ export function Home({ initialSubmitted = false, onSubmittedChange, onReadScript
   }, [hasSubmitted, onSubmittedChange]);
 
   useEffect(() => {
-    const candleIsLit = sceneIndex > LOADING_SCENE_INDEX || hasSubmitted;
-    document.documentElement.classList.toggle('candle-is-lit', candleIsLit);
-
-    return () => document.documentElement.classList.remove('candle-is-lit');
-  }, [sceneIndex, hasSubmitted]);
+    const candleIsLit = sceneIndex >= CANDLE_SCENE_INDEX || hasSubmitted;
+    onCandleLitChange?.(candleIsLit);
+  }, [sceneIndex, hasSubmitted, onCandleLitChange]);
 
   const currentScene = SCENES[sceneIndex];
   const isBlackout = currentScene.type === 'blackout';
   const isLoading = currentScene.type === 'loading';
   const isFinal = currentScene.type === 'final';
-  const canSkip = sceneIndex > LOADING_SCENE_INDEX && !isFinal && !hasSubmitted;
+  const canSkip = sceneIndex > CANDLE_SCENE_INDEX && !isFinal && !hasSubmitted;
 
   const sceneClassName = useMemo(() => {
     return [
       'page-shell',
       isBlackout ? 'is-blackout' : '',
       isLoading ? 'is-loading' : '',
-      sceneIndex > LOADING_SCENE_INDEX || hasSubmitted ? 'is-candle-lit' : '',
+      sceneIndex >= CANDLE_SCENE_INDEX || hasSubmitted ? 'is-candle-lit' : '',
       hasSubmitted ? 'is-revealed' : '',
       skipToSubmit ? 'has-skipped' : '',
     ]
@@ -160,8 +161,18 @@ export function Home({ initialSubmitted = false, onSubmittedChange, onReadScript
   };
 
   const handleSubmit = () => {
-    setHasSubmitted(true);
+    const root = document.documentElement;
+
+    // Prime the reveal synchronously so the lit candle never drops to black
+    // while React changes from the transmission to the revealed chamber.
+    root.style.setProperty('--sigil-opacity', '0');
+    root.style.setProperty('--sigil-reveal-radius', '0vmax');
+    root.style.setProperty('--reveal-wave-opacity', '0');
+    root.style.setProperty('--candle-scale', '1');
+    root.style.setProperty('--candle-opacity', '1');
+
     revealCompleteRef.current = false;
+    setHasSubmitted(true);
   };
 
   const handleReadScripture = (event) => {

@@ -1,4 +1,5 @@
 .transmission {
+  grid-area: 1 / 1;
   position: relative;
   z-index: 9;
   width: min(100%, 690px);
@@ -200,6 +201,7 @@
 }
 
 .negative-reveal {
+  grid-area: 1 / 1;
   position: relative;
   z-index: 12;
   width: min(92vw, 780px);
@@ -285,15 +287,8 @@
 
 @keyframes intro-glow-breathe {
   0%,
-  100% {
-    opacity: 0.82;
-    transform: translate(-50%, -50%) scale(0.985);
-  }
-
-  48% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.02);
-  }
+  100% { filter: brightness(0.94); }
+  48% { filter: brightness(1.08); }
 }
 
 @keyframes pattern-drift {
@@ -459,36 +454,7 @@
   }
 }
 
-/* Motion/design patch: candlelit text, smoother ritual transitions, and horizontal scripture travel. */
-.page-shell .intro-glow {
-  position: absolute;
-  opacity: 1;
-  width: clamp(620px, 108vw, 1180px);
-  top: 50%;
-}
-
-.page-shell.is-revealed .intro-glow,
-.page-shell.is-entering-scripture .intro-glow,
-.page-shell.is-arriving-home .intro-glow {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(1.08);
-}
-
-.scripture-shell .intro-glow {
-  position: fixed;
-  opacity: 0.5;
-  width: clamp(760px, 125vw, 1800px);
-  top: 34%;
-  background:
-    radial-gradient(
-      circle,
-      rgba(214, 142, 72, 0.20) 0%,
-      rgba(126, 48, 28, 0.115) 30%,
-      rgba(46, 19, 12, 0.055) 52%,
-      transparent 76%
-    );
-}
-
+/* Candlelit text refinements. */
 .doctrine .line {
   font-size: clamp(1.18rem, 4.1vw, 2.15rem);
   line-height: 1.16;
@@ -531,10 +497,10 @@
 /* Prevent the final prompt/button from jumping upward on submit. */
 .page-shell.is-revealed .transmission {
   opacity: 0;
-  filter: blur(5px);
-  transform: translateY(0);
+  filter: blur(2px);
+  transform: none;
   pointer-events: none;
-  transition: opacity 900ms ease, filter 900ms ease, transform 900ms ease;
+  transition: opacity 760ms ease, filter 760ms ease;
 }
 
 .submit-button.immediate {
@@ -690,4 +656,85 @@
 .loading-rite {
   font-size: clamp(0.66rem, 2.2vw, 0.78rem);
   color: rgba(214, 196, 152, 0.58);
+}
+
+
+/* Crossroads plaque layout refresh */
+.page-shell {
+  grid-template: 1fr / 1fr;
+}
+
+.negative-reveal {
+  justify-self: center;
+  align-self: center;
+  width: min(90vw, 760px);
+  max-height: calc(100svh - clamp(2rem, 8vw, 6rem));
+}
+
+.negative-plaque {
+  width: 100%;
+  padding: clamp(1.45rem, 3.4vw, 2.4rem) clamp(1.15rem, 5vw, 3.4rem);
+  background:
+    linear-gradient(180deg, rgba(13, 10, 8, 0.94), rgba(2, 2, 1, 0.965)),
+    radial-gradient(circle at 50% 30%, rgba(93, 44, 22, 0.13), transparent 58%);
+}
+
+.reveal-title {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  column-gap: clamp(0.75rem, 2.6vw, 1.5rem);
+  margin-bottom: 0.65rem;
+}
+
+.reveal-title-name {
+  display: grid;
+  gap: 0.03em;
+  text-align: right;
+  font-size: clamp(1.55rem, 4.4vw, 3rem);
+  line-height: 0.95;
+}
+
+.reveal-title-number {
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  padding-left: clamp(0.65rem, 1.7vw, 1rem);
+  border-left: 1px solid rgba(154, 59, 49, 0.42);
+  font-size: clamp(1.35rem, 3.5vw, 2.35rem);
+  letter-spacing: 0.16em;
+}
+
+.negative-plaque .reveal-tagline {
+  margin: 0.1rem 0 0.85rem;
+  font-size: clamp(0.78rem, 1.8vw, 1rem);
+}
+
+.reveal-rule {
+  display: block;
+  width: min(70%, 28rem);
+  height: 1px;
+  margin: 0 auto 1.15rem;
+  background: linear-gradient(90deg, transparent, rgba(214, 196, 152, 0.34), transparent);
+}
+
+.reveal-date {
+  font-size: clamp(0.9rem, 2.3vw, 1.22rem);
+}
+
+.reveal-location {
+  margin-top: 0.42rem !important;
+}
+
+.reveal-declaration {
+  margin-top: 0.72rem !important;
+  white-space: normal !important;
+}
+
+@media (max-width: 560px) {
+  .negative-reveal { width: min(92vw, 720px); }
+  .negative-plaque { padding: 1.3rem 1rem 1.5rem; }
+  .reveal-title { column-gap: 0.65rem; }
+  .reveal-title-name { font-size: clamp(1.35rem, 8vw, 2rem); }
+  .reveal-title-number { font-size: clamp(1.15rem, 6.5vw, 1.65rem); padding-left: 0.55rem; }
 }

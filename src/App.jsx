@@ -16,6 +16,7 @@ export function App() {
   const [activeChamberId, setActiveChamberId] = useState(() => getChamberFromPath().id);
   const [homeHasSubmitted, setHomeHasSubmitted] = useState(() => getChamberFromPath().id !== 'crossroads');
   const [mapHidden, setMapHidden] = useState(false);
+  const [candleLit, setCandleLit] = useState(() => getChamberFromPath().id !== 'crossroads');
 
   const activeChamber = CHAMBERS[activeChamberId] ?? CHAMBERS.crossroads;
 
@@ -46,9 +47,10 @@ export function App() {
     () => [
       'spatial-shell',
       `view-${activeChamberId}`,
+      candleLit ? 'is-candle-lit' : '',
       homeHasSubmitted ? 'is-spatial-revealed' : '',
     ].filter(Boolean).join(' '),
-    [activeChamberId, homeHasSubmitted],
+    [activeChamberId, candleLit, homeHasSubmitted],
   );
 
   const spatialStyle = {
@@ -75,6 +77,7 @@ export function App() {
           <Home
             initialSubmitted={homeHasSubmitted}
             onSubmittedChange={setHomeHasSubmitted}
+            onCandleLitChange={setCandleLit}
             onReadScripture={() => navigateTo('scriptorium')}
           />
         </section>

@@ -22,7 +22,7 @@
   will-change: opacity, transform;
 }
 
-.candle-is-lit .spatial-background .intro-glow {
+.spatial-shell.is-candle-lit .spatial-background .intro-glow {
   opacity: var(--candle-opacity, 1);
   animation: intro-glow-breathe 5.8s ease-in-out infinite;
 }
@@ -149,7 +149,7 @@
   transition: opacity 1200ms ease;
 }
 
-.candle-is-lit .spatial-background .analog-noise {
+.spatial-shell.is-candle-lit .spatial-background .analog-noise {
   opacity: 0.18;
 }
 
@@ -169,7 +169,7 @@
   transition: opacity 1200ms ease, background 1000ms ease;
 }
 
-.candle-is-lit .spatial-background .vignette {
+.spatial-shell.is-candle-lit .spatial-background .vignette {
   opacity: 1;
 }
 
@@ -192,11 +192,8 @@
   transition: opacity 1200ms ease;
 }
 
-.candle-is-lit .spatial-background .tape-damage {
+.spatial-shell.is-candle-lit .spatial-background .tape-damage {
   opacity: 0.08;
 }
 
 
-.spatial-shell.is-spatial-revealed .spatial-background .intro-glow {
-  animation: none;
-}

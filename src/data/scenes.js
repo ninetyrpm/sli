@@ -17,6 +17,12 @@ export const SCENES = [
     lines: ['LIGHTING A CANDLE'],
   },
   {
+    key: 'candle-ignition',
+    type: 'candle',
+    duration: 1550,
+    lines: [],
+  },
+  {
     key: 'summons',
     type: 'text',
     duration: 4300,
@@ -65,4 +71,5 @@ export const SCENES = [
 ];
 
 export const LOADING_SCENE_INDEX = 0;
+export const CANDLE_SCENE_INDEX = 1;
 export const FINAL_SCENE_INDEX = SCENES.length - 1;
