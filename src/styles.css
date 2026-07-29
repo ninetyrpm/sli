@@ -7,8 +7,8 @@
   --deep-red: #230d0b;
   --border: rgba(214, 196, 152, 0.24);
 
-  --sigil-contrast: 0.86;
-  --sigil-brightness: 0.24;
+  --sigil-contrast: 0.9;
+  --sigil-brightness: 0.32;
   --sigil-opacity: 0;
   --sigil-wash: 0;
   --sigil-halo: 0;
@@ -33,14 +33,14 @@ body,
   margin: 0;
 }
 
-html,
-body {
+html {
   background: var(--black);
 }
 
 body {
   min-width: 320px;
   overflow-x: clip;
+  background: var(--black);
 }
 
 button,
@@ -95,8 +95,8 @@ a {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 50% 50%, rgba(91, 40, 21, 0.11), transparent 32%),
-    radial-gradient(circle at 50% 50%, rgba(198, 172, 110, 0.055), transparent 22%),
+    radial-gradient(circle at 50% 50%, rgba(91, 40, 21, 0.11), transparent 27%),
+    radial-gradient(circle at 50% 50%, rgba(198, 172, 110, 0.045), transparent 18%),
     linear-gradient(180deg, #010101 0%, var(--asphalt) 48%, #010101 100%);
 }
 
@@ -109,7 +109,7 @@ a {
   left: 50%;
   top: 50%;
   z-index: 1;
-  width: clamp(560px, 100vw, 1160px);
+  width: clamp(520px, 92vw, 980px);
   aspect-ratio: 1;
   pointer-events: none;
   opacity: 1;
@@ -118,40 +118,33 @@ a {
   background:
     radial-gradient(
       circle,
-      rgba(214, 142, 72, 0.22) 0%,
-      rgba(126, 48, 28, 0.118) 31%,
-      rgba(46, 19, 12, 0.052) 52%,
-      transparent 75%
+      rgba(214, 142, 72, 0.20) 0%,
+      rgba(126, 48, 28, 0.105) 30%,
+      rgba(46, 19, 12, 0.038) 49%,
+      transparent 69%
     );
   mix-blend-mode: screen;
-  animation: intro-glow-breathe 6.4s ease-in-out infinite;
-  transition: opacity 1500ms ease, transform 1500ms ease;
+  animation: intro-glow-breathe 5.8s ease-in-out infinite;
+  transition: opacity 950ms ease, transform 950ms ease;
 }
 
-.scripture-shell .intro-glow {
+.page-shell.is-revealed .scripture-shell .base-darkness {
   position: fixed;
-  top: 34%;
-  width: clamp(760px, 125vw, 1800px);
-  opacity: 0.5;
-  background:
-    radial-gradient(
-      circle,
-      rgba(214, 142, 72, 0.20) 0%,
-      rgba(126, 48, 28, 0.115) 30%,
-      rgba(46, 19, 12, 0.055) 52%,
-      transparent 76%
-    );
 }
 
-.page-shell.is-revealed .intro-glow {
-  opacity: 0.36;
-  transform: translate(-50%, -50%) scale(1.18);
+.intro-glow {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.04);
 }
 
-.page-shell.is-entering-scripture .intro-glow {
-  opacity: 0.6;
-  transform: translate(-62%, -50%) scale(1.3);
-  transition-duration: 3200ms;
+.scripture-shell .scripture-shell .base-darkness {
+  position: fixed;
+}
+
+.intro-glow {
+  position: fixed;
+  opacity: 0.34;
+  width: min(90vw, 840px);
 }
 
 .sigil-pattern {
@@ -169,19 +162,15 @@ a {
     brightness(var(--sigil-brightness))
     saturate(0.92);
   transform: translateZ(0);
-  animation: pattern-drift 96s linear infinite;
-  will-change: opacity, filter, background-position;
+  animation: pattern-drift 72s linear infinite;
+  will-change: opacity, filter;
 }
 
 .sigil-pattern.quiet {
   position: fixed;
   opacity: 0.09;
   filter: contrast(1.05) brightness(0.58) saturate(0.74);
-  animation-duration: 140s;
-}
-
-.page-shell.is-entering-scripture .sigil-pattern {
-  animation: scripture-pan 3200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-duration: 120s;
 }
 
 .sigil-warmth {
@@ -195,11 +184,11 @@ a {
       circle at 50% 50%,
       rgba(227, 164, 82, var(--sigil-halo)) 0%,
       rgba(128, 52, 26, calc(var(--sigil-halo) * 0.42)) 28%,
-      transparent 63%
+      transparent 60%
     ),
     rgba(170, 92, 36, var(--sigil-wash));
   mix-blend-mode: soft-light;
-  transition: opacity 1800ms ease;
+  transition: opacity 900ms ease;
 }
 
 .sigil-warmth.quiet {
@@ -210,11 +199,6 @@ a {
 
 .page-shell.is-revealed .sigil-warmth {
   opacity: 1;
-}
-
-.page-shell.is-entering-scripture .sigil-warmth {
-  opacity: 0.72;
-  transition-duration: 3200ms;
 }
 
 .page-shell.is-blackout .transmission {
@@ -247,11 +231,6 @@ a {
   opacity: 0.11;
 }
 
-.page-shell.is-entering-scripture .analog-noise,
-.page-shell.is-entering-scripture .tape-damage {
-  animation: archive-fade 3200ms ease forwards;
-}
-
 .vignette {
   position: absolute;
   inset: -20%;
@@ -275,7 +254,7 @@ a {
 }
 
 .page-shell.is-revealed .vignette {
-  background: radial-gradient(circle at 50% 50%, transparent 31%, rgba(0, 0, 0, 0.24) 70%, rgba(0, 0, 0, 0.74) 96%);
+  background: radial-gradient(circle at 50% 50%, transparent 28%, rgba(0, 0, 0, 0.22) 68%, rgba(0, 0, 0, 0.74) 96%);
 }
 
 .tape-damage {
@@ -312,7 +291,7 @@ a {
   place-items: center;
   text-align: center;
   text-shadow: 0 0 18px rgba(0, 0, 0, 0.9);
-  transition: opacity 700ms ease, filter 700ms ease, transform 700ms ease;
+  transition: opacity 420ms ease, filter 420ms ease, transform 420ms ease;
 }
 
 .page-shell.is-revealed .transmission {
@@ -354,10 +333,6 @@ a {
   --scene-exit-delay: 1000s;
 }
 
-.copy-block.immediate {
-  animation: none;
-}
-
 .line {
   margin: 0;
   opacity: 0;
@@ -365,25 +340,6 @@ a {
   filter: blur(2px);
   animation: reveal 1200ms ease forwards;
   animation-delay: var(--delay);
-}
-
-.candlelit-text .line {
-  text-shadow:
-    0 0 6px rgba(214, 142, 72, 0.22),
-    0 0 18px rgba(126, 48, 28, 0.26),
-    0 2px 14px rgba(0, 0, 0, 0.88);
-  animation:
-    reveal 1200ms ease forwards,
-    text-candle-drift 4.4s ease-in-out infinite;
-  animation-delay: var(--delay), calc(var(--delay) + 1.1s);
-}
-
-.copy-block.immediate .line {
-  opacity: 1;
-  transform: none;
-  filter: none;
-  animation: text-candle-drift 4.4s ease-in-out infinite;
-  animation-delay: 0ms;
 }
 
 .whisper .line {
@@ -395,12 +351,12 @@ a {
 
 .doctrine .line {
   color: rgba(235, 221, 188, 0.98);
-  font-size: clamp(1.18rem, 4.1vw, 2.15rem);
-  line-height: 1.16;
+  font-size: clamp(1.45rem, 5.2vw, 2.9rem);
+  line-height: 1.08;
 }
 
 .doctrine .line + .line {
-  margin-top: 0.32rem;
+  margin-top: 0.3rem;
 }
 
 .rule .line {
@@ -482,12 +438,6 @@ a {
   transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
 }
 
-.submit-button.immediate {
-  opacity: 1;
-  transform: none;
-  animation: button-flicker 5.5s linear infinite;
-}
-
 .submit-button:hover,
 .submit-button:focus-visible {
   color: rgba(238, 228, 198, 0.96);
@@ -541,19 +491,15 @@ a {
   flex-direction: column;
   align-items: center;
   opacity: 0;
-  transform: translateY(14px) scale(0.985);
-  filter: blur(6px) brightness(0.62);
+  transform: translateY(8px) scale(0.985);
   pointer-events: none;
+  transition: opacity 1200ms ease 950ms, transform 1200ms ease 950ms;
 }
 
 .page-shell.is-revealed .negative-reveal {
-  animation: plaque-emergence 3800ms ease forwards;
-  animation-delay: 2800ms;
+  opacity: 1;
+  transform: translateY(0) scale(1);
   pointer-events: auto;
-}
-
-.page-shell.is-entering-scripture .negative-reveal {
-  animation: plaque-departure 1300ms ease forwards;
 }
 
 .negative-plaque {
@@ -620,13 +566,13 @@ a {
   opacity: 1;
 }
 
+
 .scripture-document {
   position: relative;
   z-index: 10;
   width: min(100%, 840px);
   margin: 0 auto;
   color: rgba(229, 215, 182, 0.92);
-  animation: tome-arrival 1200ms ease both;
 }
 
 .return-link,
@@ -899,27 +845,6 @@ a {
   }
 }
 
-@keyframes scripture-pan {
-  0% {
-    background-position: center center;
-    filter:
-      contrast(var(--sigil-contrast))
-      brightness(var(--sigil-brightness))
-      saturate(0.92);
-  }
-
-  100% {
-    background-position: calc(50% - 460px) center;
-    filter: contrast(1.02) brightness(0.74) saturate(0.75);
-  }
-}
-
-@keyframes archive-fade {
-  to {
-    opacity: 0.08;
-  }
-}
-
 @keyframes reveal {
   to {
     opacity: 1;
@@ -933,30 +858,6 @@ a {
     opacity: 0;
     transform: translateY(-8px);
     filter: blur(3px);
-  }
-}
-
-@keyframes text-candle-drift {
-  0%,
-  100% {
-    text-shadow:
-      0 0 5px rgba(214, 142, 72, 0.18),
-      0 0 15px rgba(126, 48, 28, 0.22),
-      0 2px 14px rgba(0, 0, 0, 0.88);
-  }
-
-  44% {
-    text-shadow:
-      0 0 8px rgba(214, 142, 72, 0.34),
-      0 0 24px rgba(126, 48, 28, 0.36),
-      0 2px 14px rgba(0, 0, 0, 0.9);
-  }
-
-  67% {
-    text-shadow:
-      0 0 6px rgba(214, 142, 72, 0.25),
-      0 0 18px rgba(126, 48, 28, 0.28),
-      0 2px 14px rgba(0, 0, 0, 0.9);
   }
 }
 
@@ -1038,61 +939,6 @@ a {
   }
 }
 
-@keyframes plaque-emergence {
-  0% {
-    opacity: 0;
-    transform: translateY(14px) scale(0.98);
-    filter: blur(7px) brightness(0.52);
-  }
-
-  52% {
-    opacity: 0.56;
-    filter: blur(3px) brightness(0.82);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0) brightness(1);
-  }
-}
-
-@keyframes plaque-departure {
-  to {
-    opacity: 0;
-    transform: translateY(-10px) scale(0.985);
-    filter: blur(5px) brightness(0.65);
-  }
-}
-
-@keyframes scripture-enter {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-    filter: blur(2px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-@keyframes tome-arrival {
-  from {
-    opacity: 0;
-    transform: translateX(28px) translateY(8px);
-    filter: blur(4px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0) translateY(0);
-    filter: blur(0);
-  }
-}
-
 @media (max-width: 640px) {
   .scripture-shell {
     padding: 1rem;
@@ -1100,10 +946,6 @@ a {
 
   .scripture-section {
     padding: 1.1rem;
-  }
-
-  .incantation-index ol {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -1145,8 +987,7 @@ a {
   .loading-rite,
   .negative-reveal,
   .secret.visible,
-  .skip-button,
-  .scripture-document {
+  .skip-button {
     opacity: 1;
     transform: none;
     filter: none;
@@ -1154,5 +995,355 @@ a {
 
   .page-shell.is-blackout .transmission {
     opacity: 1;
+  }
+}
+
+@keyframes scripture-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(2px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .incantation-index ol {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Motion/design patch: candlelit text, smoother ritual transitions, and horizontal scripture travel. */
+.page-shell .intro-glow {
+  position: absolute;
+  opacity: 1;
+  width: clamp(620px, 108vw, 1180px);
+  top: 50%;
+}
+
+.page-shell.is-revealed .intro-glow,
+.page-shell.is-entering-scripture .intro-glow,
+.page-shell.is-arriving-home .intro-glow {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.scripture-shell .intro-glow {
+  position: fixed;
+  opacity: 0.5;
+  width: clamp(760px, 125vw, 1800px);
+  top: 34%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(214, 142, 72, 0.20) 0%,
+      rgba(126, 48, 28, 0.115) 30%,
+      rgba(46, 19, 12, 0.055) 52%,
+      transparent 76%
+    );
+}
+
+.doctrine .line {
+  font-size: clamp(1.18rem, 4.1vw, 2.15rem);
+  line-height: 1.16;
+}
+
+.candlelit-text .line {
+  text-shadow:
+    0 0 6px rgba(214, 142, 72, 0.22),
+    0 0 18px rgba(126, 48, 28, 0.26),
+    0 2px 14px rgba(0, 0, 0, 0.88);
+  animation:
+    reveal 1200ms ease forwards,
+    text-candle-drift 4.6s ease-in-out infinite;
+  animation-delay: var(--delay), calc(var(--delay) + 1.1s);
+}
+
+@keyframes text-candle-drift {
+  0%,
+  100% {
+    filter: brightness(0.96);
+    text-shadow:
+      0 0 5px rgba(214, 142, 72, 0.18),
+      0 0 15px rgba(126, 48, 28, 0.22),
+      0 2px 14px rgba(0, 0, 0, 0.88);
+  }
+
+  44% {
+    filter: brightness(1.08);
+    text-shadow:
+      0 0 8px rgba(214, 142, 72, 0.32),
+      0 0 24px rgba(126, 48, 28, 0.34),
+      0 2px 14px rgba(0, 0, 0, 0.9);
+  }
+
+  67% {
+    filter: brightness(1.01);
+  }
+}
+
+/* Prevent the final prompt/button from jumping upward on submit. */
+.page-shell.is-revealed .transmission {
+  opacity: 0;
+  filter: blur(5px);
+  transform: translateY(0);
+  pointer-events: none;
+  transition: opacity 900ms ease, filter 900ms ease, transform 900ms ease;
+}
+
+.submit-button.immediate {
+  opacity: 1;
+  transform: translateY(0);
+  animation: button-flicker 5.5s linear infinite;
+}
+
+.has-skipped .closing .line,
+.has-skipped .submit-button {
+  opacity: 1;
+  transform: translateY(0);
+  filter: none;
+  animation-delay: 0ms !important;
+}
+
+.negative-reveal {
+  transition: none;
+}
+
+.page-shell.is-revealed .negative-reveal {
+  opacity: 0;
+  transform: translateY(14px) scale(0.982);
+  pointer-events: none;
+  animation: cathedral-plaque-emergence 4300ms cubic-bezier(0.16, 1, 0.3, 1) 2600ms forwards;
+}
+
+.page-shell.is-revealed .negative-plaque {
+  filter: brightness(0.72) blur(3px);
+  animation: plaque-candle-focus 4300ms cubic-bezier(0.16, 1, 0.3, 1) 2600ms forwards;
+}
+
+@keyframes cathedral-plaque-emergence {
+  0% {
+    opacity: 0;
+    transform: translateY(18px) scale(0.978);
+    pointer-events: none;
+  }
+
+  56% {
+    opacity: 0.58;
+    transform: translateY(7px) scale(0.99);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+}
+
+@keyframes plaque-candle-focus {
+  0% {
+    filter: brightness(0.62) blur(5px);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.72),
+      0 0 26px rgba(0, 0, 0, 0.86),
+      inset 0 0 34px rgba(0, 0, 0, 0.72);
+  }
+
+  58% {
+    filter: brightness(0.86) blur(1.8px);
+  }
+
+  100% {
+    filter: brightness(1) blur(0);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.72),
+      0 0 70px rgba(0, 0, 0, 0.86),
+      0 0 36px rgba(126, 48, 28, 0.18),
+      inset 0 0 34px rgba(0, 0, 0, 0.72);
+  }
+}
+
+/* Read-the-scripture transition: no fade; the ritual chamber pans left. */
+.page-shell.is-entering-scripture .negative-reveal {
+  opacity: 1 !important;
+  pointer-events: none;
+  animation: pan-left-out 2600ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.page-shell.is-entering-scripture .negative-plaque {
+  filter: brightness(1) blur(0) !important;
+  animation: none !important;
+}
+
+.page-shell.is-entering-scripture .sigil-pattern {
+  animation: sigil-background-pan-left 2600ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.page-shell.is-entering-scripture .sigil-warmth,
+.page-shell.is-entering-scripture .vignette,
+.page-shell.is-entering-scripture .tape-damage,
+.page-shell.is-entering-scripture .analog-noise {
+  animation: atmosphere-pan-left 2600ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+@keyframes pan-left-out {
+  0% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-118vw) translateY(0) scale(1);
+  }
+}
+
+@keyframes sigil-background-pan-left {
+  0% {
+    transform: translateX(0) translateZ(0);
+  }
+
+  100% {
+    transform: translateX(-32vw) translateZ(0);
+  }
+}
+
+@keyframes atmosphere-pan-left {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-18vw);
+  }
+}
+
+/* Scripture arrival/return: the tome pans horizontally instead of fading. */
+.scripture-shell {
+  overflow-x: hidden;
+}
+
+.scripture-shell.is-arriving-from-home .scripture-document {
+  animation: scripture-slide-in-from-right 2600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.scripture-shell.is-arriving-from-home .sigil-pattern.quiet,
+.scripture-shell.is-arriving-from-home .sigil-warmth.quiet,
+.scripture-shell.is-arriving-from-home .vignette,
+.scripture-shell.is-arriving-from-home .tape-damage,
+.scripture-shell.is-arriving-from-home .analog-noise {
+  animation: scripture-atmosphere-slide-in 2600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.scripture-shell.is-returning-home {
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.scripture-shell.is-returning-home .scripture-document {
+  animation: scripture-slide-right-out 2600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.scripture-shell.is-returning-home .sigil-pattern.quiet,
+.scripture-shell.is-returning-home .sigil-warmth.quiet,
+.scripture-shell.is-returning-home .vignette,
+.scripture-shell.is-returning-home .tape-damage,
+.scripture-shell.is-returning-home .analog-noise {
+  animation: scripture-atmosphere-right-out 2600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scripture-slide-in-from-right {
+  0% {
+    transform: translateX(118vw);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes scripture-slide-right-out {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(118vw);
+  }
+}
+
+@keyframes scripture-atmosphere-slide-in {
+  0% {
+    transform: translateX(24vw);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes scripture-atmosphere-right-out {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(24vw);
+  }
+}
+
+/* Returning home from scripture: reverse the pan, with the plaque chamber entering from the left. */
+.page-shell.is-arriving-home .negative-reveal {
+  opacity: 1 !important;
+  pointer-events: auto;
+  animation: home-plaque-slide-in-from-left 2600ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+.page-shell.is-arriving-home .negative-plaque {
+  filter: brightness(1) blur(0) !important;
+  animation: none !important;
+}
+
+.page-shell.is-arriving-home .sigil-pattern,
+.page-shell.is-arriving-home .sigil-warmth,
+.page-shell.is-arriving-home .vignette,
+.page-shell.is-arriving-home .tape-damage,
+.page-shell.is-arriving-home .analog-noise {
+  animation: home-atmosphere-slide-in-from-left 2600ms cubic-bezier(0.16, 1, 0.3, 1) both !important;
+}
+
+@keyframes home-plaque-slide-in-from-left {
+  0% {
+    transform: translateX(-118vw) translateY(0) scale(1);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+@keyframes home-atmosphere-slide-in-from-left {
+  0% {
+    transform: translateX(-24vw);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-shell.is-entering-scripture .negative-reveal,
+  .page-shell.is-entering-scripture .sigil-pattern,
+  .scripture-shell.is-arriving-from-home .scripture-document,
+  .scripture-shell.is-returning-home .scripture-document,
+  .page-shell.is-arriving-home .negative-reveal {
+    animation: none !important;
+    transform: none !important;
   }
 }

@@ -5,7 +5,23 @@ import { SkipButton } from '../components/SkipButton.jsx';
 import { Transmission } from '../components/Transmission.jsx';
 import { FINAL_SCENE_INDEX, LOADING_SCENE_INDEX, SCENES, SECRET_SEQUENCE } from '../data/scenes.js';
 
-function startSigilRevealDrift(isRevealedRef) {
+const HOME_RETURN_KEY = 'sliTransition';
+const HOME_RETURN_VALUE = 'fromScripture';
+
+function consumeHomeReturnTransition() {
+  try {
+    if (window.sessionStorage.getItem(HOME_RETURN_KEY) === HOME_RETURN_VALUE) {
+      window.sessionStorage.removeItem(HOME_RETURN_KEY);
+      return true;
+    }
+  } catch {
+    // Ignore storage failures and fall back to the standard intro.
+  }
+
+  return false;
+}
+
+function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   const root = document.documentElement;
   let animationFrameId;
   let revealStart;
@@ -19,38 +35,43 @@ function startSigilRevealDrift(isRevealedRef) {
     if (!isRevealed) {
       revealStart = undefined;
       root.style.setProperty('--sigil-opacity', '0');
-      root.style.setProperty('--sigil-brightness', '0.24');
-      root.style.setProperty('--sigil-contrast', '0.86');
+      root.style.setProperty('--sigil-brightness', '0.32');
+      root.style.setProperty('--sigil-contrast', '0.90');
       root.style.setProperty('--sigil-wash', '0.000');
       root.style.setProperty('--sigil-halo', '0.00');
       animationFrameId = window.requestAnimationFrame(apply);
       return;
     }
 
-    if (!revealStart) revealStart = timestamp;
+    if (!revealStart) {
+      revealStart = revealCompleteRef.current ? timestamp - 6200 : timestamp;
+    }
 
-    // Slow cathedral illumination: starts as almost nothing, then opens into a larger room.
-    const revealT = clamp01((timestamp - revealStart) / 5400);
-    const ramp = easeOutCubic(revealT);
+    const revealT = clamp01((timestamp - revealStart) / 6200);
+    const ramp = revealCompleteRef.current ? 1 : easeOutCubic(revealT);
     const t = (timestamp - revealStart) / 1000;
 
-    // Slow overlapping waves: candle-breath rather than digital jitter.
-    const slow = Math.sin(t * 0.32);
-    const medium = Math.sin(t * 0.72 + 1.7);
-    const small = Math.sin(t * 1.36 + 0.4);
-    const micro = Math.sin(t * 2.05 + Math.sin(t * 0.23) * 0.8);
+    // Slow overlapping waves: cathedral candlelight, not screen glitch.
+    const slow = Math.sin(t * 0.38);
+    const medium = Math.sin(t * 0.82 + 1.7);
+    const small = Math.sin(t * 1.65 + 0.4);
+    const micro = Math.sin(t * 2.45 + Math.sin(t * 0.24) * 1.2);
 
-    const brightness = 0.24 + ramp * (0.86 + slow * 0.10 + medium * 0.052 + small * 0.022 + micro * 0.008);
-    const contrast = 0.86 + ramp * (0.34 + slow * 0.075 + medium * 0.044 + small * 0.017);
-    const opacity = ramp * (0.76 + slow * 0.075 + medium * 0.036 + small * 0.014);
-    const wash = ramp * (0.13 + slow * 0.035 + medium * 0.020 + small * 0.008);
-    const halo = ramp * (0.25 + slow * 0.050 + medium * 0.028 + small * 0.012);
+    const brightness = 0.32 + ramp * (0.82 + slow * 0.10 + medium * 0.045 + small * 0.018 + micro * 0.008);
+    const contrast = 0.90 + ramp * (0.25 + slow * 0.08 + medium * 0.045 + small * 0.018);
+    const opacity = ramp * (0.76 + slow * 0.075 + medium * 0.035 + small * 0.014);
+    const wash = ramp * (0.14 + slow * 0.036 + medium * 0.020 + small * 0.010);
+    const halo = ramp * (0.23 + slow * 0.048 + medium * 0.026 + small * 0.012);
 
     root.style.setProperty('--sigil-opacity', Math.max(0, opacity).toFixed(3));
     root.style.setProperty('--sigil-brightness', Math.max(0, brightness).toFixed(3));
     root.style.setProperty('--sigil-contrast', Math.max(0, contrast).toFixed(3));
     root.style.setProperty('--sigil-wash', Math.max(0, wash).toFixed(3));
     root.style.setProperty('--sigil-halo', Math.max(0, halo).toFixed(3));
+
+    if (revealT >= 1 && !revealCompleteRef.current) {
+      revealCompleteRef.current = true;
+    }
 
     animationFrameId = window.requestAnimationFrame(apply);
   };
@@ -63,23 +84,34 @@ function startSigilRevealDrift(isRevealedRef) {
 }
 
 export function Home() {
-  const [sceneIndex, setSceneIndex] = useState(0);
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [hasSkipped, setHasSkipped] = useState(false);
+  const [isArrivingHome, setIsArrivingHome] = useState(() => consumeHomeReturnTransition());
+  const [sceneIndex, setSceneIndex] = useState(() => (isArrivingHome ? FINAL_SCENE_INDEX : 0));
+  const [hasSubmitted, setHasSubmitted] = useState(() => isArrivingHome);
+  const [skipToSubmit, setSkipToSubmit] = useState(false);
   const [isEnteringScripture, setIsEnteringScripture] = useState(false);
   const [secretProgress, setSecretProgress] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
 
   const submittedRef = useRef(false);
+  const revealCompleteRef = useRef(isArrivingHome);
   submittedRef.current = hasSubmitted;
 
-  useEffect(() => startSigilRevealDrift(submittedRef), []);
+  useEffect(() => startSigilRevealDrift(submittedRef, revealCompleteRef), []);
+
+  useEffect(() => {
+    if (!isArrivingHome) return undefined;
+
+    const timer = window.setTimeout(() => {
+      setIsArrivingHome(false);
+    }, 2600);
+
+    return () => window.clearTimeout(timer);
+  }, [isArrivingHome]);
 
   const currentScene = SCENES[sceneIndex];
   const isBlackout = currentScene.type === 'blackout';
   const isLoading = currentScene.type === 'loading';
   const isFinal = currentScene.type === 'final';
-  const immediateFinal = isFinal && hasSkipped && !hasSubmitted;
   const canSkip = sceneIndex > LOADING_SCENE_INDEX && !isFinal && !hasSubmitted;
 
   const sceneClassName = useMemo(() => {
@@ -88,12 +120,13 @@ export function Home() {
       isBlackout ? 'is-blackout' : '',
       isLoading ? 'is-loading' : '',
       hasSubmitted ? 'is-revealed' : '',
-      hasSkipped ? 'has-skipped' : '',
+      skipToSubmit ? 'has-skipped' : '',
       isEnteringScripture ? 'is-entering-scripture' : '',
+      isArrivingHome ? 'is-arriving-home' : '',
     ]
       .filter(Boolean)
       .join(' ');
-  }, [isBlackout, isLoading, hasSubmitted, hasSkipped, isEnteringScripture]);
+  }, [isBlackout, isLoading, hasSubmitted, skipToSubmit, isEnteringScripture, isArrivingHome]);
 
   useEffect(() => {
     if (hasSubmitted || currentScene.duration === null) return undefined;
@@ -132,17 +165,30 @@ export function Home() {
   }, [hasSubmitted, secretProgress]);
 
   const handleSkip = () => {
-    setHasSkipped(true);
     setSceneIndex(FINAL_SCENE_INDEX);
+    setSkipToSubmit(true);
   };
 
-  const handleScriptureClick = (event) => {
+  const handleSubmit = () => {
+    setHasSubmitted(true);
+    revealCompleteRef.current = false;
+  };
+
+  const handleReadScripture = (event) => {
     event.preventDefault();
     if (isEnteringScripture) return;
+
     setIsEnteringScripture(true);
+
+    try {
+      window.sessionStorage.setItem(HOME_RETURN_KEY, 'fromHome');
+    } catch {
+      // Navigation still works if storage is unavailable.
+    }
+
     window.setTimeout(() => {
       window.location.href = '/scripture';
-    }, 3200);
+    }, 2600);
   };
 
   return (
@@ -154,12 +200,12 @@ export function Home() {
         isLoading={isLoading}
         isFinal={isFinal}
         hasSubmitted={hasSubmitted}
-        onSubmit={() => setHasSubmitted(true)}
-        immediateFinal={immediateFinal}
+        skipToSubmit={skipToSubmit}
+        onSubmit={handleSubmit}
       />
 
       {canSkip && <SkipButton onSkip={handleSkip} />}
-      {hasSubmitted && <SigilReveal showSecret={showSecret} onScriptureClick={handleScriptureClick} />}
+      {hasSubmitted && <SigilReveal showSecret={showSecret} onReadScripture={handleReadScripture} />}
     </main>
   );
 }

@@ -1,4 +1,4 @@
-export function Transmission({ currentScene, isLoading, isFinal, hasSubmitted, onSubmit, immediateFinal = false }) {
+export function Transmission({ currentScene, isLoading, isFinal, hasSubmitted, skipToSubmit, onSubmit }) {
   return (
     <section className="transmission" aria-labelledby="site-title" aria-hidden={hasSubmitted}>
       <h1 id="site-title" className="sr-only">
@@ -12,14 +12,11 @@ export function Transmission({ currentScene, isLoading, isFinal, hasSubmitted, o
             <p>TUNING THE SIGNAL</p>
           </div>
         ) : (
-          <div
-            className={`copy-block candlelit-text ${currentScene.tone || ''} ${immediateFinal ? 'immediate' : ''}`}
-            key={`${currentScene.key}-${immediateFinal ? 'instant' : 'timed'}`}
-          >
+          <div className={`copy-block candlelit-text ${currentScene.tone || ''}`} key={currentScene.key}>
             {currentScene.lines.map((line, index) => (
               <p
                 className="line"
-                style={{ '--delay': immediateFinal ? '0ms' : `${0.45 + index * 1.05}s` }}
+                style={{ '--delay': skipToSubmit ? '0ms' : `${0.45 + index * 1.05}s` }}
                 key={`${currentScene.key}-${line}`}
               >
                 {line}
@@ -31,11 +28,7 @@ export function Transmission({ currentScene, isLoading, isFinal, hasSubmitted, o
 
       {isFinal && (
         <div className="final-actions">
-          <button
-            className={`submit-button ${immediateFinal ? 'immediate' : ''}`}
-            type="button"
-            onClick={onSubmit}
-          >
+          <button className={`submit-button ${skipToSubmit ? 'immediate' : ''}`} type="button" onClick={onSubmit}>
             I Submit to the Loop
           </button>
         </div>
