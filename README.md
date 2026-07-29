@@ -171,3 +171,10 @@ npm run dev
 npm run build
 npm run preview
 ```
+
+
+## v0.6.2
+
+- Corrected the opening so the candle glow remains absent during `LIGHTING A CANDLE`, then grows from the center during ignition.
+- Removed a legacy Scriptorium stylesheet override that forced the opening glow to appear immediately.
+- Refined the Crossroads plaque title, occult-styled edition numeral, location, and declaration copy.

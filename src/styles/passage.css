@@ -738,3 +738,70 @@
   .reveal-title-name { font-size: clamp(1.35rem, 8vw, 2rem); }
   .reveal-title-number { font-size: clamp(1.15rem, 6.5vw, 1.65rem); padding-left: 0.55rem; }
 }
+
+
+/* v0.6.2 Crossroads title and declaration refinement */
+.reveal-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: clamp(0.5rem, 1.4vw, 1rem);
+  width: 100%;
+  margin-bottom: 0.65rem;
+  white-space: nowrap;
+}
+
+.reveal-title-name {
+  display: inline;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.5rem, 4.15vw, 3rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: clamp(0.035em, 0.45vw, 0.085em);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.reveal-title-number {
+  display: inline-block;
+  align-self: baseline;
+  padding: 0;
+  border: 0;
+  color: rgba(154, 59, 49, 0.98);
+  font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+  font-size: clamp(1.45rem, 3.65vw, 2.65rem);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: 0.04em;
+  text-shadow:
+    0 0 10px rgba(139, 52, 44, 0.22),
+    0 0 24px rgba(139, 52, 44, 0.22);
+}
+
+.reveal-location {
+  letter-spacing: clamp(0.09em, 0.75vw, 0.16em);
+}
+
+.reveal-declaration {
+  color: rgba(235, 221, 188, 0.9);
+  font-size: clamp(0.74rem, 1.8vw, 0.98rem);
+  letter-spacing: clamp(0.08em, 0.8vw, 0.16em);
+  text-transform: uppercase;
+}
+
+@media (max-width: 680px) {
+  .reveal-title {
+    gap: 0.38rem;
+  }
+
+  .reveal-title-name {
+    font-size: clamp(1.02rem, 5.8vw, 1.72rem);
+    letter-spacing: 0.025em;
+  }
+
+  .reveal-title-number {
+    font-size: clamp(1.05rem, 5.25vw, 1.55rem);
+  }
+}
