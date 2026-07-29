@@ -1347,3 +1347,174 @@ a {
     transform: none !important;
   }
 }
+
+/* Spatial canvas architecture: one continuous world with home at center and scripture to the right. */
+.spatial-shell {
+  position: relative;
+  min-height: 100svh;
+  overflow-x: hidden;
+  isolation: isolate;
+  background: #020201;
+}
+
+.spatial-shell.view-home {
+  height: 100svh;
+  overflow: hidden;
+}
+
+.spatial-shell.view-scripture {
+  min-height: 100svh;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.spatial-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 100vw 100vw;
+  align-items: stretch;
+  width: 200vw;
+  min-height: 100svh;
+  transform: translateX(0);
+  transition: transform 3200ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.spatial-shell.view-scripture .spatial-grid {
+  transform: translateX(-100vw);
+}
+
+.spatial-background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  min-height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.spatial-background .base-darkness,
+.spatial-background .intro-glow,
+.spatial-background .sigil-pattern,
+.spatial-background .sigil-warmth,
+.spatial-background .tape-damage,
+.spatial-background .vignette,
+.spatial-background .analog-noise {
+  position: absolute;
+}
+
+.spatial-background .base-darkness,
+.spatial-background .sigil-warmth,
+.spatial-background .tape-damage,
+.spatial-background .vignette,
+.spatial-background .analog-noise {
+  inset: 0;
+}
+
+.spatial-background .intro-glow {
+  left: 25%;
+  top: 50svh;
+  width: clamp(640px, 112vw, 1280px);
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.spatial-shell.is-spatial-revealed .spatial-background .intro-glow,
+.spatial-shell.view-scripture .spatial-background .intro-glow {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.spatial-background .sigil-pattern {
+  inset: -4%;
+  background-size: 610px auto;
+}
+
+.spatial-shell:not(.is-spatial-revealed) .spatial-background .sigil-warmth {
+  opacity: 0;
+}
+
+.spatial-shell.is-spatial-revealed .spatial-background .sigil-warmth {
+  opacity: 1;
+}
+
+.spatial-shell.is-spatial-revealed .spatial-background .analog-noise {
+  opacity: 0.11;
+}
+
+.spatial-shell.is-spatial-revealed .spatial-background .vignette {
+  background: radial-gradient(circle at 50% 50%, transparent 28%, rgba(0, 0, 0, 0.22) 68%, rgba(0, 0, 0, 0.74) 96%);
+}
+
+.spatial-chamber {
+  position: relative;
+  z-index: 10;
+  min-width: 0;
+  min-height: 100svh;
+}
+
+.home-chamber {
+  grid-column: 1;
+}
+
+.scripture-chamber {
+  grid-column: 2;
+}
+
+.spatial-shell .page-shell,
+.spatial-shell .scripture-shell {
+  background: transparent;
+}
+
+.spatial-shell .page-shell {
+  width: 100vw;
+  min-height: 100svh;
+}
+
+.home-chamber .page-shell {
+  position: sticky;
+  top: 0;
+}
+
+.spatial-shell .scripture-shell {
+  width: 100vw;
+  min-height: 100svh;
+}
+
+.spatial-shell.view-scripture .scripture-document {
+  animation: tome-arrival-horizontal 1300ms ease both;
+  animation-delay: 1300ms;
+}
+
+.spatial-shell.view-home .scripture-document {
+  animation: none;
+}
+
+@keyframes tome-arrival-horizontal {
+  from {
+    filter: brightness(0.82);
+  }
+
+  to {
+    filter: brightness(1);
+  }
+}
+
+/* Old route-swap transition classes are intentionally neutralized under the spatial canvas. */
+.spatial-shell .page-shell.is-entering-scripture .negative-reveal,
+.spatial-shell .page-shell.is-entering-scripture .sigil-pattern,
+.spatial-shell .scripture-shell.is-arriving-from-home .scripture-document,
+.spatial-shell .scripture-shell.is-returning-home .scripture-document,
+.spatial-shell .page-shell.is-arriving-home .negative-reveal {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spatial-grid {
+    transition: none !important;
+  }
+
+  .spatial-shell.view-scripture .scripture-document {
+    animation: none !important;
+  }
+}

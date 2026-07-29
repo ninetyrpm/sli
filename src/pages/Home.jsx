@@ -1,25 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { BackgroundLayers } from '../components/BackgroundLayers.jsx';
 import { SigilReveal } from '../components/SigilReveal.jsx';
 import { SkipButton } from '../components/SkipButton.jsx';
 import { Transmission } from '../components/Transmission.jsx';
 import { FINAL_SCENE_INDEX, LOADING_SCENE_INDEX, SCENES, SECRET_SEQUENCE } from '../data/scenes.js';
-
-const HOME_RETURN_KEY = 'sliTransition';
-const HOME_RETURN_VALUE = 'fromScripture';
-
-function consumeHomeReturnTransition() {
-  try {
-    if (window.sessionStorage.getItem(HOME_RETURN_KEY) === HOME_RETURN_VALUE) {
-      window.sessionStorage.removeItem(HOME_RETURN_KEY);
-      return true;
-    }
-  } catch {
-    // Ignore storage failures and fall back to the standard intro.
-  }
-
-  return false;
-}
 
 function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   const root = document.documentElement;
@@ -83,30 +66,22 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   };
 }
 
-export function Home() {
-  const [isArrivingHome, setIsArrivingHome] = useState(() => consumeHomeReturnTransition());
-  const [sceneIndex, setSceneIndex] = useState(() => (isArrivingHome ? FINAL_SCENE_INDEX : 0));
-  const [hasSubmitted, setHasSubmitted] = useState(() => isArrivingHome);
+export function Home({ initialSubmitted = false, onSubmittedChange, onReadScripture }) {
+  const [sceneIndex, setSceneIndex] = useState(() => (initialSubmitted ? FINAL_SCENE_INDEX : 0));
+  const [hasSubmitted, setHasSubmitted] = useState(() => initialSubmitted);
   const [skipToSubmit, setSkipToSubmit] = useState(false);
-  const [isEnteringScripture, setIsEnteringScripture] = useState(false);
   const [secretProgress, setSecretProgress] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
 
   const submittedRef = useRef(false);
-  const revealCompleteRef = useRef(isArrivingHome);
+  const revealCompleteRef = useRef(initialSubmitted);
   submittedRef.current = hasSubmitted;
 
   useEffect(() => startSigilRevealDrift(submittedRef, revealCompleteRef), []);
 
   useEffect(() => {
-    if (!isArrivingHome) return undefined;
-
-    const timer = window.setTimeout(() => {
-      setIsArrivingHome(false);
-    }, 2600);
-
-    return () => window.clearTimeout(timer);
-  }, [isArrivingHome]);
+    onSubmittedChange?.(hasSubmitted);
+  }, [hasSubmitted, onSubmittedChange]);
 
   const currentScene = SCENES[sceneIndex];
   const isBlackout = currentScene.type === 'blackout';
@@ -121,12 +96,10 @@ export function Home() {
       isLoading ? 'is-loading' : '',
       hasSubmitted ? 'is-revealed' : '',
       skipToSubmit ? 'has-skipped' : '',
-      isEnteringScripture ? 'is-entering-scripture' : '',
-      isArrivingHome ? 'is-arriving-home' : '',
     ]
       .filter(Boolean)
       .join(' ');
-  }, [isBlackout, isLoading, hasSubmitted, skipToSubmit, isEnteringScripture, isArrivingHome]);
+  }, [isBlackout, isLoading, hasSubmitted, skipToSubmit]);
 
   useEffect(() => {
     if (hasSubmitted || currentScene.duration === null) return undefined;
@@ -176,25 +149,11 @@ export function Home() {
 
   const handleReadScripture = (event) => {
     event.preventDefault();
-    if (isEnteringScripture) return;
-
-    setIsEnteringScripture(true);
-
-    try {
-      window.sessionStorage.setItem(HOME_RETURN_KEY, 'fromHome');
-    } catch {
-      // Navigation still works if storage is unavailable.
-    }
-
-    window.setTimeout(() => {
-      window.location.href = '/scripture';
-    }, 2600);
+    onReadScripture?.();
   };
 
   return (
-    <main className={sceneClassName} aria-label="Scenic Loop Insanity teaser">
-      <BackgroundLayers includeSigil />
-
+    <div className={sceneClassName} aria-label="Scenic Loop Insanity teaser">
       <Transmission
         currentScene={currentScene}
         isLoading={isLoading}
@@ -206,6 +165,6 @@ export function Home() {
 
       {canSkip && <SkipButton onSkip={handleSkip} />}
       {hasSubmitted && <SigilReveal showSecret={showSecret} onReadScripture={handleReadScripture} />}
-    </main>
+    </div>
   );
 }
