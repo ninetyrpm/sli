@@ -20,6 +20,8 @@ export function App() {
   const [mapHasEntered, setMapHasEntered] = useState(() => getChamberFromPath().id !== 'crossroads');
   const [candleLit, setCandleLit] = useState(() => getChamberFromPath().id !== 'crossroads');
   const ritualSoundscapeRef = useRef(null);
+  const chamberWhispersRef = useRef(null);
+  const whisperStopTimerRef = useRef(null);
 
   const activeChamber = CHAMBERS[activeChamberId] ?? CHAMBERS.crossroads;
 
@@ -40,16 +42,41 @@ export function App() {
     });
   }, []);
 
+
+  const playChamberWhisper = useCallback((chamberId) => {
+    const audio = chamberWhispersRef.current;
+    if (!audio) return;
+
+    window.clearTimeout(whisperStopTimerRef.current);
+
+    const segment = chamberId === 'crossroads'
+      ? { start: 0, end: 5 }
+      : chamberId === 'scriptorium'
+        ? { start: 5.5, end: 11 }
+        : null;
+
+    if (!segment) return;
+
+    audio.pause();
+    audio.currentTime = segment.start;
+    audio.play()?.catch(() => {});
+    whisperStopTimerRef.current = window.setTimeout(() => {
+      audio.pause();
+      audio.currentTime = segment.end;
+    }, (segment.end - segment.start) * 1000);
+  }, []);
+
   useEffect(() => {
     const handlePopState = () => {
       const nextChamber = getChamberFromPath();
+      playChamberWhisper(nextChamber.id);
       setActiveChamberId(nextChamber.id);
       if (nextChamber.id !== 'crossroads') setHomeHasSubmitted(true);
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
+  }, [playChamberWhisper]);
 
   const navigateTo = (nextChamberId) => {
     const nextChamber = CHAMBERS[nextChamberId];
@@ -59,9 +86,15 @@ export function App() {
       window.history.pushState({}, '', nextChamber.path);
     }
 
+    playChamberWhisper(nextChamber.id);
     if (nextChamber.id !== 'crossroads') setHomeHasSubmitted(true);
     setActiveChamberId(nextChamber.id);
   };
+
+
+  useEffect(() => () => {
+    window.clearTimeout(whisperStopTimerRef.current);
+  }, []);
 
   const shellClassName = useMemo(
     () => [
@@ -119,6 +152,13 @@ export function App() {
         src="/audio/ritual-of-the-damned-atmosphere.mp3"
         preload="auto"
         loop
+        hidden
+      />
+
+      <audio
+        ref={chamberWhispersRef}
+        src="/audio/cult-whispers.wav"
+        preload="auto"
         hidden
       />
 

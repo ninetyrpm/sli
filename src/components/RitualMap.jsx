@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 export function RitualMap({
   currentChamberId,
   isHidden,
@@ -6,32 +8,54 @@ export function RitualMap({
   onMarkEntered,
   onNavigate,
 }) {
+  const paperAudioRef = useRef(null);
+
+  const playPaperSound = () => {
+    const audio = paperAudioRef.current;
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play()?.catch(() => {});
+  };
+
   const navigate = (chamberId) => {
     if (chamberId !== currentChamberId) onNavigate(chamberId);
   };
 
   if (isHidden) {
     return (
-      <button
-        className={`ritual-map-tab ${animateEntry ? 'is-entering' : ''}`}
-        type="button"
-        onClick={() => {
-          onMarkEntered?.();
-          onToggleHidden();
-        }}
-        aria-label="Unfold the ritual map"
-      >
-        Unfold map
-      </button>
+      <>
+        <audio ref={paperAudioRef} src="/audio/paper-double.wav" preload="auto" hidden />
+        <button
+          className={`ritual-map-tab ${animateEntry ? 'is-entering' : ''}`}
+          type="button"
+          onClick={() => {
+            playPaperSound();
+            onMarkEntered?.();
+            onToggleHidden();
+          }}
+          aria-label="Unfold the ritual map"
+        >
+          Unfold map
+        </button>
+      </>
     );
   }
 
   return (
-    <aside className="ritual-map" aria-label="Ritual map of the known chambers">
+    <>
+      <audio ref={paperAudioRef} src="/audio/paper-double.wav" preload="auto" hidden />
+      <aside className="ritual-map" aria-label="Ritual map of the known chambers">
       <div className="ritual-map-paper">
         <div className="ritual-map-heading">
           <span>Map of the Known Ways</span>
-          <button type="button" onClick={onToggleHidden} aria-label="Fold the ritual map">
+          <button
+            type="button"
+            onClick={() => {
+              playPaperSound();
+              onToggleHidden();
+            }}
+            aria-label="Fold the ritual map"
+          >
             Fold
           </button>
         </div>
@@ -77,6 +101,7 @@ export function RitualMap({
 
         <p className="ritual-map-note">The other ways have not yet revealed themselves.</p>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

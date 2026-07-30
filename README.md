@@ -217,3 +217,12 @@ The application references it as `/media/watchful-eye.mp4`. Keep that path and f
   - `public/audio/ritual-of-the-damned-atmosphere.mp3`
 
 Note: modern browsers commonly block audible autoplay before the visitor interacts with a page. The opening match strike is therefore a best-effort playback on initial load; the submission-triggered soundscape is reliable because it starts from the visitor's button click.
+
+
+### v0.7.4 — chamber and map audio refinement
+
+- Delays the match strike within `LIGHTING A CANDLE` so the loading text can be read before the transient, while keeping the strike before candle ignition.
+- Plays `paper-double.wav` only when the visitor explicitly folds or unfolds the Ritual Map.
+- Centers the middle repeated sigil tile on The Crossroads so visible vertical seams are symmetric.
+- Matches the visual height of the occult-styled `III` to the main event title.
+- Plays the `0:00–0:05` whisper segment when entering The Crossroads and the `0:05.5–0:11` segment when entering The Scriptorium.

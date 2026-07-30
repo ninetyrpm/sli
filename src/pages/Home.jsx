@@ -98,6 +98,7 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
     if (!audio || initialSubmitted) return undefined;
 
     let cancelled = false;
+    let playbackTimer;
 
     const attemptPlayback = () => {
       if (cancelled) return;
@@ -110,14 +111,19 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
       playback?.catch(() => {});
     };
 
-    if (audio.readyState >= 1) {
-      attemptPlayback();
-    } else {
-      audio.addEventListener('loadedmetadata', attemptPlayback, { once: true });
-    }
+    // Let the visitor register the loading text before the strike. The transient
+    // lands about one second before the loading scene ends and candlelight grows.
+    playbackTimer = window.setTimeout(() => {
+      if (audio.readyState >= 1) {
+        attemptPlayback();
+      } else {
+        audio.addEventListener('loadedmetadata', attemptPlayback, { once: true });
+      }
+    }, 1450);
 
     return () => {
       cancelled = true;
+      window.clearTimeout(playbackTimer);
       audio.removeEventListener('loadedmetadata', attemptPlayback);
     };
   }, [initialSubmitted]);

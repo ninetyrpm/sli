@@ -36,7 +36,7 @@
   opacity: var(--sigil-opacity);
   background-image: url('/sigil.png');
   background-repeat: repeat;
-  background-position: center;
+  background-position: var(--crossroads-center-x, 50vw) 50%;
   background-size: 610px auto;
   filter:
     contrast(var(--sigil-contrast))
