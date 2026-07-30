@@ -206,3 +206,14 @@ The application references it as `/media/watchful-eye.mp4`. Keep that path and f
 - Centers the portrait Watchful Eye video in the viewport through a document-level portal.
 - Reserves mobile space so the folded Ritual Map does not cover the tome.
 - Adds Return to the Index navigation and adjacent-page titles in Scripture footers.
+
+### v0.7.3 — ritual audio
+
+- Adds a match-strike recording to the opening `LIGHTING A CANDLE` sequence, beginning playback at 0.217 seconds so the strike transient starts immediately.
+- Starts the ritual soundscape when the visitor selects `I SUBMIT TO THE LOOP`.
+- Loops the soundscape continuously from a single App-level audio element so chamber navigation does not restart or interrupt it.
+- Stores audio assets at:
+  - `public/audio/match-strike.wav`
+  - `public/audio/ritual-of-the-damned-atmosphere.mp3`
+
+Note: modern browsers commonly block audible autoplay before the visitor interacts with a page. The opening match strike is therefore a best-effort playback on initial load; the submission-triggered soundscape is reliable because it starts from the visitor's button click.

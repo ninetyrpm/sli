@@ -79,7 +79,7 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   };
 }
 
-export function Home({ initialSubmitted = false, isActive = true, onSubmittedChange, onCandleLitChange, onCrossroadsSettled, onSecretDismiss }) {
+export function Home({ initialSubmitted = false, isActive = true, onSubmittedChange, onCandleLitChange, onCrossroadsSettled, onBeginSoundscape, onSecretDismiss }) {
   const [sceneIndex, setSceneIndex] = useState(() => (initialSubmitted ? FINAL_SCENE_INDEX : 0));
   const [hasSubmitted, setHasSubmitted] = useState(() => initialSubmitted);
   const [skipToSubmit, setSkipToSubmit] = useState(false);
@@ -87,10 +87,40 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
   const [showSecret, setShowSecret] = useState(false);
 
   const submittedRef = useRef(false);
+  const matchStrikeRef = useRef(null);
   const revealCompleteRef = useRef(initialSubmitted);
   submittedRef.current = hasSubmitted;
 
   useEffect(() => startSigilRevealDrift(submittedRef, revealCompleteRef), []);
+
+  useEffect(() => {
+    const audio = matchStrikeRef.current;
+    if (!audio || initialSubmitted) return undefined;
+
+    let cancelled = false;
+
+    const attemptPlayback = () => {
+      if (cancelled) return;
+      audio.currentTime = 0.217;
+      const playback = audio.play();
+
+      // Audible autoplay is blocked by many browsers on a fresh visit. The
+      // attempt is intentionally best-effort; the sequence continues cleanly
+      // when a browser denies it.
+      playback?.catch(() => {});
+    };
+
+    if (audio.readyState >= 1) {
+      attemptPlayback();
+    } else {
+      audio.addEventListener('loadedmetadata', attemptPlayback, { once: true });
+    }
+
+    return () => {
+      cancelled = true;
+      audio.removeEventListener('loadedmetadata', attemptPlayback);
+    };
+  }, [initialSubmitted]);
 
   useEffect(() => {
     onSubmittedChange?.(hasSubmitted);
@@ -175,6 +205,7 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
   };
 
   const handleSubmit = () => {
+    onBeginSoundscape?.();
     const root = document.documentElement;
 
     // Prime the reveal synchronously so the lit candle never drops to black
@@ -198,6 +229,12 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
 
   return (
     <div className={sceneClassName} aria-label="Scenic Loop Insanity teaser">
+      <audio
+        ref={matchStrikeRef}
+        src="/audio/match-strike.wav"
+        preload="auto"
+        hidden
+      />
       <Transmission
         currentScene={currentScene}
         isLoading={isLoading}

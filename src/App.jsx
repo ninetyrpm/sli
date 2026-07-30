@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Home } from './pages/Home.jsx';
 import { Scripture } from './pages/Scripture.jsx';
 import { BackgroundLayers } from './components/BackgroundLayers.jsx';
@@ -19,8 +19,26 @@ export function App() {
   const [mapReady, setMapReady] = useState(() => getChamberFromPath().id !== 'crossroads');
   const [mapHasEntered, setMapHasEntered] = useState(() => getChamberFromPath().id !== 'crossroads');
   const [candleLit, setCandleLit] = useState(() => getChamberFromPath().id !== 'crossroads');
+  const ritualSoundscapeRef = useRef(null);
 
   const activeChamber = CHAMBERS[activeChamberId] ?? CHAMBERS.crossroads;
+
+  const beginRitualSoundscape = useCallback(() => {
+    const audio = ritualSoundscapeRef.current;
+    if (!audio) return;
+
+    audio.loop = true;
+
+    // Submission is a direct user gesture, so browsers permit audible
+    // playback here. Keep the same element mounted at App level so the
+    // soundscape continues uninterrupted while moving between chambers.
+    const playback = audio.play();
+    playback?.catch(() => {
+      // A browser or device may still deny playback because of a local
+      // media policy. A later submission click can retry without breaking
+      // the visual transition.
+    });
+  }, []);
 
   useEffect(() => {
     const handlePopState = () => {
@@ -82,6 +100,7 @@ export function App() {
             onSubmittedChange={setHomeHasSubmitted}
             onCandleLitChange={setCandleLit}
             onCrossroadsSettled={() => setMapReady(true)}
+            onBeginSoundscape={beginRitualSoundscape}
             onSecretDismiss={() => navigateTo('crossroads')}
           />
         </section>
@@ -94,6 +113,14 @@ export function App() {
           <Scripture />
         </section>
       </div>
+
+      <audio
+        ref={ritualSoundscapeRef}
+        src="/audio/ritual-of-the-damned-atmosphere.mp3"
+        preload="auto"
+        loop
+        hidden
+      />
 
       {homeHasSubmitted && mapReady && (
         <RitualMap
