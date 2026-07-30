@@ -28,7 +28,6 @@
 .spatial-background .sigil-pattern,
 .spatial-background .sigil-warmth,
 .spatial-background .tape-damage,
-.spatial-background .vignette,
 .spatial-background .analog-noise,
 .spatial-background .reveal-wave {
   position: absolute;
@@ -49,10 +48,6 @@
 
 .spatial-shell.is-spatial-revealed .spatial-background .analog-noise {
   opacity: 0.11;
-}
-
-.spatial-shell.is-spatial-revealed .spatial-background .vignette {
-  background: radial-gradient(circle at 50% 50%, transparent 28%, rgba(0, 0, 0, 0.22) 68%, rgba(0, 0, 0, 0.74) 96%);
 }
 
 .spatial-chamber {

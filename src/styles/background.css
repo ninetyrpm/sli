@@ -156,25 +156,36 @@
   opacity: 0.11;
 }
 
-.vignette {
-  position: absolute;
-  inset: -20%;
-  z-index: 6;
+/* The vignette belongs to the visible browser frame, not to the repeated
+   sigil texture or translated spatial canvas. Keeping it viewport-fixed avoids
+   dark borders around every individual sigil tile. */
+.viewport-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
   pointer-events: none;
   opacity: 0;
-  background:
-    radial-gradient(circle, transparent 38%, rgba(0, 0, 0, 0.38) 73%, rgba(0, 0, 0, 0.88) 96%),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.008), transparent 12%, transparent 88%, rgba(255, 255, 255, 0.008));
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 30%,
+    rgba(0, 0, 0, 0.18) 66%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
   transition: opacity 1200ms ease, background 1000ms ease;
 }
 
-.spatial-shell.is-candle-lit .spatial-background .vignette {
+.spatial-shell.is-candle-lit > .viewport-vignette {
   opacity: 1;
 }
 
-.spatial-shell.is-spatial-revealed .spatial-background .vignette {
+.spatial-shell.is-spatial-revealed > .viewport-vignette {
   opacity: 1;
-  background: radial-gradient(circle at 50% 50%, transparent 28%, rgba(0, 0, 0, 0.22) 68%, rgba(0, 0, 0, 0.74) 96%);
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    transparent 27%,
+    rgba(0, 0, 0, 0.18) 68%,
+    rgba(0, 0, 0, 0.70) 100%
+  );
 }
 
 .tape-damage {

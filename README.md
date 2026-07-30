@@ -92,39 +92,112 @@ Future chambers can be positioned above, below, left, right, or diagonally from 
 
 ## Roadmap
 
-The site will be built gradually as event details become available and as the campaign moves through successive hype phases.
+The website will be developed toward a full public launch while the dedicated Scenic Loop Insanity social account builds awareness, history, and anticipation. The site URL will remain private during that campaign rather than publishing a separate teaser branch or staging partial public releases.
 
-### Near term
+At launch, the website should feel like a complete world worth exploring, while still leaving room for event details and discoveries to evolve as planning continues.
 
-- Refine the visual treatment of the ritual map
-- Replace prototype Scripture copy with final incantations
-- Add the first practical event-information chamber
-- Establish locked, obscured, or unrevealed routes on the map
-- Add visual transitions for newly revealed chambers
-- Continue mobile layout and touch-target refinement
-- Validate the experience across major mobile browsers
+### Core chamber plan
 
-### Planned event chambers and content
+- **The Crossroads** — central hub, current announcement board, and access to the known chambers
+- **The Scriptorium** — lore, incantations, and thematic foundation
+- **The Archive** — documentation of the First and Second Rites, styled as a collection of occult and ritual supplies
+- **The Loop Map** — a fantasy-map treatment of Cherokee Park's physical loop, lore landmarks, and official event locations
+- **The Doctrine** — the event's ethos, rules, safety covenant, and expectations for everyone involved
+- **Participation / registration experience** — final chamber or in-world interface to indicate intended involvement
 
-- What the Rite is
-- Full Rite, Half-Madness, and relay participation
-- Route, lap count, hills, landmarks, and course map
-- Safety covenant and rider expectations
-- Date, schedule, gathering point, parking, food, and support
-- Registration or commitment ledger
-- Sponsors, collaborators, vendors, and supporters
-- History of the first, second, and third editions
-- The Final Procession
+The final spatial arrangement and chamber names may continue to evolve as the content is designed.
+
+### Planned Crossroads additions
+
+- **Signs & Omens** announcement board beneath the Crossroads plaque
+- Current planning updates, confirmed information, volunteer calls, collaborator reveals, and other notices visible immediately upon return
+- Content presentation that remains thematic but clearly distinguishes current information from lore
+
+### Planned participation registry
+
+Add an informal, low-friction form for estimating attendance and planning support. It is not intended to be formal race registration and should collect no unnecessary personally identifiable information.
+
+Possible participation choices:
+
+- Participant / pilgrim
+  - Full Rite
+  - Half Rite
+  - Relay
+- Spectator / observer
+- Volunteer
+- Other support roles as planning develops, such as photographer, musician, vendor, or cheerleader
+
+The form should provide enough aggregate information to anticipate rosters, supplies, support needs, and likely event scale without creating a contractual registration process.
+
+### The Archive
+
+The Archive will combine several related concepts into a single chamber:
+
+- Photographs from the First and Second Rites
+- Witness accounts and participant testimonials
+- Finishers and the Book of Names
+- Strava evidence and lap records
+- Relics, recovered objects, damaged supplies, and other artifacts
+- A chronological record of the event's development
+
+Its presentation should resemble a ritual storeroom, evidence archive, or collection of ceremonial materials rather than a conventional gallery.
+
+### Mythologized Loop map
+
+Create a richly illustrated, Middle-earth-like map devoted to the Cherokee Park Scenic Loop. It should combine real geography with the event's mythological interpretation.
+
+Potential content includes:
+
+- Bridge #2
+- Baringer Hill
+- Bonnycastle Hill
+- Big Rock
+- Christensen Fountain
+- Hogan's Fountain
+- The former Hogan's Fountain Pavilion
+- Start, finish, gathering, support, food, vendor, and volunteer locations
+- Important climbs, hazards, and repeated ritual landmarks
+
+### The Doctrine
+
+The Doctrine should serve as both the event ethos and the practical rules or expectations for all participants. Topics will include:
+
+- No prizes, podiums, or official winner
+- Shared hardship rather than competitive hierarchy
+- Mutual care and assistance
+- Safety taking priority over theatrical commitment
+- Respect for Cherokee Park, bystanders, and other road users
+- Participation-format responsibilities
+- Final Procession expectations
+- The distinction between the Loop's indifference and the congregation's empathy
 
 ## Backlog
+
+### Audio system
+
+- Determine and document exact sound-cue parameters for every source recording:
+  - source file
+  - audible start time
+  - audible end time
+  - fade-in and fade-out
+  - ambience ducking amount
+  - duck attack and release timing
+  - overlap rules
+  - replay behavior
+  - muted and failed-media behavior
+- Replace the provisional Crossroads and Scriptorium whisper timestamps after the source recording is reviewed
+- Add chamber-specific ambient layers and acoustic character once suitable recordings are sourced
+- Consider separate ambience and effects controls only if the single master control proves insufficient
+- Continue balancing foreground effects against the persistent ritual soundscape
 
 ### Navigation and state
 
 - Persist completed submission state with `localStorage`
 - Create a deliberate returning-visitor experience
 - Remember ritual-map visibility between chamber visits or sessions
-- Support progressively unlocked map routes
+- Support progressively discovered map routes
 - Add a larger map or directory once the chamber network expands
+- Add a hidden ritual-reset mechanism for development and first-run testing
 
 ### Tome
 
@@ -132,6 +205,7 @@ The site will be built gradually as event details become available and as the ca
 - Show outgoing and incoming page faces during turns
 - Add page stack, shadows, edge deformation, and resistance at the first/last page
 - Refine swipe feedback and page-turn velocity behavior
+- Revisit the transparent opening in the tome cover as a future medallion, aperture, sealed element, or filled surface
 
 ### Accessibility and motion
 
@@ -144,17 +218,41 @@ The site will be built gradually as event details become available and as the ca
 
 ### Visual assets
 
-- Event-specific imagery for Bridge #2, Baringer Hill, Hogan’s Fountain, Christensen Fountain, Big Rock, Bonnycastle Hill, and the former pavilion
-- Ritualized route map
+- Event-specific imagery for Bridge #2, Baringer Hill, Hogan's Fountain, Christensen Fountain, Big Rock, Bonnycastle Hill, and the former pavilion
+- Final mythologized route map
 - Archival, woodcut, illuminated-manuscript, relic-card, or surveillance-inspired treatments
 - Final sigils, illustrations, textures, and chamber-specific environmental assets
+- Improve or replace the current sigil tile so it repeats without visible seams
 
-### Content and launch
+### Discoverable content and Easter eggs
+
+Add future discoveries sparingly so exploration is rewarded without turning the site into a hidden-hotspot scavenger hunt. Candidates include:
+
+- Clickable marginal symbols
+- Ritual-map input sequences
+- Hidden audio fragments
+- Time-dependent messages
+- Content unlocked after visiting multiple chambers
+- Long-idle discoveries
+- Alternate Scripture passages
+- A chamber that does not appear on the map
+- Visual changes tied to previous visitor actions
+- A touch-accessible counterpart to the Crossroads arrow-key code for mobile visitors
+
+### Media resilience
+
+- Expand thematic loading and failure states to future video, image, and audio assets
+- Ensure every full-screen media experience remains escapable when an asset fails
+- Prevent browser-native broken-image or media-error UI from entering the presentation
+
+### Content, launch, and operations
 
 - Final Scripture copy
-- Practical event details
-- Registration workflow
-- Sponsor and vendor content
+- Practical event details and schedule
+- Participation registry implementation
+- Signs & Omens announcement workflow
+- Sponsor, collaborator, vendor, volunteer, and supporter content
+- Dedicated Instagram launch strategy, handle, bio, first posts, and website reveal campaign
 - Social sharing refinements
 - Analytics and conversion tracking
 - SEO and structured event metadata
@@ -241,3 +339,11 @@ Note: modern browsers commonly block audible autoplay before the visitor interac
 - Made the sigil tiles spatially static and aligned each tile midpoint to The Crossroads center.
 - Added a one-time folded-map twitch, abstract passing shadows, plaque edge candlelight, media fallbacks, and chamber-aware browser titles.
 - Backlog: chamber-specific ambient layers, separate ambience/effects controls if needed, and a hidden ritual reset.
+
+
+### v0.7.7
+
+- Replaced the custom speaker sigil with a familiar speaker/mute icon matching the sound-control text.
+- Moved the vignette out of the repeated sigil layer and fixed it to the visible viewport so individual tile edges are no longer emphasized.
+- Softened ambience ducking and made volume fades cancel-safe to prevent overlapping fades and abrupt returns.
+- Added the expanded content architecture, social-first launch strategy, participation registry, Archive, Loop Map, Doctrine, Signs & Omens, sound-cue documentation, and discovery ideas to the roadmap and backlog.

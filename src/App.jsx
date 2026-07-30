@@ -13,7 +13,14 @@ const GRID_MAX_Y = Math.max(...CHAMBER_LIST.map((chamber) => chamber.y));
 const GRID_COLUMNS = GRID_MAX_X - GRID_MIN_X + 1;
 const GRID_ROWS = GRID_MAX_Y - GRID_MIN_Y + 1;
 const NORMAL_AMBIENCE_VOLUME = 0.58;
-const DUCKED_AMBIENCE_VOLUME = 0.18;
+const DUCKED_AMBIENCE_VOLUME = 0.40;
+
+// Provisional cue boundaries. Replace these after the source recordings are
+// reviewed and exact audible start/end points are documented.
+const CHAMBER_WHISPER_CUES = {
+  crossroads: { start: 0, end: 5 },
+  scriptorium: { start: 5.5, end: 11 },
+};
 
 export function App() {
   const initialChamber = getChamberFromPath();
@@ -29,28 +36,39 @@ export function App() {
   const chamberWhispersRef = useRef(null);
   const whisperStopTimerRef = useRef(null);
   const duckRestoreTimerRef = useRef(null);
+  const ambienceFadeFrameRef = useRef(null);
 
   const activeChamber = CHAMBERS[activeChamberId] ?? CHAMBERS.crossroads;
 
   const setAmbienceVolume = useCallback((volume, fadeMs = 350) => {
     const audio = ritualSoundscapeRef.current;
     if (!audio) return;
+
+    if (ambienceFadeFrameRef.current) {
+      window.cancelAnimationFrame(ambienceFadeFrameRef.current);
+    }
+
     const start = audio.volume;
     const started = performance.now();
     const step = (now) => {
       const progress = Math.min(1, (now - started) / fadeMs);
-      audio.volume = start + (volume - start) * progress;
-      if (progress < 1) requestAnimationFrame(step);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      audio.volume = start + (volume - start) * eased;
+      if (progress < 1) {
+        ambienceFadeFrameRef.current = window.requestAnimationFrame(step);
+      } else {
+        ambienceFadeFrameRef.current = null;
+      }
     };
-    requestAnimationFrame(step);
+    ambienceFadeFrameRef.current = window.requestAnimationFrame(step);
   }, []);
 
   const duckAmbience = useCallback((durationMs = 1200) => {
     if (soundMuted) return;
     window.clearTimeout(duckRestoreTimerRef.current);
-    setAmbienceVolume(DUCKED_AMBIENCE_VOLUME, 180);
+    setAmbienceVolume(DUCKED_AMBIENCE_VOLUME, 260);
     duckRestoreTimerRef.current = window.setTimeout(() => {
-      setAmbienceVolume(NORMAL_AMBIENCE_VOLUME, 700);
+      setAmbienceVolume(NORMAL_AMBIENCE_VOLUME, 1500);
     }, durationMs);
   }, [setAmbienceVolume, soundMuted]);
 
@@ -66,11 +84,9 @@ export function App() {
     const audio = chamberWhispersRef.current;
     if (!audio || soundMuted) return;
     window.clearTimeout(whisperStopTimerRef.current);
-    const segment = chamberId === 'crossroads'
-      ? { start: 0, end: 5 }
-      : chamberId === 'scriptorium' ? { start: 5.5, end: 11 } : null;
+    const segment = CHAMBER_WHISPER_CUES[chamberId] ?? null;
     if (!segment) return;
-    duckAmbience((segment.end - segment.start) * 1000 + 500);
+    duckAmbience((segment.end - segment.start) * 1000);
     audio.pause();
     audio.currentTime = segment.start;
     audio.volume = 1;
@@ -132,6 +148,7 @@ export function App() {
   useEffect(() => () => {
     window.clearTimeout(whisperStopTimerRef.current);
     window.clearTimeout(duckRestoreTimerRef.current);
+    if (ambienceFadeFrameRef.current) window.cancelAnimationFrame(ambienceFadeFrameRef.current);
   }, []);
 
   const shellClassName = useMemo(() => [
@@ -170,6 +187,7 @@ export function App() {
           <Scripture soundMuted={soundMuted} onEffect={duckAmbience} />
         </section>
       </div>
+      <div className="viewport-vignette" aria-hidden="true" />
       <audio ref={ritualSoundscapeRef} src="/audio/ritual-of-the-damned-atmosphere.mp3" preload="auto" loop hidden />
       <audio ref={chamberWhispersRef} src="/audio/cult-whispers.wav" preload="auto" hidden />
       {homeHasSubmitted && <SoundControl muted={soundMuted} onToggle={toggleSound} />}

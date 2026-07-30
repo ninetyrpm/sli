@@ -267,7 +267,7 @@
   .ritual-map-compass { height: 12.3rem; }
 }
 
-/* v0.7.6 master sound control */
+/* Master sound control: intentionally familiar rather than thematic. */
 .sound-control {
   position: fixed;
   z-index: 42;
@@ -292,12 +292,22 @@
 .sound-control:focus-visible { color: rgba(235, 221, 188, 0.96); border-color: rgba(214, 196, 152, 0.38); }
 .sound-control.is-muted { opacity: 0.62; }
 
-.speaker-sigil { position: relative; display: block; width: 1.35rem; height: 1.35rem; }
-.speaker-sigil-core { position: absolute; left: 0.08rem; top: 0.45rem; width: 0.38rem; height: 0.46rem; border: 1px solid currentColor; transform: rotate(45deg); }
-.speaker-sigil-wave { position: absolute; border: 1px solid currentColor; border-left: 0; border-bottom-color: transparent; border-top-color: transparent; border-radius: 50%; }
-.speaker-sigil-wave-one { left: 0.48rem; top: 0.32rem; width: 0.42rem; height: 0.7rem; }
-.speaker-sigil-wave-two { left: 0.58rem; top: 0.17rem; width: 0.65rem; height: 1rem; opacity: 0.65; }
-.sound-control.is-muted .speaker-sigil::after { content: ''; position: absolute; left: 0.08rem; top: 0.65rem; width: 1.2rem; height: 1px; background: currentColor; transform: rotate(-42deg); }
+.speaker-icon {
+  width: 1.18rem;
+  height: 1.18rem;
+  flex: 0 0 auto;
+  overflow: visible;
+  fill: currentColor;
+  color: inherit;
+}
+
+.speaker-icon-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 /* One restrained hint after the folded map first arrives. */
 .ritual-map-tab.is-entering { animation: ritual-map-tab-arrive 900ms cubic-bezier(0.16, 1, 0.3, 1) both, ritual-map-first-twitch 520ms ease-in-out 1450ms 1; }

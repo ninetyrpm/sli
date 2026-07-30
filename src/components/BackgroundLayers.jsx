@@ -13,7 +13,6 @@ export function BackgroundLayers({ includeSigil = true, quiet = false }) {
         </div>
       )}
       <div className="tape-damage" aria-hidden="true" />
-      <div className="vignette" aria-hidden="true" />
       <div className="analog-noise" aria-hidden="true" />
     </>
   );
