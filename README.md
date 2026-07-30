@@ -219,10 +219,17 @@ The application references it as `/media/watchful-eye.mp4`. Keep that path and f
 Note: modern browsers commonly block audible autoplay before the visitor interacts with a page. The opening match strike is therefore a best-effort playback on initial load; the submission-triggered soundscape is reliable because it starts from the visitor's button click.
 
 
-### v0.7.4 — chamber and map audio refinement
+### v0.7.5 — chamber and map audio refinement
 
 - Delays the match strike within `LIGHTING A CANDLE` so the loading text can be read before the transient, while keeping the strike before candle ignition.
 - Plays `paper-double.wav` only when the visitor explicitly folds or unfolds the Ritual Map.
 - Centers the middle repeated sigil tile on The Crossroads so visible vertical seams are symmetric.
 - Matches the visual height of the occult-styled `III` to the main event title.
 - Plays the `0:00–0:05` whisper segment when entering The Crossroads and the `0:05.5–0:11` segment when entering The Scriptorium.
+
+
+### v0.7.5 audio refinements
+
+- Match strike keeps its timed automatic attempt and retries on the first pointer, touch, or keyboard interaction while the lighting sequence is still active. Browsers may still block audible playback until a user interacts with the page.
+- Ritual Map paper audio begins at 0.237 seconds for tighter visual synchronization.
+- Scripture page-turn audio plays for arrows, index links, Return to the Index, footer navigation, and swipe page turns.

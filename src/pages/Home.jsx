@@ -89,6 +89,8 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
   const submittedRef = useRef(false);
   const matchStrikeRef = useRef(null);
   const revealCompleteRef = useRef(initialSubmitted);
+  const sceneIndexRef = useRef(sceneIndex);
+  sceneIndexRef.current = sceneIndex;
   submittedRef.current = hasSubmitted;
 
   useEffect(() => startSigilRevealDrift(submittedRef, revealCompleteRef), []);
@@ -99,20 +101,44 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
 
     let cancelled = false;
     let playbackTimer;
+    let hasPlayed = false;
 
     const attemptPlayback = () => {
-      if (cancelled) return;
+      if (cancelled || hasPlayed) return;
+      audio.pause();
       audio.currentTime = 0.217;
+      audio.volume = 1;
       const playback = audio.play();
 
-      // Audible autoplay is blocked by many browsers on a fresh visit. The
-      // attempt is intentionally best-effort; the sequence continues cleanly
-      // when a browser denies it.
-      playback?.catch(() => {});
+      playback?.then(() => {
+        hasPlayed = true;
+        removeUnlockListeners();
+      }).catch(() => {
+        // Fresh-page audible autoplay is commonly denied. Keep a one-time
+        // interaction fallback active while the loading/ignition beat is live.
+      });
     };
 
+    const handleFirstInteraction = () => {
+      if (sceneIndexRef.current > CANDLE_SCENE_INDEX) {
+        removeUnlockListeners();
+        return;
+      }
+      attemptPlayback();
+    };
+
+    const removeUnlockListeners = () => {
+      window.removeEventListener('pointerdown', handleFirstInteraction, true);
+      window.removeEventListener('keydown', handleFirstInteraction, true);
+      window.removeEventListener('touchstart', handleFirstInteraction, true);
+    };
+
+    window.addEventListener('pointerdown', handleFirstInteraction, true);
+    window.addEventListener('keydown', handleFirstInteraction, true);
+    window.addEventListener('touchstart', handleFirstInteraction, true);
+
     // Let the visitor register the loading text before the strike. The transient
-    // lands about one second before the loading scene ends and candlelight grows.
+    // lands before the loading scene ends and the candlelight begins growing.
     playbackTimer = window.setTimeout(() => {
       if (audio.readyState >= 1) {
         attemptPlayback();
@@ -124,6 +150,7 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
     return () => {
       cancelled = true;
       window.clearTimeout(playbackTimer);
+      removeUnlockListeners();
       audio.removeEventListener('loadedmetadata', attemptPlayback);
     };
   }, [initialSubmitted]);

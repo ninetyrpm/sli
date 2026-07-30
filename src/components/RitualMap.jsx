@@ -13,7 +13,7 @@ export function RitualMap({
   const playPaperSound = () => {
     const audio = paperAudioRef.current;
     if (!audio) return;
-    audio.currentTime = 0;
+    audio.currentTime = 0.237;
     audio.play()?.catch(() => {});
   };
 

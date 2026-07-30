@@ -19,6 +19,7 @@ export function Scripture() {
   const [pageIndex, setPageIndex] = useState(COVER_PAGE);
   const [turnDirection, setTurnDirection] = useState('');
   const gestureRef = useRef(null);
+  const pageFlipAudioRef = useRef(null);
   const maxPageIndex = scriptureSections.length + FIRST_INCANTATION_PAGE - 1;
 
   useEffect(() => {
@@ -28,10 +29,19 @@ export function Scripture() {
     return () => window.clearTimeout(timer);
   }, [turnDirection]);
 
+  const playPageFlip = () => {
+    const audio = pageFlipAudioRef.current;
+    if (!audio) return;
+    audio.pause();
+    audio.currentTime = 0;
+    audio.play()?.catch(() => {});
+  };
+
   const goToPage = (nextPageIndex) => {
     const boundedPage = Math.max(COVER_PAGE, Math.min(maxPageIndex, nextPageIndex));
     if (boundedPage === pageIndex || turnDirection) return;
 
+    playPageFlip();
     setTurnDirection(boundedPage > pageIndex ? 'turning-forward' : 'turning-backward');
     window.setTimeout(() => setPageIndex(boundedPage), 210);
   };
@@ -87,6 +97,7 @@ export function Scripture() {
 
   return (
     <div className="scripture-shell tome-shell" aria-labelledby="scripture-title">
+      <audio ref={pageFlipAudioRef} src="/audio/page-flip.wav" preload="auto" hidden />
       <article className="scripture-document tome-stage" aria-live="polite">
         <div
           className={tomeClassName}
