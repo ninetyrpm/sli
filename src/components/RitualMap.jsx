@@ -7,13 +7,16 @@ export function RitualMap({
   onToggleHidden,
   onMarkEntered,
   onNavigate,
+  soundMuted = false,
+  onEffect,
 }) {
   const paperAudioRef = useRef(null);
 
   const playPaperSound = () => {
     const audio = paperAudioRef.current;
-    if (!audio) return;
+    if (!audio || soundMuted) return;
     audio.currentTime = 0.237;
+    onEffect?.(1100);
     audio.play()?.catch(() => {});
   };
 

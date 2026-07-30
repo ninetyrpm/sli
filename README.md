@@ -219,7 +219,7 @@ The application references it as `/media/watchful-eye.mp4`. Keep that path and f
 Note: modern browsers commonly block audible autoplay before the visitor interacts with a page. The opening match strike is therefore a best-effort playback on initial load; the submission-triggered soundscape is reliable because it starts from the visitor's button click.
 
 
-### v0.7.5 — chamber and map audio refinement
+### v0.7.6 — chamber and map audio refinement
 
 - Delays the match strike within `LIGHTING A CANDLE` so the loading text can be read before the transient, while keeping the strike before candle ignition.
 - Plays `paper-double.wav` only when the visitor explicitly folds or unfolds the Ritual Map.
@@ -228,8 +228,16 @@ Note: modern browsers commonly block audible autoplay before the visitor interac
 - Plays the `0:00–0:05` whisper segment when entering The Crossroads and the `0:05.5–0:11` segment when entering The Scriptorium.
 
 
-### v0.7.5 audio refinements
+### v0.7.6 audio refinements
 
 - Match strike keeps its timed automatic attempt and retries on the first pointer, touch, or keyboard interaction while the lighting sequence is still active. Browsers may still block audible playback until a user interacts with the page.
 - Ritual Map paper audio begins at 0.237 seconds for tighter visual synchronization.
 - Scripture page-turn audio plays for arrows, index links, Return to the Index, footer navigation, and swipe page turns.
+
+
+### v0.7.6
+- Added an audio-unlocking dark threshold before the candle ritual.
+- Added a single master sound control and foreground-effect ambience ducking.
+- Made the sigil tiles spatially static and aligned each tile midpoint to The Crossroads center.
+- Added a one-time folded-map twitch, abstract passing shadows, plaque edge candlelight, media fallbacks, and chamber-aware browser titles.
+- Backlog: chamber-specific ambient layers, separate ambience/effects controls if needed, and a hidden ritual reset.

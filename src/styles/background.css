@@ -43,7 +43,6 @@
     brightness(var(--sigil-brightness))
     saturate(0.92);
   transform: translateZ(0);
-  animation: pattern-drift 72s linear infinite;
   -webkit-mask-image: radial-gradient(
     circle at var(--crossroads-center-x, 50vw) var(--crossroads-center-y, 50svh),
     #000 0,
@@ -63,7 +62,6 @@
   position: fixed;
   opacity: 0.09;
   filter: contrast(1.05) brightness(0.58) saturate(0.74);
-  animation-duration: 120s;
   -webkit-mask-image: none;
   mask-image: none;
 }
@@ -198,3 +196,47 @@
 }
 
 
+
+/* v0.7.6: the sigil field is spatially fixed. Its image midpoint, not its
+   tile origin, is aligned to the horizontal center of The Crossroads. */
+.sigil-pattern {
+  background-position: calc(var(--crossroads-center-x, 50vw) - 305px) 50%;
+  animation: none;
+}
+.sigil-pattern.quiet { animation: none; }
+
+.crossroads-shadows {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1800ms ease;
+  -webkit-mask-image: radial-gradient(circle at var(--crossroads-center-x) var(--crossroads-center-y), #000 0 46vmax, transparent 76vmax);
+  mask-image: radial-gradient(circle at var(--crossroads-center-x) var(--crossroads-center-y), #000 0 46vmax, transparent 76vmax);
+}
+.view-crossroads.is-spatial-revealed .crossroads-shadows { opacity: 1; }
+.crossroads-shadow {
+  position: absolute;
+  width: 70vmax;
+  height: 26vmax;
+  border-radius: 43% 57% 62% 38%;
+  background: rgba(0, 0, 0, 0.32);
+  filter: blur(55px);
+  opacity: 0;
+}
+.crossroads-shadow-one { left: -42vmax; top: 12%; transform: rotate(17deg); animation: abstract-shadow-pass-one 31s ease-in-out 8s infinite; }
+.crossroads-shadow-two { right: -50vmax; bottom: 7%; transform: rotate(-21deg); animation: abstract-shadow-pass-two 43s ease-in-out 19s infinite; }
+@keyframes abstract-shadow-pass-one {
+  0%, 13%, 100% { opacity: 0; translate: 0 0; }
+  22% { opacity: 0.18; }
+  39% { opacity: 0.31; translate: 105vw 8vh; }
+  49% { opacity: 0; translate: 128vw 14vh; }
+}
+@keyframes abstract-shadow-pass-two {
+  0%, 31%, 100% { opacity: 0; translate: 0 0; }
+  39% { opacity: 0.15; }
+  55% { opacity: 0.27; translate: -112vw -12vh; }
+  64% { opacity: 0; translate: -134vw -18vh; }
+}

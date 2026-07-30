@@ -15,7 +15,7 @@ function pageLabel(pageIndex) {
   return section ? section.title : 'Scripture page';
 }
 
-export function Scripture() {
+export function Scripture({ soundMuted = false, onEffect }) {
   const [pageIndex, setPageIndex] = useState(COVER_PAGE);
   const [turnDirection, setTurnDirection] = useState('');
   const gestureRef = useRef(null);
@@ -31,9 +31,10 @@ export function Scripture() {
 
   const playPageFlip = () => {
     const audio = pageFlipAudioRef.current;
-    if (!audio) return;
+    if (!audio || soundMuted) return;
     audio.pause();
     audio.currentTime = 0;
+    onEffect?.(1050);
     audio.play()?.catch(() => {});
   };
 

@@ -79,8 +79,9 @@ function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   };
 }
 
-export function Home({ initialSubmitted = false, isActive = true, onSubmittedChange, onCandleLitChange, onCrossroadsSettled, onBeginSoundscape, onSecretDismiss }) {
+export function Home({ initialSubmitted = false, isActive = true, soundMuted = false, onEffect, onSubmittedChange, onCandleLitChange, onCrossroadsSettled, onBeginSoundscape, onSecretOpenChange, onSecretDismiss }) {
   const [sceneIndex, setSceneIndex] = useState(() => (initialSubmitted ? FINAL_SCENE_INDEX : 0));
+  const [hasStarted, setHasStarted] = useState(() => initialSubmitted);
   const [hasSubmitted, setHasSubmitted] = useState(() => initialSubmitted);
   const [skipToSubmit, setSkipToSubmit] = useState(false);
   const [secretProgress, setSecretProgress] = useState(0);
@@ -97,63 +98,23 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
 
   useEffect(() => {
     const audio = matchStrikeRef.current;
-    if (!audio || initialSubmitted) return undefined;
+    if (!audio || initialSubmitted || !hasStarted || soundMuted) return undefined;
 
     let cancelled = false;
-    let playbackTimer;
-    let hasPlayed = false;
-
-    const attemptPlayback = () => {
-      if (cancelled || hasPlayed) return;
+    const timer = window.setTimeout(() => {
+      if (cancelled) return;
       audio.pause();
       audio.currentTime = 0.217;
       audio.volume = 1;
-      const playback = audio.play();
-
-      playback?.then(() => {
-        hasPlayed = true;
-        removeUnlockListeners();
-      }).catch(() => {
-        // Fresh-page audible autoplay is commonly denied. Keep a one-time
-        // interaction fallback active while the loading/ignition beat is live.
-      });
-    };
-
-    const handleFirstInteraction = () => {
-      if (sceneIndexRef.current > CANDLE_SCENE_INDEX) {
-        removeUnlockListeners();
-        return;
-      }
-      attemptPlayback();
-    };
-
-    const removeUnlockListeners = () => {
-      window.removeEventListener('pointerdown', handleFirstInteraction, true);
-      window.removeEventListener('keydown', handleFirstInteraction, true);
-      window.removeEventListener('touchstart', handleFirstInteraction, true);
-    };
-
-    window.addEventListener('pointerdown', handleFirstInteraction, true);
-    window.addEventListener('keydown', handleFirstInteraction, true);
-    window.addEventListener('touchstart', handleFirstInteraction, true);
-
-    // Let the visitor register the loading text before the strike. The transient
-    // lands before the loading scene ends and the candlelight begins growing.
-    playbackTimer = window.setTimeout(() => {
-      if (audio.readyState >= 1) {
-        attemptPlayback();
-      } else {
-        audio.addEventListener('loadedmetadata', attemptPlayback, { once: true });
-      }
+      onEffect?.(1500);
+      audio.play()?.catch(() => {});
     }, 1450);
 
     return () => {
       cancelled = true;
-      window.clearTimeout(playbackTimer);
-      removeUnlockListeners();
-      audio.removeEventListener('loadedmetadata', attemptPlayback);
+      window.clearTimeout(timer);
     };
-  }, [initialSubmitted]);
+  }, [hasStarted, initialSubmitted, onEffect, soundMuted]);
 
   useEffect(() => {
     onSubmittedChange?.(hasSubmitted);
@@ -197,14 +158,14 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
   }, [isBlackout, isLoading, hasSubmitted, skipToSubmit, sceneIndex]);
 
   useEffect(() => {
-    if (hasSubmitted || currentScene.duration === null) return undefined;
+    if (!hasStarted || hasSubmitted || currentScene.duration === null) return undefined;
 
     const timer = window.setTimeout(() => {
       setSceneIndex((index) => Math.min(index + 1, SCENES.length - 1));
     }, currentScene.duration);
 
     return () => window.clearTimeout(timer);
-  }, [currentScene, hasSubmitted]);
+  }, [currentScene, hasStarted, hasSubmitted]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -217,6 +178,7 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
 
         if (nextProgress === SECRET_SEQUENCE.length) {
           setShowSecret(true);
+          onSecretOpenChange?.(true);
           setSecretProgress(0);
           return;
         }
@@ -237,6 +199,20 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
     setSkipToSubmit(true);
   };
 
+  const handleStart = () => {
+    if (hasStarted) return;
+    const audio = matchStrikeRef.current;
+    if (audio && !soundMuted) {
+      audio.muted = true;
+      audio.play()?.then(() => {
+        audio.pause();
+        audio.currentTime = 0.217;
+        audio.muted = false;
+      }).catch(() => { audio.muted = false; });
+    }
+    setHasStarted(true);
+  };
+
   const handleSubmit = () => {
     onBeginSoundscape?.();
     const root = document.documentElement;
@@ -255,6 +231,7 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
 
   const handleSecretDismiss = () => {
     setShowSecret(false);
+    onSecretOpenChange?.(false);
     setSecretProgress(0);
     onSecretDismiss?.();
   };
@@ -268,16 +245,25 @@ export function Home({ initialSubmitted = false, isActive = true, onSubmittedCha
         preload="auto"
         hidden
       />
-      <Transmission
-        currentScene={currentScene}
-        isLoading={isLoading}
-        isFinal={isFinal}
-        hasSubmitted={hasSubmitted}
-        skipToSubmit={skipToSubmit}
-        onSubmit={handleSubmit}
-      />
+      {!hasStarted && !initialSubmitted ? (
+        <section className="dark-threshold" aria-label="Begin the ritual">
+          <button className="dark-threshold-button" type="button" onClick={handleStart}>
+            IT'S DARK IN HERE
+          </button>
+          <p>Sound is part of the ritual.</p>
+        </section>
+      ) : (
+        <Transmission
+          currentScene={currentScene}
+          isLoading={isLoading}
+          isFinal={isFinal}
+          hasSubmitted={hasSubmitted}
+          skipToSubmit={skipToSubmit}
+          onSubmit={handleSubmit}
+        />
+      )}
 
-      {canSkip && <SkipButton onSkip={handleSkip} />}
+      {hasStarted && canSkip && <SkipButton onSkip={handleSkip} />}
       {hasSubmitted && <SigilReveal />}
       <WatchfulEye isOpen={showSecret} onDismiss={handleSecretDismiss} />
     </div>

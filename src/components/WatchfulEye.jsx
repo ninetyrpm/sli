@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { createPortal } from 'react-dom';
 
 export function WatchfulEye({ isOpen, onDismiss }) {
+  const [mediaState, setMediaState] = useState('loading');
   if (!isOpen) return null;
 
   const vision = (
@@ -15,8 +17,10 @@ export function WatchfulEye({ isOpen, onDismiss }) {
 
       <div className="watchful-eye-vision">
         <div className="watchful-eye-frame">
+          {mediaState === 'loading' && <div className="watchful-eye-loading" aria-hidden="true" />}
+          {mediaState === 'error' && <p className="watchful-eye-error">IT HAS TURNED AWAY</p>}
           <video
-            className="watchful-eye-video"
+            className={`watchful-eye-video ${mediaState === 'ready' ? 'is-ready' : ''}`}
             src="/media/watchful-eye.mp4"
             autoPlay
             loop
@@ -24,6 +28,8 @@ export function WatchfulEye({ isOpen, onDismiss }) {
             playsInline
             preload="auto"
             aria-label="A single eye looks around"
+            onCanPlay={() => setMediaState('ready')}
+            onError={() => setMediaState('error')}
           />
           <button
             className="watchful-eye-trigger"
