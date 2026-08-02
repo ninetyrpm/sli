@@ -341,7 +341,7 @@ Note: modern browsers commonly block audible autoplay before the visitor interac
 - Backlog: chamber-specific ambient layers, separate ambience/effects controls if needed, and a hidden ritual reset.
 
 
-### v0.7.9
+### v0.8.0
 
 - Replaced the opening narration with the revised 27-second recording while preserving its spoken cue points.
 - Extended “We become one” into a slow visual decay synchronized with the repeated echo tail.
@@ -359,3 +359,13 @@ Note: modern browsers commonly block audible autoplay before the visitor interac
 ### Continuous opening narration
 
 The opening sequence now includes `public/audio/the-loop-beckons.wav` as one uninterrupted performance. The visual text cues are aligned to the recording: lead-in at 0:00, “The Loop beckons…” at 0:01.5, “Pain cleanses” at 0:08, “Distance redeems” at 0:13, “Through suffering” at 0:18, and “We become one” at 0:20. The file is never cropped or restarted during the sequence.
+
+
+## v0.8.0 — Scriptorium refinement
+
+- Simplified and recentered the tome cover around **The Scripture of the Loop**.
+- Removed the cover aperture, redundant book label, and submission warning.
+- Simplified the Index of Incantations and removed duplicate Arabic list numbering.
+- Standardized incantation-title sizing to remain on one line.
+- Removed the redundant **Verse** heading.
+- Reordered **The Fallen Temple** before **Christensen Fountain** and revised its opening line.

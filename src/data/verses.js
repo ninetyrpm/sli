@@ -78,8 +78,23 @@ export const scriptureSections = [
     ],
   },
   {
-    id: 'christensen-fountain',
+    id: 'fallen-temple',
     numeral: 'VI',
+    title: 'The Fallen Temple',
+    verse: [
+      'The Witch’s Hat once crowned The Loop, a spire of shelter and shadow.',
+      'When mortals tore it down, the spirits of cedar and sweat grew restless.',
+      'They cursed the asphalt, saying: those who ride shall never finish.',
+      'And though the structure vanished, its absence remained, heavier than stone.',
+    ],
+    interpretation: [
+      'The Teepee is gone. The curse is unverified but emotionally convenient.',
+      'Every lap now feels like one too many. Coincidence is not useful here.',
+    ],
+  },
+  {
+    id: 'christensen-fountain',
+    numeral: 'VII',
     title: 'Christensen Fountain — The Ship of the Dead',
     verse: [
       'Beneath the crest rests a vessel of memory and iron.',
@@ -90,21 +105,6 @@ export const scriptureSections = [
     interpretation: [
       'It is a beautiful fountain. Do not let beauty convince you to stop for too long.',
       'The GPS will call it recovery. The GPS lies.',
-    ],
-  },
-  {
-    id: 'fallen-temple',
-    numeral: 'VII',
-    title: 'The Fallen Temple',
-    verse: [
-      'Once the Witch’s Hat crowned The Loop, a spire of shelter and shadow.',
-      'When mortals tore it down, the spirits of cedar and sweat grew restless.',
-      'They cursed the asphalt, saying: those who ride shall never finish.',
-      'And though the structure vanished, its absence remained, heavier than stone.',
-    ],
-    interpretation: [
-      'The Teepee is gone. The curse is unverified but emotionally convenient.',
-      'Every lap now feels like one too many. Coincidence is not useful here.',
     ],
   },
   {

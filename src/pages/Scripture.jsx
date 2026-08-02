@@ -111,18 +111,15 @@ export function Scripture({ soundMuted = false, onEffect }) {
 
           {pageIndex === COVER_PAGE ? (
             <section className="tome-cover" aria-label="Book cover">
-              <p className="archive-label">Book of Scenic Loop Insanity III</p>
               <h1 id="scripture-title">The Scripture of the Loop</h1>
               <p className="scripture-subtitle">
                 Incantations of the Loop, with interpretations provided for the insufficiently initiated.
               </p>
-              <div className="cover-sigil" aria-hidden="true" />
-              <p className="cover-warning">Open only after submitting to the Loop.</p>
               <button
                 className="book-arrow book-arrow-right cover-open"
                 type="button"
                 onClick={() => goToPage(INDEX_PAGE)}
-                aria-label="Open the Book of Scenic Loop Insanity III"
+                aria-label="Open The Scripture of the Loop"
               >
                 →
               </button>
@@ -142,10 +139,9 @@ export function Scripture({ soundMuted = false, onEffect }) {
 
               {pageIndex === INDEX_PAGE ? (
                 <div className="tome-page-content index-page-content">
-                  <p className="archive-label">Index of Incantations</p>
-                  <h2>Choose the Verse</h2>
+                  <h2>Index of Incantations</h2>
                   <p className="index-instruction">
-                    Turn the pages in order, or place your finger upon an incantation and be taken there.
+                    Turn the pages in order, or select a verse.
                   </p>
 
                   <nav className="incantation-index tome-index" aria-label="Index of incantations">
@@ -171,7 +167,6 @@ export function Scripture({ soundMuted = false, onEffect }) {
                   <h2>{currentSection.title}</h2>
 
                   <div className="verse-block">
-                    <h3>Verse</h3>
                     {currentSection.verse.map((line) => <p key={line}>{line}</p>)}
                   </div>
 

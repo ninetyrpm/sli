@@ -477,3 +477,43 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* v0.8.0 Scriptorium editorial and layout refinement. */
+.tome-cover {
+  align-content: center;
+  justify-items: center;
+}
+
+.tome-cover h1 {
+  margin-top: 0;
+}
+
+/* The cover aperture and warning were intentionally removed. */
+.cover-sigil,
+.cover-warning {
+  display: none;
+}
+
+.tome-index ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.index-page-content h2 {
+  margin-top: 0.2rem;
+}
+
+/* Every incantation title uses one shared size chosen for the longest title. */
+.incantation-page-content h2 {
+  width: 100%;
+  margin: 0.7rem 0 1rem;
+  font-size: clamp(0.82rem, 2.8vw, 1.65rem);
+  line-height: 1.08;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+}
+
+.verse-block {
+  margin-top: 0.25rem;
+}
