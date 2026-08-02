@@ -341,9 +341,13 @@ Note: modern browsers commonly block audible autoplay before the visitor interac
 - Backlog: chamber-specific ambient layers, separate ambience/effects controls if needed, and a hidden ritual reset.
 
 
-### v0.7.7
+### v0.7.8
 
 - Replaced the custom speaker sigil with a familiar speaker/mute icon matching the sound-control text.
 - Moved the vignette out of the repeated sigil layer and fixed it to the visible viewport so individual tile edges are no longer emphasized.
 - Softened ambience ducking and made volume fades cancel-safe to prevent overlapping fades and abrupt returns.
 - Added the expanded content architecture, social-first launch strategy, participation registry, Archive, Loop Map, Doctrine, Signs & Omens, sound-cue documentation, and discovery ideas to the roadmap and backlog.
+
+### Continuous opening narration
+
+The opening sequence now includes `public/audio/the-loop-beckons.wav` as one uninterrupted performance. The visual text cues are aligned to the recording: lead-in at 0:00, “The Loop beckons…” at 0:01.5, “Pain cleanses” at 0:08, “Distance redeems” at 0:13, “Through suffering” at 0:18, and “We become one” at 0:20. The file is never cropped or restarted during the sequence.

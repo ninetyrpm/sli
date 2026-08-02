@@ -891,3 +891,17 @@
   68% { opacity: 0.3; filter: brightness(1.1); }
   72% { opacity: 0.16; filter: brightness(0.88); }
 }
+
+/* Continuous opening narration cues. Each phrase occupies its own timed scene
+   while the underlying recording plays through uninterrupted. */
+.copy-block.doctrine-single {
+  min-height: 5.5rem;
+  justify-content: center;
+}
+
+.copy-block.doctrine-final .line {
+  letter-spacing: 0.025em;
+  text-shadow:
+    0 0 18px rgba(214, 196, 152, 0.12),
+    0 0 42px rgba(0, 0, 0, 0.96);
+}

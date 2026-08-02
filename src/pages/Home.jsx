@@ -3,7 +3,7 @@ import { SigilReveal } from '../components/SigilReveal.jsx';
 import { SkipButton } from '../components/SkipButton.jsx';
 import { Transmission } from '../components/Transmission.jsx';
 import { WatchfulEye } from '../components/WatchfulEye.jsx';
-import { CANDLE_SCENE_INDEX, FINAL_SCENE_INDEX, LOADING_SCENE_INDEX, SCENES, SECRET_SEQUENCE } from '../data/scenes.js';
+import { CANDLE_SCENE_INDEX, FINAL_SCENE_INDEX, LOADING_SCENE_INDEX, NARRATION_END_SCENE_INDEX, NARRATION_START_SCENE_INDEX, SCENES, SECRET_SEQUENCE } from '../data/scenes.js';
 
 function startSigilRevealDrift(isRevealedRef, revealCompleteRef) {
   const root = document.documentElement;
@@ -89,6 +89,7 @@ export function Home({ initialSubmitted = false, isActive = true, soundMuted = f
 
   const submittedRef = useRef(false);
   const matchStrikeRef = useRef(null);
+  const openingNarrationRef = useRef(null);
   const revealCompleteRef = useRef(initialSubmitted);
   const sceneIndexRef = useRef(sceneIndex);
   sceneIndexRef.current = sceneIndex;
@@ -115,6 +116,24 @@ export function Home({ initialSubmitted = false, isActive = true, soundMuted = f
       window.clearTimeout(timer);
     };
   }, [hasStarted, initialSubmitted, onEffect, soundMuted]);
+
+  useEffect(() => {
+    const audio = openingNarrationRef.current;
+    if (!audio || initialSubmitted || !hasStarted) return undefined;
+
+    if (sceneIndex === NARRATION_START_SCENE_INDEX && !soundMuted) {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = 0.72;
+      audio.play()?.catch(() => {});
+    }
+
+    if (sceneIndex > NARRATION_END_SCENE_INDEX || hasSubmitted) {
+      audio.pause();
+    }
+
+    return undefined;
+  }, [hasStarted, hasSubmitted, initialSubmitted, sceneIndex, soundMuted]);
 
   useEffect(() => {
     onSubmittedChange?.(hasSubmitted);
@@ -195,6 +214,7 @@ export function Home({ initialSubmitted = false, isActive = true, soundMuted = f
   }, [hasSubmitted, isActive, secretProgress, showSecret]);
 
   const handleSkip = () => {
+    openingNarrationRef.current?.pause();
     setSceneIndex(FINAL_SCENE_INDEX);
     setSkipToSubmit(true);
   };
@@ -209,6 +229,16 @@ export function Home({ initialSubmitted = false, isActive = true, soundMuted = f
         audio.currentTime = 0.217;
         audio.muted = false;
       }).catch(() => { audio.muted = false; });
+    }
+
+    const narration = openingNarrationRef.current;
+    if (narration && !soundMuted) {
+      narration.muted = true;
+      narration.play()?.then(() => {
+        narration.pause();
+        narration.currentTime = 0;
+        narration.muted = false;
+      }).catch(() => { narration.muted = false; });
     }
     setHasStarted(true);
   };
@@ -242,6 +272,12 @@ export function Home({ initialSubmitted = false, isActive = true, soundMuted = f
       <audio
         ref={matchStrikeRef}
         src="/audio/match-strike.wav"
+        preload="auto"
+        hidden
+      />
+      <audio
+        ref={openingNarrationRef}
+        src="/audio/the-loop-beckons.wav"
         preload="auto"
         hidden
       />
