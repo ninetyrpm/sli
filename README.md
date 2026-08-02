@@ -341,6 +341,14 @@ Note: modern browsers commonly block audible autoplay before the visitor interac
 - Backlog: chamber-specific ambient layers, separate ambience/effects controls if needed, and a hidden ritual reset.
 
 
+### v0.7.9
+
+- Replaced the opening narration with the revised 27-second recording while preserving its spoken cue points.
+- Extended “We become one” into a slow visual decay synchronized with the repeated echo tail.
+- Added a continuous “No prizes / No podium / Just insanity” narration track.
+- Split the rules typography into individually timed scenes at 0:00, 0:03, and 0:06.5 while allowing the final reverb to continue beneath the invitation.
+- Left “Scenic Loop Insanity III approaches” unvoiced; a future narration cue is reserved for “Will you join the madness?”
+
 ### v0.7.8
 
 - Replaced the custom speaker sigil with a familiar speaker/mute icon matching the sound-control text.

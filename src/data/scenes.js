@@ -70,10 +70,9 @@ export const SCENES = [
   {
     key: 'become-one',
     type: 'text',
-    duration: 5862,
+    duration: 7000,
     tone: 'doctrine doctrine-single doctrine-final',
     lineDelay: 0,
-    exitDelay: 4.9,
     lines: ['We become one.'],
   },
   {
@@ -83,17 +82,31 @@ export const SCENES = [
     lines: [],
   },
   {
-    key: 'rules',
+    key: 'no-prizes',
     type: 'text',
-    duration: 6200,
-    tone: 'rule',
-    lines: ['No prizes.', 'No podiums.', 'Just insanity.'],
+    duration: 3000,
+    tone: 'rule rule-single',
+    lineDelay: 0,
+    exitDelay: 2.1,
+    lines: ['No prizes.'],
   },
   {
-    key: 'flicker-three',
-    type: 'blackout',
-    duration: 1100,
-    lines: [],
+    key: 'no-podium',
+    type: 'text',
+    duration: 3500,
+    tone: 'rule rule-single',
+    lineDelay: 0,
+    exitDelay: 2.6,
+    lines: ['No podium.'],
+  },
+  {
+    key: 'just-insanity',
+    type: 'text',
+    duration: 2500,
+    tone: 'rule rule-single rule-final',
+    lineDelay: 0,
+    exitDelay: 1.65,
+    lines: ['Just insanity.'],
   },
   {
     key: 'closing',
@@ -108,4 +121,5 @@ export const LOADING_SCENE_INDEX = 0;
 export const CANDLE_SCENE_INDEX = 1;
 export const NARRATION_START_SCENE_INDEX = 2;
 export const NARRATION_END_SCENE_INDEX = 7;
+export const RULES_NARRATION_START_SCENE_INDEX = 9;
 export const FINAL_SCENE_INDEX = SCENES.length - 1;

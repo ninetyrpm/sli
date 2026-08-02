@@ -905,3 +905,35 @@
     0 0 18px rgba(214, 196, 152, 0.12),
     0 0 42px rgba(0, 0, 0, 0.96);
 }
+
+/* The final doctrine line remains visible while its recorded echoes decay. */
+.copy-block.doctrine-final {
+  animation-name: doctrine-echo-decay;
+  animation-duration: 5.8s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  animation-delay: 1.2s;
+}
+
+.copy-block.rule-single {
+  min-height: 5.5rem;
+  justify-content: center;
+}
+
+@keyframes doctrine-echo-decay {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  45% {
+    opacity: 0.74;
+    transform: translateY(-1px);
+    filter: blur(0.35px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-5px);
+    filter: blur(3px);
+  }
+}
